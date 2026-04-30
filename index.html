@@ -307,7 +307,6 @@ modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('
 function goToRoom(){
   document.body.classList.add('room-mode');
   window.scrollTo(0, 0);
-  // 部屋を初めて開く時、または再表示時にキャンドル配置を更新
   if(!roomInitialized){
     initRoom();
     roomInitialized = true;
@@ -474,7 +473,7 @@ function createCandle(record, xPercent, yPercent){
   candle.style.animationDelay = `-${delay}s`;
 
   const img = document.createElement('img');
-  img.src = `assets/candles/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  img.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
   candle.appendChild(img);
 
@@ -495,7 +494,7 @@ function openPopup(record){
   const d = new Date(record.date);
   dateEl.textContent = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
   wordEl.textContent = record.word;
-  imgEl.src = `assets/candles/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  imgEl.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
 
   overlay.classList.add('show');
 }
@@ -531,7 +530,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/yurapon_lantern.mp4');
+    playVideo('assets/video/yurapon_lantern.mp4');
     return;
   }
 
@@ -542,15 +541,15 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/yurapon_single.mov');
+    playVideo('assets/video/yurapon_single.mov');
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
 }
 
 function testVideo(type){
-  if(type === 'single') playVideo('assets/yurapon_single.mov');
-  else playVideo('assets/yurapon_lantern.mp4');
+  if(type === 'single') playVideo('assets/video/yurapon_single.mov');
+  else playVideo('assets/video/yurapon_lantern.mp4');
 }
 
 function resetData(){
@@ -609,7 +608,6 @@ document.getElementById('yearToggle').addEventListener('click',()=>{
   placeCandles();
 });
 
-// 部屋の初期化（最初に部屋を開いた時に実行）
 function initRoom(){
   allRecords = loadRecords();
   updateNav();
