@@ -11,13 +11,13 @@ html,body{min-height:100%}html{background:#f7f4fb}
 body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;overflow-x:hidden;background:#f7f4fb}
 
 /* メイン背景：画面いっぱいに広がる固定背景 */
-.bg-layer{position:fixed;inset:0;z-index:-2;background:url("./assets/img/bg_main.jpg") center center/cover no-repeat;filter:saturate(.68) contrast(.92) brightness(1.08)}
+.bg-layer{position:fixed;inset:0;z-index:-2;background:url("assets/img/bg_main.jpg") center center/cover no-repeat;filter:saturate(.68) contrast(.92) brightness(1.08)}
 .bg-layer::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.30)}
 
 /* 部屋モード時の背景：画面いっぱいに広がる */
 body.room-mode{color:#e8e0f5}
 body.room-mode .bg-layer{display:none}
-.room-bg-layer{display:none;position:fixed;inset:0;z-index:-2;background:#0a0618 url("./assets/img/bg_room.png") center center/cover no-repeat}
+.room-bg-layer{display:none;position:fixed;inset:0;z-index:-2;background:#0a0618 url("assets/img/bg_room.png") center center/cover no-repeat}
 body.room-mode .room-bg-layer{display:block}
 
 /* 部屋背景の上に光の粒（floating dust） */
@@ -82,7 +82,9 @@ button.choice:active{transform:translateY(1px)}
 
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:flex-end;justify-content:center;padding:18px;background:rgba(34,28,54,.20)}
 .modal.show{display:flex}
-.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:24px 20px 26px;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(44,31,72,.20);color:var(--ink);line-height:2.0}
+.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:24px 20px 26px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,rgba(255,255,255,.88);backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(44,31,72,.20);color:var(--ink);line-height:2.0;position:relative}
+.modal-panel::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:inherit;pointer-events:none;z-index:0}
+.modal-panel > *{position:relative;z-index:1}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .modal-head h2{font-size:22px;margin:0;line-height:1.4}
 .close-btn{width:86px;min-height:42px;border-radius:999px;background:rgba(246,239,255,.82);border:1px solid rgba(135,116,166,.14);font:inherit;cursor:pointer}
@@ -101,8 +103,7 @@ body.room-mode .page{display:none}
 .room-stage{position:relative;width:100%;max-width:480px;min-height:100vh;overflow:hidden}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px)}
-.room-back{background:transparent;border:none;color:rgba(232,224,245,.6);font-size:13px;letter-spacing:.1em;padding:6px 8px;cursor:pointer;font-family:inherit;font-weight:300;line-height:1;transition:color .3s}
+.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px)}.room-back{background:transparent;border:none;color:rgba(232,224,245,.6);font-size:13px;letter-spacing:.1em;padding:6px 8px;cursor:pointer;font-family:inherit;font-weight:300;line-height:1;transition:color .3s}
 .room-back:hover{color:rgba(232,224,245,.95)}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
@@ -117,7 +118,7 @@ body.room-mode .page{display:none}
 .year-toggle:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
 
-.room{position:relative;width:100%;min-height:calc(100vh - 60px);padding:20px 0 60px;transition:opacity .3s ease}
+.room{position:relative;width:100%;padding:0;transition:opacity .3s ease}
 .room.fading{opacity:0}
 
 /* キャンドル：ゆらゆら揺らめき強化 + 火の揺れ */
@@ -638,7 +639,7 @@ if(window.location.hash === '#room'){
 
 // 背景画像のプリロード（黒画面バグ対策）
 (function preloadImages(){
-  const imgs = ['./assets/img/bg_main.jpg','./assets/img/bg_room.png'];
+  const imgs = ['assets/img/bg_main.jpg','assets/img/bg_room.png','assets/img/bg_caption.jpg'];
   imgs.forEach(src=>{
     const img = new Image();
     img.src = src;
@@ -774,8 +775,15 @@ function placeCandles(){
     room.innerHTML = '';
     const records = getFilteredRecords();
 
+    // ヘッダー（room-top-bar）の実際の高さを取得
+    const topBar = document.querySelector('.room-top-bar');
+    const topBarH = topBar ? topBar.offsetHeight : 60;
+    const viewportH = window.innerHeight;
+    const availableH = viewportH - topBarH;
+
     if(records.length === 0){
-      room.style.minHeight = (window.innerHeight - 60) + 'px';
+      room.style.minHeight = availableH + 'px';
+      room.style.height = availableH + 'px';
       room.classList.remove('fading');
       return;
     }
@@ -788,23 +796,21 @@ function placeCandles(){
     const minDist = candleSize * 0.85;
     const padding = 8;
 
-    // 画面サイズ基準の高さ計算
-    // ヘッダー高さ ~60px を引いた利用可能高さ
-    const viewportH = window.innerHeight;
-    const availableH = viewportH - 60;
-
     // 記録数に応じて高さを決める
     // - 記録が少ない（〜25個程度）：画面にちょうど収まる高さ
     // - 記録が多い（25個〜）：明確にスクロールできる長さ
     let calculatedHeight;
     const fitThreshold = viewMode === 'year' ? 60 : 25;
     if(records.length <= fitThreshold){
-      calculatedHeight = availableH; // 画面ちょうど
+      // 画面ちょうど（スクロールしない）
+      calculatedHeight = availableH;
+      room.style.height = availableH + 'px';
     } else {
-      // しっかりスクロール（記録数 × 行間）
+      // しっかりスクロール
       const rowsNeeded = Math.ceil(records.length / (viewMode === 'year' ? 6 : 4));
       const rowH = viewMode === 'year' ? 70 : 130;
       calculatedHeight = Math.max(availableH * 1.4, rowsNeeded * rowH + 80);
+      room.style.height = 'auto';
     }
     room.style.minHeight = calculatedHeight + 'px';
 
