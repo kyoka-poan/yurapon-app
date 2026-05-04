@@ -15,7 +15,7 @@ html{overflow-x:hidden}
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
 /* 部屋モード時の背景：body自体に背景指定で確実に出す */
-body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:100% auto;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -97,8 +97,8 @@ button.choice:active{transform:translateY(1px)}
 .room-stage-wrapper{display:none;width:100%;min-height:100svh;justify-content:center}
 body.room-mode .room-stage-wrapper{display:flex}
 body.room-mode .page{display:none}
-.room-stage{position:relative;width:100%;max-width:480px;height:100svh;overflow:hidden;display:flex;flex-direction:column}
-.room-stage.scrollable{height:auto;overflow:visible}
+.room-stage{position:relative;width:100%;max-width:480px;min-height:100svh;display:flex;flex-direction:column}
+.room-stage.scrollable{height:auto}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
 .room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.7);font-size:11px;letter-spacing:.15em;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:300;transition:all .3s}
@@ -115,9 +115,10 @@ body.room-mode .page{display:none}
 .year-toggle{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.7);font-size:11px;letter-spacing:.15em;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:300;min-width:72px}
 .year-toggle:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
+.tap-hint{margin:0;padding:0 16px 12px;text-align:center;font-size:11px;color:rgba(232,224,245,.55);letter-spacing:.2em;font-weight:300}
 
-.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1;overflow:hidden}
-.room.scrollable{flex:none;overflow:visible}
+.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1}
+.room.scrollable{flex:none}
 .room.fading{opacity:0}
 
 /* キャンドル：ゆらゆら揺らめき強化 + 火の揺れ */
@@ -126,22 +127,22 @@ body.room-mode .page{display:none}
 .candle.size-year{width:34px;height:44px}
 .candle:active{opacity:.7}
 .candle-wax{width:100%;height:100%;position:relative;animation:candle-sway 6s ease-in-out infinite;transform-origin:center bottom}
-.candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 10px rgba(255,200,120,.45)) drop-shadow(0 0 20px rgba(255,180,100,.2))}
+.candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(255,200,120,.35)) drop-shadow(0 0 8px rgba(255,180,100,.15))}
 
 /* 火の表現：キャンドル画像の上にSVG炎を重ねる（揺らめき） */
 .candle-flame{position:absolute;top:-8%;left:50%;transform:translateX(-50%);pointer-events:none;animation:flame-flicker 1.6s ease-in-out infinite alternate;transform-origin:center bottom}
 .candle.size-month .candle-flame{width:18px;height:28px}
 .candle.size-year .candle-flame{width:9px;height:14px}
 
-.candle::before{content:'';position:absolute;top:35%;left:50%;width:160%;height:160%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,200,120,.22) 0%,rgba(255,180,100,.10) 40%,transparent 70%);pointer-events:none;animation:glow-pulse 3.5s ease-in-out infinite;z-index:-1}
+.candle::before{content:'';position:absolute;top:35%;left:50%;width:90%;height:90%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,200,120,.14) 0%,rgba(255,180,100,.06) 50%,transparent 80%);pointer-events:none;animation:glow-pulse 3.5s ease-in-out infinite;z-index:-1}
 .candle.just-lit{animation:fade-in 1.5s ease-out}
 .candle.just-lit::before{animation:glow-pulse 3.5s ease-in-out infinite,first-glow 4s ease-out}
 
 @keyframes candle-sway{
-  0%,100%{transform:rotate(-1.2deg) translateY(0)}
-  25%{transform:rotate(0.8deg) translateY(-1px)}
-  50%{transform:rotate(1.5deg) translateY(0)}
-  75%{transform:rotate(-0.6deg) translateY(-0.5px)}
+  0%,100%{transform:rotate(-3deg) translateY(0)}
+  25%{transform:rotate(2deg) translateY(-2px)}
+  50%{transform:rotate(3.5deg) translateY(0)}
+  75%{transform:rotate(-1.5deg) translateY(-1px)}
 }
 @keyframes flame-flicker{
   0%{transform:translateX(-50%) scaleY(1) scaleX(1) rotate(-1deg);opacity:.9}
@@ -319,6 +320,7 @@ body.room-mode .page{display:none}
           <button class="year-toggle" id="yearToggle">Year</button>
         </div>
       </div>
+      <p class="tap-hint">キャンドルをタップしてね</p>
       <div class="room" id="room"></div>
     </div>
   </div>
@@ -846,8 +848,15 @@ function placeCandles(){
         baseY = 70 - innerNorm * 65;
       }
 
-      // このキャンドルのスケール：下=1倍、真ん中=2倍、上=3倍
-      const myScale = 1 + norm * 2;
+      // このキャンドルのスケール：下=1倍、真ん中=1.3倍、上=2倍
+      // norm: 0(古い・下) 〜 1(新しい・上)
+      // norm=0 → 1, norm=0.5 → 1.3, norm=1 → 2
+      let myScale;
+      if(norm < 0.5){
+        myScale = 1 + norm * 0.6; // 0→1, 0.5→1.3
+      } else {
+        myScale = 1.3 + (norm - 0.5) * 1.4; // 0.5→1.3, 1→2
+      }
 
       const baseX = padding + rand() * (100 - padding*2);
       const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12);
@@ -1026,61 +1035,26 @@ function showCandleSelect(){
 function onCandlePicked(candleType){
   document.getElementById('candleSelect').classList.remove('show');
 
-  const lighting = document.getElementById('lighting');
-  const stars = document.getElementById('lightingStars');
-  const svgFlame = document.getElementById('svgFlame');
-  const lightingSvg = document.getElementById('lightingSvg');
-  const lightingImage = document.getElementById('lightingImage');
+  // 点灯アニメ動画を再生
+  const overlay = document.getElementById('videoOverlay');
+  const video = document.getElementById('ritualVideo');
+  video.src = 'assets/video/yurapon.candle.mp4';
+  video.muted = false;
+  video.controls = false;
+  overlay.classList.add('show');
 
-  // 状態リセット
-  lighting.classList.remove('lit');
-  svgFlame.style.opacity = '0';
-  lightingSvg.classList.remove('fading-out');
-  lightingImage.classList.remove('fading-in');
-  lightingImage.style.opacity = '0';
-  lightingImage.src = `assets/img/candle_${String(candleType).padStart(2,'0')}.png`;
+  // ミュートでもオートプレイ可能にする保険
+  video.play().catch(()=>{
+    video.muted = true;
+    video.play().catch(()=>{});
+  });
 
-  // 星をランダム配置
-  stars.innerHTML = '';
-  for(let i=0; i<40; i++){
-    const s = document.createElement('div');
-    s.className = 'lighting-star';
-    s.style.left = Math.random()*100 + '%';
-    s.style.top = Math.random()*100 + '%';
-    s.style.animationDelay = (Math.random()*3) + 's';
-    stars.appendChild(s);
-  }
-  // 光の粒（ふわふわ漂う）
-  for(let i=0; i<8; i++){
-    const dust = document.createElement('div');
-    dust.className = 'lighting-dust';
-    const size = 3 + Math.random()*5;
-    dust.style.width = size + 'px';
-    dust.style.height = size + 'px';
-    dust.style.left = (10 + Math.random()*80) + '%';
-    dust.style.top = (20 + Math.random()*70) + '%';
-    dust.style.animationDelay = (Math.random()*8) + 's';
-    dust.style.animationDuration = (6 + Math.random()*4) + 's';
-    stars.appendChild(dust);
-  }
+  // 動画終了時に記録保存して部屋に戻る
+  const finishAndRecord = ()=>{
+    overlay.classList.remove('show');
+    video.src = '';
+    video.onended = null;
 
-  lighting.classList.add('show');
-
-  // 1.8秒：火がじわっと灯る + ハロー広がる
-  setTimeout(()=>{
-    svgFlame.style.transition = 'opacity 2s ease';
-    svgFlame.style.opacity = '1';
-    lighting.classList.add('lit');
-  }, 1800);
-
-  // 4秒：SVGからきょうかの画像にクロスフェード
-  setTimeout(()=>{
-    lightingSvg.classList.add('fading-out');
-    lightingImage.classList.add('fading-in');
-  }, 4000);
-
-  // 8秒：部屋に追加して通常表示へ
-  setTimeout(()=>{
     pendingRecord.candleType = candleType;
     allRecords.push({...pendingRecord});
     saveRecords();
@@ -1093,12 +1067,16 @@ function onCandlePicked(candleType){
     viewMode = 'month';
     updateNav();
     placeCandles();
+  };
 
-    lighting.classList.remove('show');
-    setTimeout(()=>{
-      lighting.classList.remove('lit');
-    }, 1200);
-  }, 8000);
+  video.onended = finishAndRecord;
+
+  // 動画読み込み失敗時のフォールバック（5秒後に強制完了）
+  setTimeout(()=>{
+    if(overlay.classList.contains('show')){
+      finishAndRecord();
+    }
+  }, 30000); // 30秒タイムアウト
 }
 
 function showConfirm(text, onOk, onCancel){
