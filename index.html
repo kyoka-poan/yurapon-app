@@ -8,14 +8,14 @@
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}html{background:#f7f4fb}
-body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#f7f4fb;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#f7f4fb;background-image:url("assets/img/bg_main.jpg");background-size:100% auto;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 html{overflow-x:hidden}
 
 /* 白い半透明オーバーレイ（背景画像の上に重ねて優しい雰囲気に） */
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
 /* 部屋モード時の背景：body自体に背景指定で確実に出す */
-body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:100% auto;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -121,10 +121,10 @@ body.room-mode .page{display:none}
 .room.fading{opacity:0}
 
 /* キャンドル：ゆらゆら揺らめき強化 + 火の揺れ */
-.candle{position:absolute;cursor:pointer;transform:translate(-50%,-50%);transition:transform .4s ease;will-change:transform}
+.candle{position:absolute;cursor:pointer;transition:opacity .4s ease;will-change:transform}
 .candle.size-month{width:70px;height:90px}
 .candle.size-year{width:34px;height:44px}
-.candle:active{transform:translate(-50%,-50%) scale(.9)}
+.candle:active{opacity:.7}
 .candle-wax{width:100%;height:100%;position:relative;animation:candle-sway 6s ease-in-out infinite;transform-origin:center bottom}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 10px rgba(255,200,120,.45)) drop-shadow(0 0 20px rgba(255,180,100,.2))}
 
@@ -846,6 +846,9 @@ function placeCandles(){
         baseY = 70 - innerNorm * 65;
       }
 
+      // このキャンドルのスケール：下=1倍、真ん中=2倍、上=3倍
+      const myScale = 1 + norm * 2;
+
       const baseX = padding + rand() * (100 - padding*2);
       const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12);
       const xJitter = (rand() - 0.5) * 8;
@@ -861,7 +864,9 @@ function placeCandles(){
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          if(Math.sqrt(dx*dx + dy*dy) < minDist){
+          // 両者のスケールを考慮した最小距離
+          const requiredDist = minDist * (myScale + p.scale) / 2;
+          if(Math.sqrt(dx*dx + dy*dy) < requiredDist){
             tooClose = true;
             break;
           }
@@ -872,8 +877,8 @@ function placeCandles(){
         attempts++;
       }
 
-      placed.push({xpx:(x/100)*stageWidth, ypx:(y/100)*stageHeight});
-      room.appendChild(createCandle(rec, x, y));
+      placed.push({xpx:(x/100)*stageWidth, ypx:(y/100)*stageHeight, scale:myScale});
+      room.appendChild(createCandle(rec, x, y, myScale));
     });
 
     requestAnimationFrame(()=>{
@@ -882,7 +887,7 @@ function placeCandles(){
   },200);
 }
 
-function createCandle(record, xPercent, yPercent){
+function createCandle(record, xPercent, yPercent, scale=1){
   const candle = document.createElement('div');
   let cls = 'candle ' + (viewMode === 'year' ? 'size-year' : 'size-month');
   if(justAddedDate && record.date === justAddedDate){
@@ -891,6 +896,8 @@ function createCandle(record, xPercent, yPercent){
   candle.className = cls;
   candle.style.left = xPercent + '%';
   candle.style.top = yPercent + '%';
+  candle.style.transform = `translate(-50%,-50%) scale(${scale})`;
+  candle.style.zIndex = Math.round(scale * 10); // 大きいキャンドルが手前に
 
   // 揺れの遅延・速度をランダムに（同じ動きにならないように）
   const swayDelay = Math.random() * 6;
