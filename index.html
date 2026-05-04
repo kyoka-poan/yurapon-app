@@ -101,21 +101,21 @@ body.room-mode .page{display:none}
 .room-stage.scrollable{height:auto}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:18px;letter-spacing:.15em;padding:8px 18px;cursor:pointer;font-family:inherit;font-weight:400;transition:all .3s}
+.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.15em;padding:6px 16px;cursor:pointer;font-family:inherit;font-weight:400;transition:all .3s}
 .room-back:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
 .month-control{display:flex;align-items:center;gap:2px}
-.nav-arrow{background:transparent;border:none;color:rgba(232,224,245,.65);font-size:28px;padding:6px 10px;cursor:pointer;line-height:1;font-family:inherit}
+.nav-arrow{background:transparent;border:none;color:rgba(232,224,245,.65);font-size:22px;padding:6px 10px;cursor:pointer;line-height:1;font-family:inherit}
 .nav-arrow:hover{color:rgba(232,224,245,.95)}
 .nav-arrow:disabled{opacity:.18;cursor:default}
-.nav-label{font-size:21px;color:rgba(232,224,245,.95);letter-spacing:.1em;font-weight:400;min-width:120px;text-align:center;padding:6px 4px;cursor:pointer;border-radius:8px;transition:background .2s}
+.nav-label{font-size:16px;color:rgba(232,224,245,.95);letter-spacing:.1em;font-weight:400;min-width:108px;text-align:center;padding:6px 4px;cursor:pointer;border-radius:8px;transition:background .2s}
 .nav-label:hover{background:rgba(232,224,245,.06)}
-.nav-divider{width:1px;height:18px;background:rgba(232,224,245,.2);margin:0 14px}
-.year-toggle{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:18px;letter-spacing:.15em;padding:8px 22px;cursor:pointer;font-family:inherit;font-weight:400;min-width:90px}
+.nav-divider{width:1px;height:16px;background:rgba(232,224,245,.2);margin:0 12px}
+.year-toggle{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.15em;padding:6px 18px;cursor:pointer;font-family:inherit;font-weight:400;min-width:80px}
 .year-toggle:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
-.tap-hint{margin:0 auto 12px;padding:6px 18px;text-align:center;font-size:18px;color:rgba(232,224,245,.85);letter-spacing:.1em;font-weight:400;border:1px solid rgba(232,224,245,.25);border-radius:14px;display:block;width:fit-content;background:transparent}
+.tap-hint{margin:0 auto 12px;padding:5px 16px;text-align:center;font-size:13px;color:rgba(232,224,245,.85);letter-spacing:.1em;font-weight:400;border:1px solid rgba(232,224,245,.25);border-radius:14px;display:block;width:fit-content;background:transparent}
 
 .room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1}
 .room.scrollable{flex:none}
@@ -801,28 +801,20 @@ function placeCandles(){
     const minDist = candleSize * 0.85;
     const padding = 8;
 
-    // 記録数に応じて高さを決める
+    // 部屋の高さを記録数に応じて決める（常時スクロール可能）
     let calculatedHeight;
-    const fitThreshold = viewMode === 'year' ? 60 : 25;
-
-    if(records.length <= fitThreshold){
-      // 画面ちょうど（スクロールしない）
-      room.classList.remove('scrollable');
-      roomStage.classList.remove('scrollable');
-      room.style.minHeight = '';
-      room.style.height = '';
-      // 配置計算用には availableH を使う
+    if(records.length === 0){
       calculatedHeight = availableH;
     } else {
-      // しっかりスクロール
       const rowsNeeded = Math.ceil(records.length / (viewMode === 'year' ? 6 : 4));
       const rowH = viewMode === 'year' ? 70 : 130;
-      calculatedHeight = Math.max(availableH * 1.4, rowsNeeded * rowH + 80);
-      room.classList.add('scrollable');
-      roomStage.classList.add('scrollable');
-      room.style.height = calculatedHeight + 'px';
-      room.style.minHeight = calculatedHeight + 'px';
+      // 最低 availableH、記録多ければそれに応じて延長
+      calculatedHeight = Math.max(availableH, rowsNeeded * rowH + 80);
     }
+    room.classList.add('scrollable');
+    roomStage.classList.add('scrollable');
+    room.style.height = calculatedHeight + 'px';
+    room.style.minHeight = calculatedHeight + 'px';
 
     const stageWidth = Math.min(480, window.innerWidth);
     const stageHeight = calculatedHeight;
