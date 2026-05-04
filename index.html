@@ -27,13 +27,12 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .card h3:first-child{margin-top:0}
 .lead{margin:0;font-size:15.5px;line-height:2.2;color:#51466f}
 
-/* 結果ブロック（一番下のカードに統合） */
 .result-block{display:none;opacity:0;transform:translateY(8px);transition:opacity .42s ease,transform .42s ease;margin-bottom:24px;padding-bottom:24px;border-bottom:1px dashed rgba(134,112,170,.2)}
 .result-block.show{display:block}
 .result-block.visible{opacity:1;transform:translateY(0)}
 .result-title{font-size:22px;line-height:1.65;margin:0 0 20px}
 .meters{display:grid;gap:14px;margin-top:16px;margin-bottom:18px}
-.meter-row{display:grid;grid-template-columns:108px 1fr 38px;gap:10px;align-items:center;font-size:13.5px;line-height:1.5}
+.meter-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;font-size:13.5px;line-height:1.5}
 .track{height:12px;border-radius:999px;background:rgba(202,194,218,.34);overflow:hidden}
 .fill{height:100%;border-radius:inherit;width:60%;transition:width .8s ease}
 .f1{background:linear-gradient(90deg,rgba(170,232,214,.72),rgba(200,179,255,.72))}
@@ -61,7 +60,6 @@ button.choice:active{transform:translateY(1px)}
 
 .seen-grid{display:grid;grid-template-columns:72px 1fr;gap:12px 14px;font-size:14.5px;line-height:2.05;margin-bottom:22px}
 .seen-grid b{color:#3d345d}
-.seen-grid h3{grid-column:1/-1}
 
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:flex-end;justify-content:center;padding:18px;background:rgba(34,28,54,.20)}
 .modal.show{display:flex}
@@ -96,7 +94,7 @@ body.room-mode .page{display:none}
 .nav-label{font-size:13px;color:rgba(232,224,245,.85);letter-spacing:.1em;font-weight:300;min-width:90px;text-align:center;padding:6px 4px;cursor:pointer;border-radius:8px;transition:background .2s}
 .nav-label:hover{background:rgba(232,224,245,.06)}
 .nav-divider{width:1px;height:14px;background:rgba(232,224,245,.2);margin:0 12px}
-.year-toggle{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.7);font-size:11px;letter-spacing:.1em;padding:5px 12px;cursor:pointer;font-family:inherit;font-weight:300;min-width:72px}
+.year-toggle{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.7);font-size:11px;letter-spacing:.15em;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:300;min-width:72px}
 .year-toggle:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
 
@@ -131,6 +129,7 @@ body.room-mode .page{display:none}
 .video-overlay.show{display:flex}
 .video-overlay video{width:100%;height:100%;object-fit:contain}
 
+/* キャンドル選択 */
 .candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px;opacity:0;transition:opacity .8s ease}
 .candle-select.show{display:flex;opacity:1}
 .candle-select-title{color:rgba(232,224,245,.75);font-size:14px;letter-spacing:.2em;margin-bottom:30px;font-weight:300;text-align:center}
@@ -141,17 +140,49 @@ body.room-mode .page{display:none}
 .candle-pick img{width:64px;height:80px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(255,200,120,.3));transition:filter .3s}
 .candle-pick:hover img{filter:drop-shadow(0 0 14px rgba(255,200,120,.6))}
 
-.lighting{position:fixed;inset:0;z-index:160;background:#0a0618;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 1s ease}
+/* ====================================================
+   点灯アニメ（新規・呼吸できる5秒〜8秒）
+   フェーズ：暗闇 → ふっと光が芽吹く → カードに浮かぶ → ハロー広がる → 言葉
+======================================================*/
+.lighting{position:fixed;inset:0;z-index:160;background:radial-gradient(ellipse at center,#1a0e3a 0%,#0a0618 70%);display:none;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity 1.2s ease;padding:30px 20px}
 .lighting.show{display:flex;opacity:1}
-.lighting-stage{position:relative;width:200px;height:280px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
-.lighting-candle{width:160px;height:200px;position:relative;z-index:2}
-.lighting-candle img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 0 transparent);transition:filter 4s ease}
-.lighting.lit .lighting-candle img{filter:drop-shadow(0 0 24px rgba(255,200,120,.7)) drop-shadow(0 0 48px rgba(255,180,100,.4))}
-.lighting-glow{position:absolute;inset:-50px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,120,0) 0%,transparent 70%);transition:background 4s ease;pointer-events:none}
-.lighting.lit .lighting-glow{background:radial-gradient(circle,rgba(255,200,120,.25) 0%,rgba(255,180,100,.1) 40%,transparent 70%);animation:lighting-pulse 6s ease-in-out infinite}
 
-@keyframes lighting-pulse{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+/* 星（背景に小さくランダム） */
+.lighting-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lighting-star{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.6);border-radius:50%;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.9}}
 
+/* 中央のハロー（背景全体に広がる紫の光） */
+.lighting-halo{position:absolute;top:50%;left:50%;width:400px;height:400px;transform:translate(-50%,-50%) scale(.3);background:radial-gradient(circle,rgba(255,200,120,0) 0%,transparent 70%);opacity:0;transition:opacity 3s ease,transform 4s ease,background 3s ease;pointer-events:none}
+.lighting.lit .lighting-halo{opacity:1;transform:translate(-50%,-50%) scale(1.2);background:radial-gradient(circle,rgba(255,200,120,.18) 0%,rgba(180,140,220,.10) 40%,transparent 70%)}
+
+/* カード（キャンドルが入ってる四角い枠） */
+.lighting-card{position:relative;width:240px;height:240px;border-radius:24px;background:linear-gradient(180deg,rgba(50,35,80,.55),rgba(30,20,55,.7));border:1px solid rgba(180,160,220,.18);box-shadow:0 0 0 0 rgba(255,200,120,0);overflow:hidden;transition:box-shadow 3s ease,border-color 3s ease;display:flex;align-items:center;justify-content:center;z-index:2}
+.lighting.lit .lighting-card{border-color:rgba(255,210,160,.35);box-shadow:0 0 60px 8px rgba(255,200,120,.20),0 0 120px 16px rgba(180,140,220,.12)}
+
+.lighting-candle-img{width:140px;height:180px;object-fit:contain;filter:brightness(.35) saturate(.5);transition:filter 3.5s ease;position:relative;z-index:1}
+.lighting.lit .lighting-candle-img{filter:brightness(1.05) saturate(1) drop-shadow(0 0 18px rgba(255,200,120,.55)) drop-shadow(0 0 36px rgba(255,180,100,.3))}
+
+/* 火花（マッチで火がふっと灯る瞬間の小さい光） */
+.lighting-spark{position:absolute;top:38%;left:50%;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#fff5d8,#ffc88a 50%,transparent 80%);transform:translate(-50%,-50%) scale(0);opacity:0;z-index:3;pointer-events:none}
+.lighting.spark .lighting-spark{animation:spark-flash 1.4s ease-out forwards}
+@keyframes spark-flash{
+  0%{transform:translate(-50%,-50%) scale(0);opacity:0}
+  20%{transform:translate(-50%,-50%) scale(1.8);opacity:1}
+  60%{transform:translate(-50%,-50%) scale(2.4);opacity:.6}
+  100%{transform:translate(-50%,-50%) scale(3);opacity:0}
+}
+
+/* 擬音文字（カード内に薄く浮かぶ・点灯前） */
+.lighting-onomat{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:22px;color:rgba(232,224,245,.5);font-weight:300;letter-spacing:.2em;opacity:0;transition:opacity 1.5s ease;pointer-events:none;z-index:2;white-space:nowrap}
+.lighting.show:not(.lit) .lighting-onomat{opacity:.8}
+.lighting.lit .lighting-onomat{opacity:0}
+
+/* 観測の言葉（カード下にふっと浮かぶ） */
+.lighting-word{margin-top:32px;font-size:17px;color:rgba(245,236,217,.95);font-weight:300;letter-spacing:.15em;opacity:0;transform:translateY(8px);transition:opacity 2s ease 2.8s,transform 2s ease 2.8s;text-align:center;line-height:1.8;min-height:1.8em}
+.lighting.lit .lighting-word{opacity:1;transform:translateY(0)}
+
+/* カレンダー */
 .calendar-popup{position:fixed;inset:0;z-index:120;display:none;justify-content:center;align-items:center;background:rgba(10,6,24,.7);backdrop-filter:blur(6px);padding:24px}
 .calendar-popup.show{display:flex}
 .calendar-panel{background:rgba(30,20,50,.92);border:1px solid rgba(255,220,180,.2);border-radius:18px;padding:20px 18px 22px;max-width:300px;width:100%;color:#e8e0f5}
@@ -166,6 +197,7 @@ body.room-mode .page{display:none}
 .calendar-month.current{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
 .calendar-month:disabled{opacity:.25;cursor:default}
 
+/* 確認モーダル */
 .confirm-modal{position:fixed;inset:0;z-index:170;display:none;justify-content:center;align-items:center;background:rgba(10,6,24,.7);backdrop-filter:blur(6px);padding:24px}
 .confirm-modal.show{display:flex}
 .confirm-panel{background:rgba(30,20,50,.95);border:1px solid rgba(255,220,180,.2);border-radius:18px;padding:24px 22px;max-width:300px;width:100%;color:#e8e0f5;text-align:center}
@@ -197,10 +229,8 @@ body.room-mode ::-webkit-scrollbar{width:0;background:transparent}
       <p class="lead">灯は、もともとみんなの中にある、<br>願いのあたたかさ。<br>自分の状態が、「いまどんな流れか」を<br>やさしく観測するためのもの。<br>ただ見て、感じて、流す時間。</p>
     </section>
 
-    <!-- 入力カード（上に配置） -->
     <section class="card">
       <h2>今日のあなた</h2>
-
       <h3>今の状態をえらんでね</h3>
       <div class="choices three-col" id="onomatChoices">
         <button class="choice" data-onomat="ぎゅ">ぎゅ</button>
@@ -213,7 +243,6 @@ body.room-mode ::-webkit-scrollbar{width:0;background:transparent}
         <button class="choice" data-onomat="るんるん">るんるん</button>
         <button class="choice" data-onomat="ざわざわ">ざわざわ</button>
       </div>
-
       <h3>灯の声</h3>
       <div class="choices" id="wishChoices">
         <button class="choice" data-key="sad">悲しい</button>
@@ -227,32 +256,26 @@ body.room-mode ::-webkit-scrollbar{width:0;background:transparent}
         <button class="choice" data-key="compare">比べてしんどかった</button>
         <button class="choice" data-key="rest">ゆっくり休めた</button>
       </div>
-
       <div class="wish-area">
         <label for="wishInput">ひとこと（任意・60字まで）</label>
         <textarea id="wishInput" class="wish-input" maxlength="60" rows="2" placeholder="休みたい、ゆっくりしよ、など"></textarea>
         <div class="wish-counter"><span id="wishCount">0</span>/60</div>
       </div>
-
       <p class="selected-line" id="selectedLine">状態と灯の声を選んでね</p>
       <button class="poan-btn" id="poanBtn" disabled>ぽあんでみる</button>
     </section>
 
-    <!-- 結果カード（一番下に配置・全部統合） -->
     <section class="card">
       <h2>いま見えてるもの</h2>
-
-      <!-- 結果ブロック（ぽあんでみる後に表示） -->
       <div class="result-block" id="resultBlock" aria-live="polite">
         <p class="result-title" id="resultTitle">ぽあん。</p>
         <div class="meters">
-          <div class="meter-row"><b>灯のともり具合</b><div class="track"><div class="fill f1" id="m1"></div></div><b id="s1">3/5</b></div>
-          <div class="meter-row"><b>疲れちゃった / 元気</b><div class="track"><div class="fill f2" id="m2"></div></div><b id="s2">3/5</b></div>
-          <div class="meter-row"><b>ぽあんしてる具合</b><div class="track"><div class="fill f3" id="m3"></div></div><b id="s3">3/5</b></div>
+          <div class="meter-row"><b>灯のともり具合</b><div class="track"><div class="fill f1" id="m1"></div></div></div>
+          <div class="meter-row"><b>疲れちゃった / 元気</b><div class="track"><div class="fill f2" id="m2"></div></div></div>
+          <div class="meter-row"><b>ぽあんしてる具合</b><div class="track"><div class="fill f3" id="m3"></div></div></div>
         </div>
         <button class="go-room-btn" id="goRoomBtn">灯の部屋へ送る ・</button>
       </div>
-
       <div class="seen-grid">
         <b>空気</b><span id="airText">まだみえてない</span>
         <b>灯</b><span id="lightText">まだみえてない</span>
@@ -273,7 +296,7 @@ body.room-mode ::-webkit-scrollbar{width:0;background:transparent}
             <button class="nav-arrow" id="nextBtn" aria-label="次">›</button>
           </div>
           <div class="nav-divider"></div>
-          <button class="year-toggle" id="yearToggle">一年</button>
+          <button class="year-toggle" id="yearToggle">Year</button>
         </div>
       </div>
       <div class="room" id="room"></div>
@@ -298,13 +321,16 @@ body.room-mode ::-webkit-scrollbar{width:0;background:transparent}
     <div class="candle-select-grid" id="candleSelectGrid"></div>
   </div>
 
+  <!-- 点灯アニメ画面（新版） -->
   <div class="lighting" id="lighting">
-    <div class="lighting-stage">
-      <div class="lighting-glow"></div>
-      <div class="lighting-candle">
-        <img id="lightingCandleImg" src="" alt="">
-      </div>
+    <div class="lighting-stars" id="lightingStars"></div>
+    <div class="lighting-halo"></div>
+    <div class="lighting-card">
+      <div class="lighting-onomat" id="lightingOnomat">ぎゅ</div>
+      <img class="lighting-candle-img" id="lightingCandleImg" src="" alt="">
+      <div class="lighting-spark"></div>
     </div>
+    <div class="lighting-word" id="lightingWord">あ、灯ともってる</div>
   </div>
 
   <div class="calendar-popup" id="calendarPopup">
@@ -356,6 +382,19 @@ const stateData = {
   rest:{label:'ゆっくり休めた',title:'ぽあん。\n休めたところに、灯が戻ってる',air:'やわらかい',light:'回復の灯がある',yura:'休めたの、灯が戻ってきてる。じんわり巡ってるね。',scores:[4,5,5]}
 };
 
+// 擬音 → 観測の言葉（点灯アニメで出す）
+const onomatWords = {
+  'ぎゅ':'ぎゅっ、てなってるね',
+  'ぽあぽあ':'ぽあぽあ、してる',
+  'ドクンドクン':'ドクン、ドクン',
+  'しゅん':'しゅん、てなってる',
+  'ゆる〜っ':'ゆる〜っ、ほどけてる',
+  'ムカムカ':'ムカムカ、見てるよ',
+  'キラキラ':'キラキラ、灯ってる',
+  'るんるん':'るんるん、ともってる',
+  'ざわざわ':'ざわざわ、揺れてるね'
+};
+
 let currentOnomat = null;
 let currentWish = null;
 
@@ -369,7 +408,6 @@ const airText = document.getElementById('airText');
 const lightText = document.getElementById('lightText');
 const yuraText = document.getElementById('yuraText');
 const fills = [document.getElementById('m1'),document.getElementById('m2'),document.getElementById('m3')];
-const nums = [document.getElementById('s1'),document.getElementById('s2'),document.getElementById('s3')];
 const wishInput = document.getElementById('wishInput');
 const wishCount = document.getElementById('wishCount');
 const goRoomBtn = document.getElementById('goRoomBtn');
@@ -422,13 +460,11 @@ poanBtn.addEventListener('click',()=>{
     yuraText.textContent = r.yura;
     r.scores.forEach((v,i)=>{
       fills[i].style.width = (v*20)+'%';
-      nums[i].textContent = v+'/5';
     });
     resultBlock.classList.add('show');
     requestAnimationFrame(()=>resultBlock.classList.add('visible'));
     poanBtn.classList.remove('loading');
     poanBtn.textContent = 'ぽあんでみる';
-    // 結果ブロックのところまでスムーズスクロール（ヘッダーが見えるように少し上）
     setTimeout(()=>{
       const rect = resultBlock.getBoundingClientRect();
       const targetY = window.scrollY + rect.top - 40;
@@ -459,7 +495,7 @@ document.getElementById('closeModal').addEventListener('click',()=>modal.classLi
 modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('show')});
 
 // ============================================
-// ページ切替（履歴管理付き）
+// ページ切替
 // ============================================
 function goToRoom(recordMode=false){
   document.body.classList.add('room-mode');
@@ -503,7 +539,7 @@ document.querySelectorAll('[data-goto-main]').forEach(el=>{
 });
 
 // ============================================
-// 部屋ページ
+// 部屋
 // ============================================
 const SAMPLE_WORDS = [
   "もういいよ、で今日は閉じる","ゆっくりしよ","そのうちでいいんだ",
@@ -584,11 +620,11 @@ function updateNav(){
 
   if(viewMode === 'year'){
     label.textContent = `${currentYear}`;
-    yearToggle.textContent = '今月へ';
+    yearToggle.textContent = 'Month';
     yearToggle.classList.add('active');
   } else {
     label.textContent = `${currentYear}.${String(currentMonth+1).padStart(2,'0')}`;
-    yearToggle.textContent = '一年';
+    yearToggle.textContent = 'Year';
     yearToggle.classList.remove('active');
   }
 
@@ -601,6 +637,29 @@ function updateNav(){
                      (currentYear === today.getFullYear() && currentMonth > today.getMonth());
     nextBtn.disabled = isCurrent || isFuture;
   }
+}
+
+// ============================================
+// キャンドル配置（積もり感・1日1回入れ替え）
+// 古いキャンドルが下、新しいのが上、下は密集・上はスカスカ
+// 重ならないように最小距離保証
+// ============================================
+
+// 1日1回入れ替えのシード（日付＋月キーで決まる）
+function dailySeed(seedKey){
+  const today = new Date();
+  const dayKey = today.toISOString().split('T')[0]; // YYYY-MM-DD
+  const fullKey = dayKey + ':' + seedKey;
+  let h = 2166136261;
+  for(let i=0; i<fullKey.length; i++){
+    h ^= fullKey.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ()=>{
+    h = Math.imul(h ^ (h >>> 15), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return ((h ^= h >>> 16) >>> 0) / 4294967296;
+  };
 }
 
 function placeCandles(){
@@ -617,32 +676,89 @@ function placeCandles(){
       return;
     }
 
-    const cols = viewMode === 'year' ? 6 : 4;
-    const padding = viewMode === 'year' ? 8 : 12;
-    const usableWidth = 100 - padding*2;
-    const cellWidth = usableWidth / cols;
-    const verticalStart = 5;
-    const verticalEnd = 96;
-    const verticalRange = verticalEnd - verticalStart;
-    const rows = Math.ceil(records.length / cols);
-    const cellHeightPercent = verticalRange / rows;
+    // 古い順にソート（古い→下、新しい→上）
+    const sortedByDate = [...records].sort((a,b)=>{
+      return new Date(a.date) - new Date(b.date);
+    });
 
+    // 1日1回入れ替え用のシード（月キー含む）
+    const seedKey = viewMode + '-' + currentYear + '-' + currentMonth;
+    const rand = dailySeed(seedKey);
+
+    // 部屋の高さを決める
+    const candleSize = viewMode === 'year' ? 34 : 70;
+    const minDist = candleSize * 0.85; // 重ならないための最小距離（px換算で扱う）
     const minHeight = window.innerHeight - 60;
-    const cellHeightPx = viewMode === 'year' ? 60 : 110;
-    const calculatedHeight = Math.max(minHeight, rows * cellHeightPx + 80);
+    const padding = 8; // 左右の余白（%）
+
+    // 推定必要高さ：記録数とキャンドルサイズから（密度勾配考慮）
+    const estimatedRows = Math.ceil(records.length / (viewMode === 'year' ? 6 : 4));
+    const estimatedRowHeight = viewMode === 'year' ? 60 : 110;
+    const calculatedHeight = Math.max(minHeight, estimatedRows * estimatedRowHeight + 100);
     room.style.minHeight = calculatedHeight + 'px';
 
-    const shuffled = [...records].sort(()=>Math.random()-0.5);
+    const stageWidth = Math.min(480, window.innerWidth);
+    const stageHeight = calculatedHeight;
+    const minDistPx = minDist;
 
-    shuffled.forEach((rec,i)=>{
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const baseX = padding + cellWidth*col + cellWidth/2;
-      const baseYPercent = verticalStart + cellHeightPercent*row + cellHeightPercent/2;
-      const jitterX = (Math.random()-0.5) * cellWidth * 0.5;
-      const jitterY = (Math.random()-0.5) * cellHeightPercent * 0.4;
-      const x = baseX + jitterX;
-      const y = baseYPercent + jitterY;
+    // 配置済みの座標を記録（重なりチェック用）
+    const placed = [];
+
+    sortedByDate.forEach((rec, idx)=>{
+      // 古い順（idx=0）が一番下、新しい順（idx=最後）が一番上
+      // 縦の正規化位置：0=最古=下、1=最新=上
+      const norm = idx / Math.max(1, sortedByDate.length - 1);
+
+      // 密度勾配：下60%が密、上40%がスカスカ
+      // norm が 0〜0.6（下60%）：縦の密集ゾーン（70%〜97%の縦位置）
+      // norm が 0.6〜1.0（上40%）：縦のスカスカゾーン（5%〜70%の縦位置）
+      let baseY; // %
+      if(norm < 0.6){
+        // 下密集ゾーン
+        const innerNorm = norm / 0.6; // 0〜1
+        baseY = 97 - innerNorm * 27; // 97% → 70%
+      } else {
+        // 上スカスカゾーン
+        const innerNorm = (norm - 0.6) / 0.4; // 0〜1
+        baseY = 70 - innerNorm * 65; // 70% → 5%
+      }
+
+      // 横位置：ジッター付きランダム
+      const baseX = padding + rand() * (100 - padding*2);
+
+      // 縦のジッター（密集度に応じて変える）
+      const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12); // 上はジッター大きめ
+      let xJitter = (rand() - 0.5) * 8;
+
+      let x = Math.max(padding, Math.min(100 - padding, baseX + xJitter));
+      let y = Math.max(2, Math.min(98, baseY + yJitter));
+
+      // 重なりチェック：最小距離を保つように調整
+      let attempts = 0;
+      while(attempts < 30){
+        const xpx = (x / 100) * stageWidth;
+        const ypx = (y / 100) * stageHeight;
+        let tooClose = false;
+        for(const p of placed){
+          const dx = p.xpx - xpx;
+          const dy = p.ypx - ypx;
+          if(Math.sqrt(dx*dx + dy*dy) < minDistPx){
+            tooClose = true;
+            break;
+          }
+        }
+        if(!tooClose) break;
+        // 少しずらす
+        x = Math.max(padding, Math.min(100 - padding, x + (rand() - 0.5) * 12));
+        y = Math.max(2, Math.min(98, y + (rand() - 0.5) * 4));
+        attempts++;
+      }
+
+      placed.push({
+        xpx: (x / 100) * stageWidth,
+        ypx: (y / 100) * stageHeight
+      });
+
       room.appendChild(createCandle(rec, x, y));
     });
 
@@ -730,18 +846,51 @@ function showCandleSelect(){
   document.getElementById('candleSelect').classList.add('show');
 }
 
+// ============================================
+// 点灯アニメ（呼吸できる8秒）
+// 0〜1.5s : 暗闇のカード、擬音文字が薄く浮かぶ
+// 1.5〜3s : 火花（spark）が芽吹く、ハロー始まり
+// 3〜5s   : 画像が灯って、ハローが広がる
+// 5〜7s   : 観測の言葉がふっと浮かぶ
+// 7〜8s   : フェードアウトして部屋へ
+// ============================================
 function onCandlePicked(candleType){
   document.getElementById('candleSelect').classList.remove('show');
   const lighting = document.getElementById('lighting');
   const img = document.getElementById('lightingCandleImg');
+  const onomatEl = document.getElementById('lightingOnomat');
+  const wordEl = document.getElementById('lightingWord');
+
+  // 星をランダムに配置
+  const stars = document.getElementById('lightingStars');
+  stars.innerHTML = '';
+  for(let i=0; i<30; i++){
+    const s = document.createElement('div');
+    s.className = 'lighting-star';
+    s.style.left = Math.random()*100 + '%';
+    s.style.top = Math.random()*100 + '%';
+    s.style.animationDelay = (Math.random()*3) + 's';
+    stars.appendChild(s);
+  }
+
   img.src = `assets/img/candle_${String(candleType).padStart(2,'0')}.png`;
-  lighting.classList.remove('lit');
+  onomatEl.textContent = pendingRecord.onomat || '';
+  wordEl.textContent = onomatWords[pendingRecord.onomat] || 'やさしい灯だね';
+
+  lighting.classList.remove('lit', 'spark');
   lighting.classList.add('show');
 
+  // 1.5秒後：火花が芽吹く
+  setTimeout(()=>{
+    lighting.classList.add('spark');
+  }, 1500);
+
+  // 2.2秒後：「灯る」状態へ移行（じわっと）
   setTimeout(()=>{
     lighting.classList.add('lit');
-  }, 800);
+  }, 2200);
 
+  // 8秒後：部屋に追加して通常表示へ
   setTimeout(()=>{
     pendingRecord.candleType = candleType;
     allRecords.push({...pendingRecord});
@@ -758,8 +907,8 @@ function onCandlePicked(candleType){
 
     lighting.classList.remove('show');
     setTimeout(()=>{
-      lighting.classList.remove('lit');
-    }, 1000);
+      lighting.classList.remove('lit', 'spark');
+    }, 1200);
   }, 8000);
 }
 
