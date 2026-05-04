@@ -7,19 +7,16 @@
 <style>
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{min-height:100%}html{background:#f7f4fb}
-body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#f7f4fb;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+html,body{min-height:100%}html{background:#bcc6e8}
+body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 html{overflow-x:hidden}
 
-/* 白い半透明オーバーレイ（背景画像の上に重ねて優しい雰囲気に） */
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-/* 部屋モード時の背景：body自体に背景指定で確実に出す */
-body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
-/* 部屋背景の上に光の粒（floating dust） */
 body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:
   radial-gradient(circle at 12% 20%, rgba(255,220,170,.08) 0%, transparent 1.2px),
   radial-gradient(circle at 85% 35%, rgba(255,200,150,.10) 0%, transparent 1.5px),
@@ -93,7 +90,6 @@ button.choice:active{transform:translateY(1px)}
 
 @media (max-width:360px){.page{padding-left:16px;padding-right:16px}.hero{grid-template-columns:1fr 88px;gap:14px}.yurapon-wrap{width:88px;height:88px}h1{font-size:30px}.choices{gap:10px}button.choice{font-size:13.5px;min-height:50px}}
 
-/* 部屋ページ：背景は body 側、ステージは透過してオーバーレイのみ */
 .room-stage-wrapper{display:none;width:100%;min-height:100svh;justify-content:center}
 body.room-mode .room-stage-wrapper{display:flex}
 body.room-mode .page{display:none}
@@ -101,7 +97,8 @@ body.room-mode .page{display:none}
 .room-stage.scrollable{height:auto}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.15em;padding:6px 16px;cursor:pointer;font-family:inherit;font-weight:400;transition:all .3s;white-space:nowrap;line-height:1.4}
+.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}
+.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.15em;padding:6px 16px;cursor:pointer;font-family:inherit;font-weight:400;transition:all .3s;white-space:nowrap;line-height:1.4}
 .room-back:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
@@ -121,18 +118,12 @@ body.room-mode .page{display:none}
 .room.scrollable{flex:none}
 .room.fading{opacity:0}
 
-/* キャンドル：ゆらゆら揺らめき強化 + 火の揺れ */
 .candle{position:absolute;cursor:pointer;transition:opacity .4s ease;will-change:transform}
 .candle.size-month{width:70px;height:90px}
 .candle.size-year{width:34px;height:44px}
 .candle:active{opacity:.7}
 .candle-wax{width:100%;height:100%;position:relative;animation:candle-sway 6s ease-in-out infinite;transform-origin:center bottom}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(255,200,120,.35)) drop-shadow(0 0 8px rgba(255,180,100,.15))}
-
-/* 火の表現：キャンドル画像の上にSVG炎を重ねる（揺らめき） */
-.candle-flame{position:absolute;top:-8%;left:50%;transform:translateX(-50%);pointer-events:none;animation:flame-flicker 1.6s ease-in-out infinite alternate;transform-origin:center bottom}
-.candle.size-month .candle-flame{width:18px;height:28px}
-.candle.size-year .candle-flame{width:9px;height:14px}
 
 .candle::before{content:'';position:absolute;top:35%;left:50%;width:90%;height:90%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,200,120,.14) 0%,rgba(255,180,100,.06) 50%,transparent 80%);pointer-events:none;animation:glow-pulse 3.5s ease-in-out infinite;z-index:-1}
 .candle.just-lit{animation:fade-in 1.5s ease-out}
@@ -143,12 +134,6 @@ body.room-mode .page{display:none}
   25%{transform:rotate(2deg) translateY(-2px)}
   50%{transform:rotate(3.5deg) translateY(0)}
   75%{transform:rotate(-1.5deg) translateY(-1px)}
-}
-@keyframes flame-flicker{
-  0%{transform:translateX(-50%) scaleY(1) scaleX(1) rotate(-1deg);opacity:.9}
-  30%{transform:translateX(-50%) scaleY(1.15) scaleX(.95) rotate(2deg);opacity:1}
-  60%{transform:translateX(-50%) scaleY(.92) scaleX(1.05) rotate(-1.5deg);opacity:.85}
-  100%{transform:translateX(-50%) scaleY(1.08) scaleX(.98) rotate(1deg);opacity:1}
 }
 @keyframes glow-pulse{0%,100%{opacity:.65}50%{opacity:1}}
 @keyframes fade-in{from{opacity:0}to{opacity:1}}
@@ -170,7 +155,6 @@ body.room-mode .page{display:none}
 .video-overlay video{width:70%;max-width:380px;max-height:70vh;object-fit:contain;border-radius:18px;box-shadow:0 0 60px rgba(255,200,120,.25),0 0 0 1px rgba(255,210,160,.2)}
 @media (max-width:480px){.video-overlay video{width:80%}}
 
-/* キャンドル選択：ランダム配置スタイル（4-3-3 + ジッター） */
 .candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px;opacity:0;transition:opacity .8s ease}
 .candle-select.show{display:flex;opacity:1}
 .candle-select-title{color:rgba(232,224,245,.75);font-size:14px;letter-spacing:.2em;margin-bottom:30px;font-weight:300;text-align:center}
@@ -184,59 +168,6 @@ body.room-mode .page{display:none}
   0%,100%{transform:translate(-50%,-50%) rotate(var(--rotate)) scale(var(--scale)) translateY(0)}
   50%{transform:translate(-50%,-50%) rotate(var(--rotate)) scale(var(--scale)) translateY(-3px)}
 }
-
-/* ====================================================
-   点灯アニメ（新版・SVGストーリー）
-   1. 暗闇に SVG キャンドル登場
-   2. マッチが上から降りてくる
-   3. マッチに火が灯る
-   4. キャンドルの芯に火が移る
-   5. マッチが消えて、キャンドルが灯る
-   6. きょうかの絵にクロスフェード
-   7. 大きく揺らめく
-======================================================*/
-.lighting{position:fixed;inset:0;z-index:160;background:radial-gradient(ellipse at center,#1a0e3a 0%,#0a0618 70%);display:none;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity 1.2s ease}
-.lighting.show{display:flex;opacity:1}
-
-.lighting-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.lighting-star{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.6);border-radius:50%;animation:twinkle 3s ease-in-out infinite}
-@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.9}}
-
-/* 光の粒（ふわふわ漂う） */
-.lighting-dust{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,220,170,.7),rgba(255,200,150,.2) 50%,transparent 80%);pointer-events:none;animation:dust-float 8s ease-in-out infinite}
-@keyframes dust-float{
-  0%,100%{transform:translate(0,0);opacity:.3}
-  25%{transform:translate(10px,-15px);opacity:.7}
-  50%{transform:translate(-8px,-30px);opacity:.5}
-  75%{transform:translate(12px,-20px);opacity:.6}
-}
-
-/* 中央のハロー */
-.lighting-halo{position:absolute;top:50%;left:50%;width:500px;height:500px;transform:translate(-50%,-50%) scale(.2);background:radial-gradient(circle,rgba(255,200,120,0) 0%,transparent 70%);opacity:0;transition:opacity 3s ease,transform 4s ease,background 3s ease;pointer-events:none}
-.lighting.lit .lighting-halo{opacity:1;transform:translate(-50%,-50%) scale(1.3);background:radial-gradient(circle,rgba(255,200,120,.20) 0%,rgba(180,140,220,.10) 40%,transparent 70%);animation:halo-breathe 5s ease-in-out infinite 3s}
-@keyframes halo-breathe{
-  0%,100%{transform:translate(-50%,-50%) scale(1.3);opacity:.85}
-  50%{transform:translate(-50%,-50%) scale(1.5);opacity:1}
-}
-
-/* カード */
-.lighting-card{position:relative;width:280px;height:340px;border-radius:24px;background:linear-gradient(180deg,rgba(50,35,80,.55),rgba(30,20,55,.7));border:1px solid rgba(180,160,220,.18);box-shadow:0 0 0 0 rgba(255,200,120,0);overflow:visible;transition:box-shadow 3s ease,border-color 3s ease;display:flex;align-items:center;justify-content:center;z-index:2}
-.lighting.lit .lighting-card{border-color:rgba(255,210,160,.4);box-shadow:0 0 80px 12px rgba(255,200,120,.25),0 0 160px 24px rgba(180,140,220,.15)}
-
-/* SVG キャンドル（点灯前後共通） */
-.lighting-svg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:280px;transition:opacity 1.6s ease;z-index:2}
-.lighting-svg.fading-out{opacity:0}
-
-/* きょうかの画像（クロスフェード後に表示） */
-.lighting-image{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:200px;object-fit:contain;opacity:0;transition:opacity 1.6s ease;z-index:2;filter:drop-shadow(0 0 18px rgba(255,200,120,.55)) drop-shadow(0 0 36px rgba(255,180,100,.3))}
-.lighting-image.fading-in{opacity:1;animation:image-sway 4s ease-in-out infinite 1.6s}
-@keyframes image-sway{
-  0%,100%{transform:translate(-50%,-50%) rotate(-1deg)}
-  50%{transform:translate(-50%,-50%) rotate(1deg)}
-}
-
-/* 部屋表示用キャンドル画像 */
-.candle-pick img{width:64px;height:84px}
 </style>
 </head>
 <body>
@@ -340,102 +271,9 @@ body.room-mode .page{display:none}
     <video id="ritualVideo" playsinline preload="auto"></video>
   </div>
 
-  <!-- キャンドル選択画面（ランダム配置エリア） -->
   <div class="candle-select" id="candleSelect">
     <div class="candle-select-title">今日の灯を、ひとつ</div>
     <div class="candle-select-area" id="candleSelectArea"></div>
-  </div>
-
-  <!-- 点灯アニメ -->
-  <div class="lighting" id="lighting">
-    <div class="lighting-stars" id="lightingStars"></div>
-    <div class="lighting-halo"></div>
-    <div class="lighting-card" id="lightingCard">
-      <!-- SVG キャンドル（点灯前） -->
-      <svg class="lighting-svg" id="lightingSvg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
-        <!-- 受け皿（小さなお皿） -->
-        <ellipse cx="100" cy="252" rx="48" ry="6" fill="#c8a78a" opacity="0.6"/>
-        <ellipse cx="100" cy="248" rx="44" ry="5" fill="#d4b89c"/>
-
-        <!-- キャンドル本体（丸みのある形） -->
-        <path d="M 75 110 Q 73 115 75 122 L 75 240 Q 75 248 100 248 Q 125 248 125 240 L 125 122 Q 127 115 125 110 Z"
-              fill="url(#waxGrad)" stroke="#c89a6a" stroke-width="1.2"/>
-
-        <!-- ろうの溶け感（上部のたれ） -->
-        <ellipse cx="100" cy="110" rx="25" ry="4.5" fill="#ffd9a8"/>
-        <ellipse cx="100" cy="109" rx="22" ry="3" fill="#ffe8c4"/>
-        <!-- ろうのたれ（左右に小さく） -->
-        <path d="M 78 112 Q 76 122 78 128 Q 82 130 82 122 Z" fill="#ffc890" opacity="0.8"/>
-        <path d="M 122 112 Q 124 124 122 130 Q 118 132 118 124 Z" fill="#ffc890" opacity="0.8"/>
-
-        <!-- 芯 -->
-        <line x1="100" y1="82" x2="100" y2="108" stroke="#5a3a16" stroke-width="2.2" stroke-linecap="round"/>
-
-        <defs>
-          <linearGradient id="waxGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#ffd9a8"/>
-            <stop offset="50%" stop-color="#ffe8c4"/>
-            <stop offset="100%" stop-color="#ffcb95"/>
-          </linearGradient>
-          <radialGradient id="flameGlow" cx="50%" cy="60%">
-            <stop offset="0%" stop-color="#fff5dc" stop-opacity="1"/>
-            <stop offset="40%" stop-color="#ffd590" stop-opacity="0.95"/>
-            <stop offset="80%" stop-color="#ffaa55" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#ff8833" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <!-- 火の炎（点灯後・大きめで可愛く） -->
-        <g class="svg-flame" id="svgFlame" style="opacity:0">
-          <!-- 外側の柔らかいハロー -->
-          <ellipse cx="100" cy="55" rx="32" ry="42" fill="url(#flameGlow)" opacity="0.4">
-            <animate attributeName="ry" values="42;48;38;42" dur="3s" repeatCount="indefinite"/>
-            <animate attributeName="rx" values="32;30;34;32" dur="2.4s" repeatCount="indefinite"/>
-          </ellipse>
-          <!-- 外炎（オレンジ・しずく型） -->
-          <path d="M 100 22 Q 80 50 78 70 Q 78 90 100 92 Q 122 90 122 70 Q 120 50 100 22 Z" fill="#ffaa55" opacity="0.75">
-            <animate attributeName="d" dur="2.4s" repeatCount="indefinite"
-              values="M 100 22 Q 80 50 78 70 Q 78 90 100 92 Q 122 90 122 70 Q 120 50 100 22 Z;
-                      M 100 18 Q 78 48 76 72 Q 76 92 100 94 Q 124 92 124 72 Q 122 48 100 18 Z;
-                      M 100 26 Q 82 54 80 68 Q 80 88 100 90 Q 120 88 120 68 Q 118 54 100 26 Z;
-                      M 100 22 Q 80 50 78 70 Q 78 90 100 92 Q 122 90 122 70 Q 120 50 100 22 Z"/>
-          </path>
-          <!-- 中炎 -->
-          <path d="M 100 38 Q 88 56 86 72 Q 86 86 100 88 Q 114 86 114 72 Q 112 56 100 38 Z" fill="#ffd590" opacity="0.95">
-            <animate attributeName="d" dur="2s" repeatCount="indefinite"
-              values="M 100 38 Q 88 56 86 72 Q 86 86 100 88 Q 114 86 114 72 Q 112 56 100 38 Z;
-                      M 100 34 Q 86 54 84 74 Q 84 88 100 90 Q 116 88 116 74 Q 114 54 100 34 Z;
-                      M 100 42 Q 90 58 88 70 Q 88 84 100 86 Q 112 84 112 70 Q 110 58 100 42 Z;
-                      M 100 38 Q 88 56 86 72 Q 86 86 100 88 Q 114 86 114 72 Q 112 56 100 38 Z"/>
-          </path>
-          <!-- 内炎（白っぽい光の芯） -->
-          <ellipse cx="100" cy="68" rx="6" ry="14" fill="#fff5dc">
-            <animate attributeName="ry" values="14;17;12;14" dur="1.8s" repeatCount="indefinite"/>
-            <animate attributeName="rx" values="6;5;7;6" dur="1.4s" repeatCount="indefinite"/>
-          </ellipse>
-          <!-- きらきら粒（可愛さ） -->
-          <circle cx="100" cy="20" r="2" fill="#fff5d8">
-            <animate attributeName="cy" values="20;0;20" dur="3s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="115" cy="30" r="1.5" fill="#ffd590">
-            <animate attributeName="cy" values="30;5;30" dur="4s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;0.9;0" dur="4s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="85" cy="28" r="1.8" fill="#fff5d8">
-            <animate attributeName="cy" values="28;3;28" dur="3.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;0.85;0" dur="3.5s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="92" cy="16" r="1.2" fill="#ffe5b0">
-            <animate attributeName="cy" values="16;-5;16" dur="4.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;0.8;0" dur="4.5s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-      </svg>
-
-      <!-- きょうかの画像（クロスフェード後） -->
-      <img class="lighting-image" id="lightingImage" src="" alt="">
-    </div>
   </div>
 
   <div class="calendar-popup" id="calendarPopup" style="position:fixed;inset:0;z-index:120;display:none;justify-content:center;align-items:center;background:rgba(10,6,24,.7);backdrop-filter:blur(6px);padding:24px">
@@ -471,14 +309,14 @@ body.room-mode .page{display:none}
   <div class="modal" id="moreModal" role="dialog" aria-modal="true" aria-label="もっと見る">
     <div class="modal-panel">
       <div class="modal-head">
-        <h2><p>もっと見る<p></h2>
+        <h2>もっと見る</h2>
         <button class="close-btn" id="closeModal">閉じる</button>
       </div>
-      <section class="modal-section"><h3><p>🕯️ 灯(あかり)ってなに？</h3><p><p>「なんか今、心が動いたな」って瞬間。<br><br>大切にしたい、小さな“願い”そのもの。<br><br>最初から自分の中にあった、<br>“命の創造エネルギー”。<br></p></section>
-      <section class="modal-section"><h3><p>🌌 なんで灯観測するといいの？</h3><p><br>気付かないうちに、灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>あなたの存在が、<br>“今、たしかにここにある”と、<br>認識できるから。<br></p></section>
-      <section class="modal-section"><h3><p>💖 どうなるの？</h3><p><br>自分の人生の“操縦席”に、戻る。<br><br>「ちゃんとしなきゃ」という、<br>社会のルールや、他人の評価から離れる。<br><br>重たい心の鎧を少しおろしたら、<br>ぽあんっ🫧と呼吸がしやすくなる。<br><br>地球が重たくなるのは、<br>案外、大事なものを全部ポケットに<br>つっこんでるからだったり。<br><br></p></section>
-      <section class="modal-section"><h3><p>🛸 ゆらぽんって？</h3><p><br>未来の“ぽあん星“から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>あなたの『灯』を見つけるのは大好き。<br><br>ただあなたの隣にいて、<br>「あ、今の灯だね」と一緒に見つめる。<br>（たまにゆるツッコミを入れてくれる）相棒。<br></p></section>
-      <section class="modal-section"><h3><p>🎈 なんで手放すと楽になるの？</h3><p><br>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>“本当は自分が背負わなくていいもの”を、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。本当に大事なものは、<br>離れていかないから。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。<br></p></section>
+      <section class="modal-section"><h3>🕯️ 灯(あかり)ってなに？</h3><p>「なんか今、心が動いたな」って瞬間。<br><br>大切にしたい、小さな"願い"そのもの。<br><br>最初から自分の中にあった、<br>"命の創造エネルギー"。</p></section>
+      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気付かないうちに、灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>あなたの存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
+      <section class="modal-section"><h3>💖 どうなるの？</h3><p>自分の人生の"操縦席"に、戻る。<br><br>「ちゃんとしなきゃ」という、<br>社会のルールや、他人の評価から離れる。<br><br>重たい心の鎧を少しおろしたら、<br>ぽあんっ🫧と呼吸がしやすくなる。<br><br>地球が重たくなるのは、<br>案外、大事なものを全部ポケットに<br>つっこんでるからだったり。</p></section>
+      <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>あなたの『灯』を見つけるのは大好き。<br><br>ただあなたの隣にいて、<br>「あ、今の灯だね」と一緒に見つめる。<br>（たまにゆるツッコミを入れてくれる）相棒。</p></section>
+      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"を、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。本当に大事なものは、<br>離れていかないから。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
     </div>
   </div>
 
@@ -625,10 +463,7 @@ window.addEventListener('popstate',(e)=>{
   }
 });
 
-// ページロード時にURLハッシュをチェック
-// #room が付いてたら部屋モードで初期化（リロード対策）
 if(window.location.hash === '#room'){
-  // 履歴は触らずに、部屋モードに切り替え
   setTimeout(()=>{
     document.body.classList.add('room-mode');
     window.scrollTo(0, 0);
@@ -640,7 +475,6 @@ if(window.location.hash === '#room'){
   }, 50);
 }
 
-// 背景画像のプリロード（黒画面バグ対策）
 (function preloadImages(){
   const imgs = ['assets/img/bg_main.jpg','assets/img/bg_room.png','assets/img/bg_caption.jpg'];
   imgs.forEach(src=>{
@@ -665,7 +499,7 @@ const SAMPLE_WORDS = [
   "ちょっと泣いた","なんでもない一日もある","じわっと、あったかかった",
   "止まっていい","ここに戻ってこれる",""
 ];
-const SAMPLE_ONOMAT = ['ぎゅ','ぽあぽあ','ドクンドクン','しゅん','ゆる〜っ','ざわざわ'];
+const SAMPLE_ONOMAT = ['ぎゅ','ぽあぽあ','ドクン','しゅん','ゆる〜っ','ざわざわ'];
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 10;
 const STORAGE_KEY = 'yurapon_akari_records';
@@ -779,7 +613,6 @@ function placeCandles(){
     room.innerHTML = '';
     const records = getFilteredRecords();
 
-    // ヘッダー（room-top-bar）の実際の高さを取得
     const topBar = document.querySelector('.room-top-bar');
     const topBarH = topBar ? topBar.offsetHeight : 60;
     const viewportH = window.innerHeight;
@@ -801,14 +634,12 @@ function placeCandles(){
     const minDist = candleSize * 0.85;
     const padding = 8;
 
-    // 部屋の高さを記録数に応じて決める（常時スクロール可能）
     let calculatedHeight;
     if(records.length === 0){
       calculatedHeight = availableH;
     } else {
       const rowsNeeded = Math.ceil(records.length / (viewMode === 'year' ? 6 : 4));
       const rowH = viewMode === 'year' ? 70 : 130;
-      // 最低 availableH、記録多ければそれに応じて延長
       calculatedHeight = Math.max(availableH, rowsNeeded * rowH + 80);
     }
     room.classList.add('scrollable');
@@ -822,7 +653,6 @@ function placeCandles(){
     const placed = [];
 
     sortedByDate.forEach((rec, idx)=>{
-      // 記録が1個だけの場合は中央に配置
       let norm;
       if(sortedByDate.length === 1){
         norm = 0.5;
@@ -832,7 +662,6 @@ function placeCandles(){
 
       let baseY;
       if(sortedByDate.length === 1){
-        // 1個だけの時は画面の真ん中に
         baseY = 50;
       } else if(norm < 0.6){
         const innerNorm = norm / 0.6;
@@ -842,14 +671,11 @@ function placeCandles(){
         baseY = 70 - innerNorm * 65;
       }
 
-      // このキャンドルのスケール：下=1倍、真ん中=1.3倍、上=2倍
-      // norm: 0(古い・下) 〜 1(新しい・上)
-      // norm=0 → 1, norm=0.5 → 1.3, norm=1 → 2
       let myScale;
       if(norm < 0.5){
-        myScale = 1 + norm * 0.6; // 0→1, 0.5→1.3
+        myScale = 1 + norm * 0.6;
       } else {
-        myScale = 1.3 + (norm - 0.5) * 1.4; // 0.5→1.3, 1→2
+        myScale = 1.3 + (norm - 0.5) * 1.4;
       }
 
       const baseX = padding + rand() * (100 - padding*2);
@@ -867,7 +693,6 @@ function placeCandles(){
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          // 両者のスケールを考慮した最小距離
           const requiredDist = minDist * (myScale + p.scale) / 2;
           if(Math.sqrt(dx*dx + dy*dy) < requiredDist){
             tooClose = true;
@@ -900,14 +725,11 @@ function createCandle(record, xPercent, yPercent, scale=1){
   candle.style.left = xPercent + '%';
   candle.style.top = yPercent + '%';
   candle.style.transform = `translate(-50%,-50%) scale(${scale})`;
-  candle.style.zIndex = Math.round(scale * 10); // 大きいキャンドルが手前に
+  candle.style.zIndex = Math.round(scale * 10);
 
-  // 揺れの遅延・速度をランダムに（同じ動きにならないように）
   const swayDelay = Math.random() * 6;
-  const flameDelay = Math.random() * 1.6;
-  const swayDuration = 5 + Math.random() * 3; // 5〜8秒
+  const swayDuration = 5 + Math.random() * 3;
 
-  // キャンドル本体（揺れる）
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
   wax.style.animationDelay = `-${swayDelay}s`;
@@ -917,9 +739,6 @@ function createCandle(record, xPercent, yPercent, scale=1){
   img.alt = '';
   wax.appendChild(img);
   candle.appendChild(wax);
-
-  // 火の表現は削除：きょうかの絵にすでに火が描かれているため
-  // SVG炎を重ねると二重になっておかしい
 
   candle.addEventListener('click',(e)=>{
     e.stopPropagation();
@@ -970,28 +789,22 @@ function startRecordFlow(){
   }
 }
 
-// キャンドル選択画面（4-3-3 + ジッターで自然なランダム配置）
 function showCandleSelect(){
   const area = document.getElementById('candleSelectArea');
   area.innerHTML = '';
 
-  // 配置定義：[行内の位置（0〜1）, 行（0=上, 1=中, 2=下）]
   const positions = [
-    // 上の行：4個
     [0.15, 0], [0.40, 0], [0.62, 0], [0.85, 0],
-    // 中の行：3個
     [0.22, 1], [0.50, 1], [0.78, 1],
-    // 下の行：3個
     [0.18, 2], [0.50, 2], [0.82, 2]
   ];
-  const rowYs = [18, 50, 82]; // 縦位置（%）
+  const rowYs = [18, 50, 82];
 
   positions.forEach((pos, i)=>{
     const candleNum = i + 1;
     const xBase = pos[0] * 100;
     const yBase = rowYs[pos[1]];
 
-    // 軽めのジッター（重ならない範囲で）
     const jitterX = (Math.random() - 0.5) * 6;
     const jitterY = (Math.random() - 0.5) * 8;
     const x = xBase + jitterX;
@@ -1015,21 +828,9 @@ function showCandleSelect(){
   document.getElementById('candleSelect').classList.add('show');
 }
 
-// ============================================
-// 点灯アニメ：マッチで火を灯すストーリー
-// 0〜1.5s: SVGキャンドルが暗いカードに浮かぶ
-// 1.5〜3s: マッチが上から降りてくる
-// 3〜3.5s: マッチに火が灯る
-// 3.5〜4.5s: マッチがキャンドルに傾いて、芯に火が移る
-// 4.5〜5.5s: マッチが上に去る、SVG火が大きく揺らめく
-// 5.5〜6.5s: SVGからきょうかの画像にクロスフェード
-// 6.5〜9s: 画像が揺れる、ハロー脈動、呼吸の時間
-// 9〜10s: フェードアウト
-// ============================================
 function onCandlePicked(candleType){
   document.getElementById('candleSelect').classList.remove('show');
 
-  // 点灯アニメ動画を再生
   const overlay = document.getElementById('videoOverlay');
   const video = document.getElementById('ritualVideo');
   video.src = 'assets/video/yurapon.candle.mp4';
@@ -1039,17 +840,14 @@ function onCandlePicked(candleType){
   overlay.classList.remove('fading-out');
   overlay.classList.add('show');
 
-  // 記録保存して部屋に戻る
   let finishedAlready = false;
   const finishAndRecord = ()=>{
     if(finishedAlready) return;
     finishedAlready = true;
     video.onended = null;
 
-    // フェードアウト開始
     overlay.classList.add('fading-out');
 
-    // フェードアウト完了後に切り替え
     setTimeout(()=>{
       overlay.classList.remove('show');
       overlay.classList.remove('fading-out');
@@ -1068,46 +866,37 @@ function onCandlePicked(candleType){
       viewMode = 'month';
       updateNav();
       placeCandles();
-    }, 1000); // フェードアウト時間
+    }, 1000);
   };
 
-  // 動画再生開始（iOSではミュートでないとautoplay失敗）
   const tryPlay = ()=>{
     video.play().catch(()=>{
-      // 失敗したらミュートで再試行
       video.muted = true;
       video.play().catch(()=>{
-        // それでも失敗 → 即終了
         finishAndRecord();
       });
     });
   };
 
-  // 動画読み込みできたら再生
   if(video.readyState >= 3){
     tryPlay();
   } else {
     video.addEventListener('canplay', tryPlay, { once: true });
-    // 読み込み開始
     video.load();
   }
 
-  // 動画終了時：少し前からフェードアウト開始
   video.addEventListener('timeupdate', ()=>{
     if(!finishedAlready && video.duration > 0 && video.currentTime > video.duration - 1){
       finishAndRecord();
     }
   }, { once: false });
 
-  // バックアップ：終了イベント
   video.onended = finishAndRecord;
 
-  // エラー時の保険
   video.onerror = ()=>{
     finishAndRecord();
   };
 
-  // 30秒タイムアウト
   setTimeout(()=>{
     if(!finishedAlready){
       finishAndRecord();
@@ -1214,7 +1003,6 @@ function playVideo(src, onEnd){
     video.play().catch(()=>{ finish(); });
   });
 
-  // 動画終了の少し前からフェードアウト
   video.addEventListener('timeupdate', ()=>{
     if(!finished && video.duration > 0 && video.currentTime > video.duration - 1){
       finish();
