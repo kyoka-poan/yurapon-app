@@ -8,17 +8,16 @@
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}html{background:#f7f4fb}
-body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;overflow-x:hidden;background:#f7f4fb}
+body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#f7f4fb;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+html{overflow-x:hidden}
 
-/* メイン背景：画面いっぱいに広がる固定背景 */
-.bg-layer{position:fixed;inset:0;z-index:-2;background:url("assets/img/bg_main.jpg") center center/cover no-repeat;filter:saturate(.68) contrast(.92) brightness(1.08)}
-.bg-layer::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.30)}
+/* 白い半透明オーバーレイ（背景画像の上に重ねて優しい雰囲気に） */
+.bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-/* 部屋モード時の背景：画面いっぱいに広がる */
-body.room-mode{color:#e8e0f5}
+/* 部屋モード時の背景：body自体に背景指定で確実に出す */
+body.room-mode{color:#e8e0f5;background-color:#0a0618;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
 body.room-mode .bg-layer{display:none}
-.room-bg-layer{display:none;position:fixed;inset:0;z-index:-2;background:#0a0618 url("assets/img/bg_room.png") center center/cover no-repeat}
-body.room-mode .room-bg-layer{display:block}
+.room-bg-layer{display:none}
 
 /* 部屋背景の上に光の粒（floating dust） */
 body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:
@@ -83,10 +82,10 @@ button.choice:active{transform:translateY(1px)}
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(34,28,54,.20)}
 .modal.show{display:flex}
 .modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:38px 34px 44px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,#f0e8f5;box-shadow:0 24px 80px rgba(44,31,72,.20);color:var(--ink);line-height:2.0;position:relative}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.85);border-radius:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 4px 16px rgba(60,40,90,.08)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
 .modal-head h2{font-size:22px;margin:0;line-height:1.4}
 .close-btn{width:86px;min-height:42px;border-radius:999px;background:rgba(246,239,255,.82);border:1px solid rgba(135,116,166,.14);font:inherit;cursor:pointer}
-.modal-section{margin:0 0 24px;padding:24px 22px;background:rgba(255,255,255,.78);border-radius:20px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 4px 16px rgba(60,40,90,.08)}
+.modal-section{margin:0 0 24px;padding:24px 22px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
 .modal-section h3{margin:0 0 16px;font-size:18px;line-height:1.5}
 .modal-section p{margin:0;font-size:14.5px;line-height:2.1;font-weight:650;color:#51466f}
 
@@ -102,8 +101,8 @@ body.room-mode .page{display:none}
 .room-stage.scrollable{height:auto;overflow:visible}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:none;color:rgba(232,224,245,.6);font-size:13px;letter-spacing:.1em;padding:6px 8px;cursor:pointer;font-family:inherit;font-weight:300;line-height:1;transition:color .3s}
-.room-back:hover{color:rgba(232,224,245,.95)}
+.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}.room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.7);font-size:11px;letter-spacing:.15em;padding:5px 14px;cursor:pointer;font-family:inherit;font-weight:300;transition:all .3s}
+.room-back:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
 .month-control{display:flex;align-items:center;gap:2px}
@@ -827,10 +826,19 @@ function placeCandles(){
     const placed = [];
 
     sortedByDate.forEach((rec, idx)=>{
-      const norm = idx / Math.max(1, sortedByDate.length - 1);
+      // 記録が1個だけの場合は中央に配置
+      let norm;
+      if(sortedByDate.length === 1){
+        norm = 0.5;
+      } else {
+        norm = idx / (sortedByDate.length - 1);
+      }
 
       let baseY;
-      if(norm < 0.6){
+      if(sortedByDate.length === 1){
+        // 1個だけの時は画面の真ん中に
+        baseY = 50;
+      } else if(norm < 0.6){
         const innerNorm = norm / 0.6;
         baseY = 97 - innerNorm * 27;
       } else {
