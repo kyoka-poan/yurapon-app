@@ -168,7 +168,7 @@ body.room-mode .page{display:none}
       <h1>灯観測装置<br>〜ゆらぽん〜</h1>
       <div class="yurapon-wrap" aria-hidden="true">
         <video class="yurapon" autoplay muted loop playsinline preload="auto">
-          <source src="assets/ビデオ/yurapon_main.mp4" type="video/mp4">
+          <source src="assets/video/yurapon.main.mp4" type="video/mp4">
         </video>
       </div>
     </header>
@@ -709,7 +709,7 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
   const img = document.createElement('img');
-  img.src = `assets/img/candle_${(record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0'))}.png`;
+  img.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
   wax.appendChild(img);
   candle.appendChild(wax);
@@ -740,7 +740,7 @@ function openPopup(record){
 
   wordEl.textContent = record.word || '';
   wordEl.style.display = record.word ? 'block' : 'none';
-  imgEl.src = `assets/img/candle_${(record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0'))}.png`;
+  imgEl.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
   imgEl.style.display = 'block';
   overlay.classList.add('show');
 }
@@ -793,7 +793,7 @@ function showCandleSelect(){
     btn.style.top = y + '%';
     btn.style.setProperty('--rotate', rotate + 'deg');
     btn.style.setProperty('--scale', scale);
-    btn.innerHTML = `<img src="assets/img/candle_${(candleNum >= 10 ? String(candleNum).padStart(3,'0') : String(candleNum).padStart(2,'0'))}.png" alt="">`;
+    btn.innerHTML = `<img src="assets/img/candle_${String(candleNum).padStart(2,'0')}.png" alt="">`;
     btn.addEventListener('click', ()=>onCandlePicked(candleNum));
     area.appendChild(btn);
   });
@@ -806,7 +806,7 @@ function onCandlePicked(candleType){
 
   const overlay = document.getElementById('videoOverlay');
   const video = document.getElementById('ritualVideo');
-  video.src = 'assets/ビデオ/yurapon.candle.mp4';
+  video.src = 'assets/video/yurapon.candle.mp4';
   video.muted = false;
   video.controls = false;
   video.playsInline = true;
@@ -998,7 +998,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/ビデオ/yurapon_lantern.mp4');
+    playVideo('assets/video/yurapon_lantern.mp4');
     return;
   }
 
@@ -1009,7 +1009,7 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/ビデオ/yurapon_single.mov');
+    playVideo('assets/video/yurapon_single.mov');
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
