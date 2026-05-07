@@ -29,16 +29,16 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
   100%{background-position:50% 100%, 50% 0%, 100% 0%, 20% 80%}
 }
 
-.page{width:min(100%,430px);margin:0 auto;min-height:100svh;padding:34px 22px 48px;background:rgba(255,255,255,.04);position:relative}
+.page{width:min(100%,430px);margin:0 auto;min-height:100svh;padding:34px 22px 16px;background:rgba(255,255,255,.04);position:relative}
 @media (min-width:760px){.page{margin:28px auto 48px;border-radius:34px;padding:36px 26px 52px;box-shadow:var(--shadow);background:rgba(255,255,255,.18);backdrop-filter:blur(2px)}}
 .hero{display:grid;grid-template-columns:1fr 127px;align-items:center;gap:18px;margin:0 0 26px;padding:4px 2px 0}
 h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22)}
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
 .yurapon{width:120%;height:120%;object-fit:cover;display:block;pointer-events:none;filter:contrast(1.05) saturate(0.9)}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid rgba(154,125,185,.12);border-radius:20px;background:rgba(255,255,255,.24);color:var(--ink);text-decoration:none;box-shadow:0 10px 26px rgba(80,60,130,.05);cursor:pointer;font:inherit}
-.card{margin:0 0 30px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
-.card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em}
-.card h3{margin:36px 0 3.6em;font-size:16px;line-height:1.5;color:#51466f;letter-spacing:.02em}
+.card{margin:0 0 20px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
+.card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center}
+.card h3{margin:36px 0 3.6em;font-size:16px;line-height:1.5;color:#51466f;letter-spacing:.02em;text-align:center}
 .card h3:first-child{margin-top:0}
 .lead{margin:0 0 1.9em;font-size:15.5px;line-height:2.2;color:#51466f;text-align:center}
 
@@ -131,11 +131,11 @@ body.room-mode .page{display:none}
   75%{transform:rotate(-1.5deg) translateY(-1px)}
 }
 
-.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:100;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
+.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:300;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
 .popup-overlay.show{opacity:1;pointer-events:auto}
-.popup{background:rgba(30,20,50,.6);border:1px solid rgba(255,220,180,.2);border-radius:16px;padding:32px 28px 36px;max-width:340px;width:100%;text-align:center;transform:translateY(20px);transition:transform .6s ease}
+.popup{background:transparent;border:none;border-radius:16px;padding:8px 28px 8px;max-width:340px;width:100%;text-align:center;transform:translateY(20px);transition:transform .6s ease}
 .popup-overlay.show .popup{transform:translateY(0)}
-.popup-candle{width:110px;height:110px;margin:0 auto 18px;position:relative}
+.popup-candle{width:110px;height:110px;margin:0 auto 10px;position:relative}
 .popup-candle img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 16px rgba(255,200,120,.5))}
 .popup-date{font-size:12px;color:rgba(232,224,245,.6);letter-spacing:.15em;margin-bottom:10px;font-weight:300}
 .popup-state{font-size:14px;color:rgba(232,224,245,.85);margin-bottom:14px;font-weight:300;letter-spacing:.05em}
@@ -168,7 +168,7 @@ body.room-mode .page{display:none}
       <h1>灯観測装置<br>〜ゆらぽん〜</h1>
       <div class="yurapon-wrap" aria-hidden="true">
         <video class="yurapon" autoplay muted loop playsinline preload="auto">
-          <source src="assets/ビデオ/yurapon .main.mp4" type="video/mp4">
+          <source src="assets/ビデオ/yurapon_main.mp4" type="video/mp4">
         </video>
       </div>
     </header>
@@ -250,7 +250,7 @@ body.room-mode .page{display:none}
 
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
-      <div class="popup-candle"><img id="popupCandleImg" src="" alt=""></div>
+      <div class="popup-candle"><img id="popupCandleImg" src="" alt="" style="display:none"></div>
       <div class="popup-date" id="popupDate"></div>
       <div class="popup-state" id="popupState"></div>
       <div class="popup-word" id="popupWord"></div>
@@ -464,14 +464,6 @@ if(window.location.hash === '#room'){
     setTimeout(checkVideoTrigger, 300);
   }, 50);
 }
-
-(function preloadImages(){
-  const imgs = ['assets/img/bg_main.jpg','assets/img/bg_room.jpg','assets/img/bg_caption.jpg'];
-  imgs.forEach(src=>{
-    const img = new Image();
-    img.src = src;
-  });
-})();
 
 document.querySelectorAll('[data-goto-room]').forEach(el=>{
   el.addEventListener('click', ()=>goToRoom(false));
@@ -749,6 +741,7 @@ function openPopup(record){
   wordEl.textContent = record.word || '';
   wordEl.style.display = record.word ? 'block' : 'none';
   imgEl.src = `assets/img/candle_${(record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0'))}.png`;
+  imgEl.style.display = 'block';
   overlay.classList.add('show');
 }
 
