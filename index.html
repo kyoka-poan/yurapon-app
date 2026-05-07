@@ -120,8 +120,8 @@ body.room-mode .page{display:none}
 .room.fading{opacity:0}
 
 .candle{position:absolute;cursor:pointer;transition:opacity .4s ease;will-change:transform}
-.candle.size-month{width:119px;height:153px}
-.candle.size-year{width:34px;height:44px}
+.candle.size-month{width:70px;height:90px}
+.candle.size-year{width:55px;height:70px}
 .candle:active{opacity:.7}
 .candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(255,200,120,.35)) drop-shadow(0 0 8px rgba(255,180,100,.15))}
@@ -142,7 +142,9 @@ body.room-mode .page{display:none}
 .popup-state{font-size:14px;color:rgba(232,224,245,.85);margin-bottom:14px;font-weight:300;letter-spacing:.05em}
 .popup-word{font-size:16px;line-height:1.9;color:#f5ecd9;font-weight:300;letter-spacing:.05em;white-space:pre-wrap;word-break:break-word}
 
-.video-overlay{position:fixed;inset:0;background:rgba(10,6,24,.92);z-index:350;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 1s ease;padding:30px}
+.skip-btn{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;color:rgba(255,255,255,.7);font-size:12px;letter-spacing:.15em;padding:6px 20px;cursor:pointer;font-family:inherit;backdrop-filter:blur(4px)}
+.skip-btn:hover{background:rgba(255,255,255,.25);color:rgba(255,255,255,.95)}
+.video-overlay{position:fixed;inset:0;background:rgba(10,6,24,.92);z-index:350;display:none;flex-direction:column;justify-content:center;align-items:center;opacity:0;transition:opacity 1s ease;padding:30px}
 .video-overlay.show{display:flex;opacity:1}
 .video-overlay.fading-out{opacity:0}
 .video-overlay video{width:70%;max-width:380px;max-height:70vh;object-fit:contain;border-radius:18px;box-shadow:0 0 60px rgba(255,200,120,.25),0 0 0 1px rgba(255,210,160,.2)}
@@ -252,6 +254,7 @@ body.room-mode .page{display:none}
 
   <div class="video-overlay" id="videoOverlay">
     <video id="ritualVideo" playsinline preload="auto"></video>
+    <button class="skip-btn" id="skipBtn">スキップ</button>
   </div>
 
   <div class="candle-select" id="candleSelect">
@@ -605,8 +608,8 @@ function placeCandles(){
     const seedKey = viewMode + '-' + currentYear + '-' + currentMonth;
     const rand = dailySeed(seedKey);
 
-    const candleSize = viewMode === 'year' ? 34 : 70;
-    const minDist = candleSize * 0.85;
+    const candleSize = viewMode === 'year' ? 55 : 70;
+    const minDist = candleSize * 1.1;
     const padding = 8;
 
     let calculatedHeight;
@@ -646,12 +649,7 @@ function placeCandles(){
         baseY = 70 - innerNorm * 65;
       }
 
-      let myScale;
-      if(norm < 0.5){
-        myScale = 1 + norm * 0.6;
-      } else {
-        myScale = 1.3 + (norm - 0.5) * 1.4;
-      }
+      const myScale = 1.0;
 
       const baseX = padding + rand() * (100 - padding*2);
       const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12);
@@ -947,7 +945,7 @@ calendarPopup.addEventListener('click',e=>{
 });
 
 document.getElementById('navLabel').addEventListener('click',()=>{
-  if(viewMode === 'month') openCalendar();
+  openCalendar();
 });
 
 function playVideo(src, onEnd){
@@ -1065,6 +1063,18 @@ function initRoom(){
   updateNav();
   placeCandles();
 }
+
+document.getElementById('skipBtn').addEventListener('click',()=>{
+  const video = document.getElementById('ritualVideo');
+  const overlay = document.getElementById('videoOverlay');
+  overlay.classList.add('fading-out');
+  setTimeout(()=>{
+    overlay.classList.remove('show');
+    overlay.classList.remove('fading-out');
+    try{ video.pause(); }catch(e){}
+    video.src = '';
+  }, 500);
+});
 }); // DOMContentLoaded
 </script>
 
