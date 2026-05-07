@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>灯観測装置〜ゆらぽん〜</title>
+<title>灯観測装置 ゆらぽん</title>
 <style>
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -34,7 +34,7 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
 .hero{display:grid;grid-template-columns:1fr 127px;align-items:center;gap:18px;margin:0 0 26px;padding:4px 2px 0}
 h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22)}
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
-.yurapon{width:120%;height:120%;object-fit:cover;display:block;pointer-events:none;filter:contrast(1.05) saturate(0.9)}
+.yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid rgba(154,125,185,.12);border-radius:20px;background:rgba(255,255,255,.24);color:var(--ink);text-decoration:none;box-shadow:0 10px 26px rgba(80,60,130,.05);cursor:pointer;font:inherit}
 .card{margin:0 0 20px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
 .card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center}
@@ -91,8 +91,8 @@ button.choice:active{transform:translateY(1px)}
 
 @media (max-width:360px){.page{padding-left:16px;padding-right:16px}.hero{grid-template-columns:1fr 88px;gap:14px}.yurapon-wrap{width:106px;height:106px}h1{font-size:30px}.choices{gap:10px}button.choice{font-size:13.5px;min-height:50px}}
 
-.room-stage-wrapper{display:none;width:100%;min-height:100svh;justify-content:center}
-body.room-mode .room-stage-wrapper{display:flex}
+.room-stage-wrapper{display:none !important;width:100%;min-height:100svh;justify-content:center}
+body.room-mode .room-stage-wrapper{display:flex !important}
 body.room-mode .page{display:none}
 .room-stage{position:relative;width:100%;max-width:480px;min-height:100svh;display:flex;flex-direction:column}
 .room-stage.scrollable{height:auto}
@@ -123,7 +123,7 @@ body.room-mode .page{display:none}
 .candle.size-month{width:70px;height:90px}
 .candle.size-year{width:34px;height:44px}
 .candle:active{opacity:.7}
-.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom}
+.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(255,200,120,.35)) drop-shadow(0 0 8px rgba(255,180,100,.15))}
 
 
@@ -131,7 +131,8 @@ body.room-mode .page{display:none}
   75%{transform:rotate(-1.5deg) translateY(-1px)}
 }
 
-.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:300;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
+@keyframes candle-sway{0%,100%{transform:rotate(-2deg) translateY(0)}25%{transform:rotate(1.5deg) translateY(-1px)}50%{transform:rotate(2.5deg) translateY(0)}75%{transform:rotate(-1deg) translateY(-1px)}}
+.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
 .popup-overlay.show{opacity:1;pointer-events:auto}
 .popup{background:transparent;border:none;border-radius:16px;padding:8px 28px 8px;max-width:340px;width:100%;text-align:center;transform:translateY(20px);transition:transform .6s ease}
 .popup-overlay.show .popup{transform:translateY(0)}
@@ -141,7 +142,7 @@ body.room-mode .page{display:none}
 .popup-state{font-size:14px;color:rgba(232,224,245,.85);margin-bottom:14px;font-weight:300;letter-spacing:.05em}
 .popup-word{font-size:16px;line-height:1.9;color:#f5ecd9;font-weight:300;letter-spacing:.05em;white-space:pre-wrap;word-break:break-word}
 
-.video-overlay{position:fixed;inset:0;background:rgba(10,6,24,.92);z-index:200;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 1s ease;padding:30px}
+.video-overlay{position:fixed;inset:0;background:rgba(10,6,24,.92);z-index:350;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 1s ease;padding:30px}
 .video-overlay.show{display:flex;opacity:1}
 .video-overlay.fading-out{opacity:0}
 .video-overlay video{width:70%;max-width:380px;max-height:70vh;object-fit:contain;border-radius:18px;box-shadow:0 0 60px rgba(255,200,120,.25),0 0 0 1px rgba(255,210,160,.2)}
@@ -165,7 +166,7 @@ body.room-mode .page{display:none}
 
   <main class="page">
     <header class="hero">
-      <h1>灯観測装置<br>〜ゆらぽん〜</h1>
+      <h1>灯観測装置<br>ゆらぽん</h1>
       <div class="yurapon-wrap" aria-hidden="true">
         <video class="yurapon" autoplay muted loop playsinline preload="auto">
           <source src="assets/video/yurapon.main.mp4" type="video/mp4">
@@ -248,14 +249,6 @@ body.room-mode .page{display:none}
     </div>
   </div>
 
-  <div class="popup-overlay" id="popupOverlay">
-    <div class="popup">
-      <div class="popup-candle"><img id="popupCandleImg" src="" alt="" style="display:none"></div>
-      <div class="popup-date" id="popupDate"></div>
-      <div class="popup-state" id="popupState"></div>
-      <div class="popup-word" id="popupWord"></div>
-    </div>
-  </div>
 
   <div class="video-overlay" id="videoOverlay">
     <video id="ritualVideo" playsinline preload="auto"></video>
@@ -711,10 +704,17 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const img = document.createElement('img');
   img.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
+  img.draggable = false;
   wax.appendChild(img);
   candle.appendChild(wax);
 
   candle.addEventListener('click',(e)=>{
+    e.preventDefault();
+    e.stopPropagation();
+    openPopup(record);
+  });
+  candle.addEventListener('touchend',(e)=>{
+    e.preventDefault();
     e.stopPropagation();
     openPopup(record);
   });
@@ -793,7 +793,7 @@ function showCandleSelect(){
     btn.style.top = y + '%';
     btn.style.setProperty('--rotate', rotate + 'deg');
     btn.style.setProperty('--scale', scale);
-    btn.innerHTML = `<img src="assets/img/candle_${String(candleNum).padStart(2,'0')}.png" alt="">`;
+    btn.innerHTML = `<img src="assets/img/candle_${String(candleNum).padStart(2,'0')}.png" alt="" draggable="false">`;
     btn.addEventListener('click', ()=>onCandlePicked(candleNum));
     area.appendChild(btn);
   });
@@ -1062,5 +1062,14 @@ function initRoom(){
   placeCandles();
 }
 </script>
+
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup">
+      <div class="popup-candle"><img id="popupCandleImg" src="" alt="" style="display:none"></div>
+      <div class="popup-date" id="popupDate"></div>
+      <div class="popup-state" id="popupState"></div>
+      <div class="popup-word" id="popupWord"></div>
+    </div>
+  </div>
 </body>
 </html>
