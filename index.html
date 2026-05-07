@@ -5,10 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>灯観測装置 ゆらぽん</title>
 <style>
+@font-face {
+  font-family: 'AppFont';
+  src: url('assets/fonts/iroha-mochi.otf') format('opentype');
+  unicode-range: U+3040-309F, U+30A0-30FF; /* ひらがな・カタカナ */
+}
+@font-face {
+  font-family: 'AppFont';
+  src: url('assets/fonts/GenJyuuGothicX-Bold.ttf') format('truetype');
+  unicode-range: U+0000-302F, U+3100-FFFF; /* 漢字・英数字・記号 */
+}
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}html{background:#bcc6e8}
-body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+body{margin:0;min-height:100svh;color:var(--ink);font-family:"AppFont",-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 html{overflow-x:hidden}
 
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
@@ -91,14 +101,14 @@ button.choice:active{transform:translateY(1px)}
 
 @media (max-width:360px){.page{padding-left:16px;padding-right:16px}.hero{grid-template-columns:1fr 88px;gap:14px}.yurapon-wrap{width:106px;height:106px}h1{font-size:30px}.choices{gap:10px}button.choice{font-size:13.5px;min-height:50px}}
 
-.room-stage-wrapper{display:none !important;width:100%;min-height:100svh;justify-content:center}
+.room-stage-wrapper{display:none !important;width:100%;min-height:100svh;justify-content:center;overflow:hidden}
 body.room-mode .room-stage-wrapper{display:flex !important}
 body.room-mode .page{display:none}
 .room-stage{position:relative;width:100%;max-width:480px;min-height:100svh;display:flex;flex-direction:column}
 .room-stage.scrollable{height:auto}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}
+.room-top-bar{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0}
 .room-back{background:transparent;border:1px solid rgba(232,224,245,.25);border-radius:14px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.15em;padding:6px 16px;cursor:pointer;font-family:inherit;font-weight:400;transition:all .3s;white-space:nowrap;line-height:1.4}
 .room-back:hover{color:rgba(232,224,245,1);border-color:rgba(232,224,245,.45)}
 
@@ -115,12 +125,12 @@ body.room-mode .page{display:none}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
 .tap-hint{margin:0 auto 12px;padding:5px 16px;text-align:center;font-size:13px;color:rgba(232,224,245,.85);letter-spacing:.1em;font-weight:400;border:1px solid rgba(232,224,245,.25);border-radius:14px;display:block;width:fit-content;background:transparent}
 
-.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1}
+.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1;overflow:hidden}
 .room.scrollable{flex:none}
 .room.fading{opacity:0}
 
 .candle{position:absolute;cursor:pointer;transition:opacity .4s ease;will-change:transform}
-.candle.size-month{width:70px;height:90px}
+.candle.size-month{width:119px;height:153px}
 .candle.size-year{width:34px;height:44px}
 .candle:active{opacity:.7}
 .candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
@@ -134,7 +144,7 @@ body.room-mode .page{display:none}
 @keyframes candle-sway{0%,100%{transform:rotate(-2deg) translateY(0)}25%{transform:rotate(1.5deg) translateY(-1px)}50%{transform:rotate(2.5deg) translateY(0)}75%{transform:rotate(-1deg) translateY(-1px)}}
 .popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
 .popup-overlay.show{opacity:1;pointer-events:auto}
-.popup{background:transparent;border:none;border-radius:16px;padding:8px 28px 8px;max-width:340px;width:100%;text-align:center;transform:translateY(20px);transition:transform .6s ease}
+.popup{background:rgba(20,12,40,.75);border:1px solid rgba(255,220,180,.15);border-radius:24px;padding:28px 24px 32px;max-width:300px;width:90%;text-align:center;transform:translateY(20px);transition:transform .6s ease;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,0,0,.4)}
 .popup-overlay.show .popup{transform:translateY(0)}
 .popup-candle{width:110px;height:110px;margin:0 auto 10px;position:relative}
 .popup-candle img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 16px rgba(255,200,120,.5))}
@@ -151,7 +161,7 @@ body.room-mode .page{display:none}
 .candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px;opacity:0;transition:opacity .8s ease}
 .candle-select.show{display:flex;opacity:1}
 .candle-select-title{color:rgba(232,224,245,.75);font-size:14px;letter-spacing:.2em;margin-bottom:30px;font-weight:300;text-align:center}
-.candle-select-area{position:relative;width:100%;max-width:380px;height:520px}
+.candle-select-area{position:relative;width:100%;max-width:380px;height:600px}
 .candle-pick{position:absolute;background:transparent;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .3s;--rotate:0deg;--scale:1}
 .candle-pick:hover{z-index:2}
 .candle-pick:active{transform:translate(-50%,-50%) rotate(var(--rotate)) scale(calc(var(--scale) * 0.92))}
@@ -281,6 +291,16 @@ body.room-mode .page{display:none}
   </div>
 
   <style>
+@font-face {
+  font-family: 'AppFont';
+  src: url('assets/fonts/iroha-mochi.otf') format('opentype');
+  unicode-range: U+3040-309F, U+30A0-30FF; /* ひらがな・カタカナ */
+}
+@font-face {
+  font-family: 'AppFont';
+  src: url('assets/fonts/GenJyuuGothicX-Bold.ttf') format('truetype');
+  unicode-range: U+0000-302F, U+3100-FFFF; /* 漢字・英数字・記号 */
+}
     .calendar-popup.show{display:flex !important}
     .confirm-modal.show{display:flex !important}
     .calendar-month{background:transparent;border:1px solid rgba(232,224,245,.15);border-radius:10px;padding:10px 6px;color:rgba(232,224,245,.75);font-family:inherit;font-weight:300;font-size:13px;cursor:pointer;transition:all .2s}
@@ -745,8 +765,8 @@ function openPopup(record){
   overlay.classList.add('show');
 }
 
-document.getElementById('popupOverlay').addEventListener('click',()=>{
-  document.getElementById('popupOverlay').classList.remove('show');
+document.getElementById('popupOverlay').addEventListener('click',(e)=>{
+  if(e.target === document.getElementById('popupOverlay')) document.getElementById('popupOverlay').classList.remove('show');
 });
 
 function startRecordFlow(){
