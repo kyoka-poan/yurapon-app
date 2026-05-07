@@ -5,25 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>灯観測装置 ゆらぽん</title>
 <style>
-@font-face {
-  font-family: 'AppFont';
-  src: url('assets/fonts/iroha-mochi.otf') format('opentype');
-  unicode-range: U+3040-309F, U+30A0-30FF; /* ひらがな・カタカナ */
-}
-@font-face {
-  font-family: 'AppFont';
-  src: url('assets/fonts/GenJyuuGothicX-Bold.ttf') format('truetype');
-  unicode-range: U+0000-302F, U+3100-FFFF; /* 漢字・英数字・記号 */
-}
 :root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}html{background:#bcc6e8}
-body{margin:0;min-height:100svh;color:var(--ink);font-family:"AppFont",-apple-system,BlinkMacSystemFont,"Hiragino Sans",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 html{overflow-x:hidden}
 
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -41,8 +31,8 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
 
 .page{width:min(100%,430px);margin:0 auto;min-height:100svh;padding:34px 22px 16px;background:rgba(255,255,255,.04);position:relative}
 @media (min-width:760px){.page{margin:28px auto 48px;border-radius:34px;padding:36px 26px 52px;box-shadow:var(--shadow);background:rgba(255,255,255,.18);backdrop-filter:blur(2px)}}
-.hero{display:grid;grid-template-columns:1fr 127px;align-items:center;gap:18px;margin:0 0 26px;padding:4px 2px 0}
-h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22)}
+.hero{display:flex;align-items:center;justify-content:center;gap:18px;margin:0 0 26px;padding:4px 2px 0}
+h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22);text-align:center}
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid rgba(154,125,185,.12);border-radius:20px;background:rgba(255,255,255,.24);color:var(--ink);text-decoration:none;box-shadow:0 10px 26px rgba(80,60,130,.05);cursor:pointer;font:inherit}
@@ -142,9 +132,9 @@ body.room-mode .page{display:none}
 }
 
 @keyframes candle-sway{0%,100%{transform:rotate(-2deg) translateY(0)}25%{transform:rotate(1.5deg) translateY(-1px)}50%{transform:rotate(2.5deg) translateY(0)}75%{transform:rotate(-1deg) translateY(-1px)}}
-.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
-.popup-overlay.show{opacity:1;pointer-events:auto}
-.popup{background:rgba(20,12,40,.75);border:1px solid rgba(255,220,180,.15);border-radius:24px;padding:28px 24px 32px;max-width:300px;width:90%;text-align:center;transform:translateY(20px);transition:transform .6s ease;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,0,0,.4)}
+.popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
+.popup-overlay.show{display:flex;opacity:1;pointer-events:auto}
+.popup{background:rgba(20,12,40,.75);border:1px solid rgba(255,220,180,.15);border-radius:24px;padding:28px 24px 32px;max-width:300px;width:90%;max-height:80svh;overflow:auto;text-align:center;transform:translateY(20px);transition:transform .6s ease;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,0,0,.4)}
 .popup-overlay.show .popup{transform:translateY(0)}
 .popup-candle{width:110px;height:110px;margin:0 auto 10px;position:relative}
 .popup-candle img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 16px rgba(255,200,120,.5))}
@@ -161,7 +151,7 @@ body.room-mode .page{display:none}
 .candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;justify-content:center;align-items:center;padding:30px 20px;opacity:0;transition:opacity .8s ease}
 .candle-select.show{display:flex;opacity:1}
 .candle-select-title{color:rgba(232,224,245,.75);font-size:14px;letter-spacing:.2em;margin-bottom:30px;font-weight:300;text-align:center}
-.candle-select-area{position:relative;width:100%;max-width:380px;height:600px}
+.candle-select-area{position:relative;width:100%;max-width:380px;height:min(520px,70svh)}
 .candle-pick{position:absolute;background:transparent;border:none;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;transition:transform .3s;--rotate:0deg;--scale:1}
 .candle-pick:hover{z-index:2}
 .candle-pick:active{transform:translate(-50%,-50%) rotate(var(--rotate)) scale(calc(var(--scale) * 0.92))}
@@ -176,12 +166,12 @@ body.room-mode .page{display:none}
 
   <main class="page">
     <header class="hero">
-      <h1>灯観測装置<br>ゆらぽん</h1>
       <div class="yurapon-wrap" aria-hidden="true">
         <video class="yurapon" autoplay muted loop playsinline preload="auto">
           <source src="assets/video/yurapon.main.mp4" type="video/mp4">
         </video>
       </div>
+      <h1>灯観測装置<br>ゆらぽん</h1>
     </header>
     <button class="room-top" data-goto-room>灯の部屋</button>
 
@@ -291,16 +281,6 @@ body.room-mode .page{display:none}
   </div>
 
   <style>
-@font-face {
-  font-family: 'AppFont';
-  src: url('assets/fonts/iroha-mochi.otf') format('opentype');
-  unicode-range: U+3040-309F, U+30A0-30FF; /* ひらがな・カタカナ */
-}
-@font-face {
-  font-family: 'AppFont';
-  src: url('assets/fonts/GenJyuuGothicX-Bold.ttf') format('truetype');
-  unicode-range: U+0000-302F, U+3100-FFFF; /* 漢字・英数字・記号 */
-}
     .calendar-popup.show{display:flex !important}
     .confirm-modal.show{display:flex !important}
     .calendar-month{background:transparent;border:1px solid rgba(232,224,245,.15);border-radius:10px;padding:10px 6px;color:rgba(232,224,245,.75);font-family:inherit;font-weight:300;font-size:13px;cursor:pointer;transition:all .2s}
@@ -324,6 +304,7 @@ body.room-mode .page{display:none}
   </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 const stateData = {
   sad:{label:'かなしい',title:'ぽあん。\n雨みたいな灯が、ここにある',air:'しっとりしてる',light:'泣きたいのも、きれいな灯だよ',yura:'しょんぼりの日も、灯は消えてないよ。',scores:[3,2,3]},
   tired:{label:'つかれた',title:'ぽあん。\nからだが休みたいって言ってる',air:'すこし重ため',light:'ゆらゆら小さい灯が見える',yura:'今日は充電の灯だね。',scores:[2,1,2]},
@@ -638,8 +619,8 @@ function placeCandles(){
     }
     room.classList.add('scrollable');
     roomStage.classList.add('scrollable');
-    room.style.height = calculatedHeight + 'px';
-    room.style.minHeight = calculatedHeight + 'px';
+    room.style.height = Math.max(availableH, calculatedHeight) + 'px';
+    room.style.minHeight = Math.max(availableH, calculatedHeight) + 'px';
 
     const stageWidth = Math.min(480, window.innerWidth);
     const stageHeight = calculatedHeight;
@@ -722,7 +703,7 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
   const img = document.createElement('img');
-  img.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  img.src = `assets/img/candle_${record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
   img.draggable = false;
   wax.appendChild(img);
@@ -760,12 +741,15 @@ function openPopup(record){
 
   wordEl.textContent = record.word || '';
   wordEl.style.display = record.word ? 'block' : 'none';
-  imgEl.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  imgEl.src = `assets/img/candle_${record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0')}.png`;
   imgEl.style.display = 'block';
   overlay.classList.add('show');
 }
 
 document.getElementById('popupOverlay').addEventListener('click',(e)=>{
+  if(e.target === document.getElementById('popupOverlay')) document.getElementById('popupOverlay').classList.remove('show');
+});
+document.getElementById('popupOverlay').addEventListener('touchend',(e)=>{
   if(e.target === document.getElementById('popupOverlay')) document.getElementById('popupOverlay').classList.remove('show');
 });
 
@@ -789,11 +773,11 @@ function showCandleSelect(){
   area.innerHTML = '';
 
   const positions = [
-    [0.10, 0], [0.32, 0], [0.54, 0], [0.76, 0],
-    [0.10, 1], [0.32, 1], [0.54, 1], [0.76, 1],
-    [0.10, 2], [0.32, 2], [0.54, 2], [0.76, 2]
+    [0.12, 0], [0.37, 0], [0.62, 0], [0.87, 0],
+    [0.12, 1], [0.37, 1], [0.62, 1], [0.87, 1],
+    [0.12, 2], [0.37, 2], [0.62, 2], [0.87, 2]
   ];
-  const rowYs = [14, 48, 82];
+  const rowYs = [20, 50, 80];
 
   positions.forEach((pos, i)=>{
     const candleNum = i + 1;
@@ -813,7 +797,7 @@ function showCandleSelect(){
     btn.style.top = y + '%';
     btn.style.setProperty('--rotate', rotate + 'deg');
     btn.style.setProperty('--scale', scale);
-    btn.innerHTML = `<img src="assets/img/candle_${String(candleNum).padStart(2,'0')}.png" alt="" draggable="false">`;
+    btn.innerHTML = `<img src="assets/img/candle_${candleNum >= 10 ? String(candleNum).padStart(3,'0') : String(candleNum).padStart(2,'0')}.png" alt="" draggable="false">`;
     btn.addEventListener('click', ()=>onCandlePicked(candleNum));
     area.appendChild(btn);
   });
@@ -1081,6 +1065,7 @@ function initRoom(){
   updateNav();
   placeCandles();
 }
+}); // DOMContentLoaded
 </script>
 
   <div class="popup-overlay" id="popupOverlay">
