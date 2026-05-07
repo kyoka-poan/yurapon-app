@@ -13,7 +13,7 @@ html{overflow-x:hidden}
 
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.png");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
+body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:cover;background-position:center center;background-repeat:no-repeat;background-attachment:fixed}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -33,8 +33,8 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
 @media (min-width:760px){.page{margin:28px auto 48px;border-radius:34px;padding:36px 26px 52px;box-shadow:var(--shadow);background:rgba(255,255,255,.18);backdrop-filter:blur(2px)}}
 .hero{display:grid;grid-template-columns:1fr 127px;align-items:center;gap:18px;margin:0 0 26px;padding:4px 2px 0}
 h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22)}
-.yurapon-wrap{width:127px;height:127px;border-radius:999px;background:rgba(56,49,66,.74);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:visible;flex:none}
-.yurapon{width:120%;height:120%;object-fit:cover;display:block;mix-blend-mode:multiply;pointer-events:none}
+.yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
+.yurapon{width:120%;height:120%;object-fit:cover;display:block;pointer-events:none;filter:contrast(1.05) saturate(0.9)}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid rgba(154,125,185,.12);border-radius:20px;background:rgba(255,255,255,.24);color:var(--ink);text-decoration:none;box-shadow:0 10px 26px rgba(80,60,130,.05);cursor:pointer;font:inherit}
 .card{margin:0 0 30px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
 .card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em}
@@ -168,7 +168,7 @@ body.room-mode .page{display:none}
       <h1>灯観測装置<br>〜ゆらぽん〜</h1>
       <div class="yurapon-wrap" aria-hidden="true">
         <video class="yurapon" autoplay muted loop playsinline preload="auto">
-          <source src="assets/video/yurapon .main.mp4" type="video/mp4">
+          <source src="assets/ビデオ/yurapon .main.mp4" type="video/mp4">
         </video>
       </div>
     </header>
@@ -466,7 +466,7 @@ if(window.location.hash === '#room'){
 }
 
 (function preloadImages(){
-  const imgs = ['assets/img/bg_main.jpg','assets/img/bg_room.png','assets/img/bg_caption.jpg'];
+  const imgs = ['assets/img/bg_main.jpg','assets/img/bg_room.jpg','assets/img/bg_caption.jpg'];
   imgs.forEach(src=>{
     const img = new Image();
     img.src = src;
@@ -717,7 +717,7 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
   const img = document.createElement('img');
-  img.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  img.src = `assets/img/candle_${(record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0'))}.png`;
   img.alt = '';
   wax.appendChild(img);
   candle.appendChild(wax);
@@ -748,7 +748,7 @@ function openPopup(record){
 
   wordEl.textContent = record.word || '';
   wordEl.style.display = record.word ? 'block' : 'none';
-  imgEl.src = `assets/img/candle_${String(record.candleType).padStart(2,'0')}.png`;
+  imgEl.src = `assets/img/candle_${(record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0'))}.png`;
   overlay.classList.add('show');
 }
 
@@ -800,7 +800,7 @@ function showCandleSelect(){
     btn.style.top = y + '%';
     btn.style.setProperty('--rotate', rotate + 'deg');
     btn.style.setProperty('--scale', scale);
-    btn.innerHTML = `<img src="assets/img/candle_${String(candleNum).padStart(2,'0')}.png" alt="">`;
+    btn.innerHTML = `<img src="assets/img/candle_${(candleNum >= 10 ? String(candleNum).padStart(3,'0') : String(candleNum).padStart(2,'0'))}.png" alt="">`;
     btn.addEventListener('click', ()=>onCandlePicked(candleNum));
     area.appendChild(btn);
   });
@@ -813,7 +813,7 @@ function onCandlePicked(candleType){
 
   const overlay = document.getElementById('videoOverlay');
   const video = document.getElementById('ritualVideo');
-  video.src = 'assets/video/yurapon.candle.mp4';
+  video.src = 'assets/ビデオ/yurapon.candle.mp4';
   video.muted = false;
   video.controls = false;
   video.playsInline = true;
@@ -1005,7 +1005,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/video/yurapon_lantern.mp4');
+    playVideo('assets/ビデオ/yurapon_lantern.mp4');
     return;
   }
 
@@ -1016,7 +1016,7 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/video/yurapon_single.mov');
+    playVideo('assets/ビデオ/yurapon_single.mov');
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
