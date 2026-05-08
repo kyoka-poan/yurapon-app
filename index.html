@@ -123,15 +123,20 @@ body.room-mode .page{display:none}
 .candle.size-month{width:70px;height:90px}
 .candle.size-year{width:55px;height:70px}
 .candle:active{opacity:.7}
-.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
-.candle-wax img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 4px rgba(255,200,120,.35)) drop-shadow(0 0 8px rgba(255,180,100,.15))}
+.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom}
+.candle-wax img{width:100%;height:100%;object-fit:contain;display:block}
 
 
   50%{transform:rotate(3.5deg) translateY(0)}
   75%{transform:rotate(-1.5deg) translateY(-1px)}
 }
 
+
+.room-stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.room-stars span{position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(255,255,255,.8);animation:star-twinkle var(--dur,3s) ease-in-out var(--delay,0s) infinite}
+@keyframes star-twinkle{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.9;transform:scale(1.4)}}
 @keyframes candle-sway{0%,100%{transform:rotate(-2deg) translateY(0)}25%{transform:rotate(1.5deg) translateY(-1px)}50%{transform:rotate(2.5deg) translateY(0)}75%{transform:rotate(-1deg) translateY(-1px)}}
+@keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,200,120,.25)) drop-shadow(0 0 6px rgba(255,180,100,.1))}50%{filter:drop-shadow(0 0 8px rgba(255,200,120,.55)) drop-shadow(0 0 16px rgba(255,180,100,.3))}}
 .popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
 .popup-overlay.show{display:flex;opacity:1;pointer-events:auto}
 .popup{background:rgba(20,12,40,.75);border:1px solid rgba(255,220,180,.15);border-radius:24px;padding:28px 24px 32px;max-width:300px;width:90%;max-height:80svh;overflow:auto;text-align:center;transform:translateY(20px);transition:transform .6s ease;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 40px rgba(0,0,0,.4)}
@@ -246,6 +251,7 @@ body.room-mode .page{display:none}
           <button class="year-toggle" id="yearToggle">Year</button>
         </div>
       </div>
+      <div class="room-stars" id="roomStars"></div>
       <p class="tap-hint">キャンドルをタップしてね</p>
       <div class="room" id="room"></div>
     </div>
@@ -299,10 +305,10 @@ body.room-mode .page{display:none}
         <button class="close-btn" id="closeModal">閉じる</button>
       </div>
       <section class="modal-section"><h3>🕯️ 灯(あかり)ってなに？</h3><p>「なんか今、心が動いたな」って瞬間。<br><br>大切にしたい、小さな"願い"そのもの。<br><br>最初から自分の中にあった、<br>"命の創造エネルギー"。</p></section>
-      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気付かないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>あなたの存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
+      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気づかないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>あなたの存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
       <section class="modal-section"><h3>💖 どうなるの？</h3><p>自分の人生の"操縦席"に、戻る。<br><br>「ちゃんとしなきゃ」という、<br>社会のルールや、他人の評価から離れる。<br><br>重たい心の鎧を少しおろしたら、<br>ぽあんっ🫧と呼吸がしやすくなる。<br><br>地球が重たくなるのは、<br>案外、大事なものを全部ポケットに<br>つっこんでるからだったり。</p></section>
-      <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>あなたの『灯』を見つけるのは大好き。<br><br>ただあなたの隣にいて、<br>「あ、今の灯だね」と一緒に見つめる相棒。</p></section>
-      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"を、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。本当に大事なものは、<br>離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
+      <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>あなたの『灯』を見つけるのは大好き。<br><br>「あ、今の灯だね」と、<br>一緒に見つめる相棒。</p></section>
+      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"を、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。<br>本当に大事なものは、離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
     </div>
   </div>
 
@@ -608,80 +614,65 @@ function placeCandles(){
     const seedKey = viewMode + '-' + currentYear + '-' + currentMonth;
     const rand = dailySeed(seedKey);
 
-    const candleSize = viewMode === 'year' ? 55 : 70;
-    const minDist = candleSize * 2.2;
-    const padding = 14;
+    const baseCandle = viewMode === 'year' ? 55 : 70;
+    const stageWidth = Math.min(480, window.innerWidth);
 
-    let calculatedHeight;
-    if(records.length === 0){
-      calculatedHeight = availableH;
-    } else {
-      const rowsNeeded = Math.ceil(records.length / (viewMode === 'year' ? 6 : 4));
-      const rowH = viewMode === 'year' ? 70 : 130;
-      calculatedHeight = Math.max(availableH, rowsNeeded * rowH + 80);
-    }
+    // キャンドル1個あたりに必要な面積から高さを計算
+    const maxScale = 1.5;
+    const cellSize = Math.round(baseCandle * maxScale * 2.0); // 1個に必要な正方形
+    const cols = Math.max(2, Math.floor(stageWidth / cellSize));
+    const rows = Math.ceil(records.length / cols);
+    const calculatedHeight = Math.max(availableH, rows * cellSize + 80);
+
     room.classList.add('scrollable');
     roomStage.classList.add('scrollable');
-    room.style.height = Math.max(availableH, calculatedHeight) + 'px';
-    room.style.minHeight = Math.max(availableH, calculatedHeight) + 'px';
+    room.style.height = calculatedHeight + 'px';
+    room.style.minHeight = calculatedHeight + 'px';
 
-    const stageWidth = Math.min(480, window.innerWidth);
     const stageHeight = calculatedHeight;
-
     const placed = [];
 
     sortedByDate.forEach((rec, idx)=>{
-      let norm;
-      if(sortedByDate.length === 1){
-        norm = 0.5;
-      } else {
-        norm = idx / (sortedByDate.length - 1);
-      }
-
-      let baseY;
-      if(sortedByDate.length === 1){
-        baseY = 50;
-      } else if(norm < 0.6){
-        const innerNorm = norm / 0.6;
-        baseY = 97 - innerNorm * 27;
-      } else {
-        const innerNorm = (norm - 0.6) / 0.4;
-        baseY = 70 - innerNorm * 65;
-      }
-
-      // ランダムサイズ：シード基準で決定的に割り当て
+      // ランダムサイズ
       const scaleSeed = rand();
       const myScale = scaleSeed < 0.28 ? 1.5 : scaleSeed < 0.56 ? 1.2 : 1.0;
+      const actualSize = baseCandle * myScale;
+      const minDist = actualSize * 1.8;
 
-      const baseX = padding + rand() * (100 - padding*2);
-      const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12);
-      const xJitter = (rand() - 0.5) * 8;
+      // グリッドベースの初期位置（ランダムにずらす）
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      const cellW = stageWidth / cols;
+      const cellH = cellSize;
 
-      const candlePadX = Math.ceil(candleSize / stageWidth * 50) + 2;
-      let x = Math.max(candlePadX, Math.min(100 - candlePadX, baseX + xJitter));
-      let y = Math.max(8, Math.min(92, baseY + yJitter));
+      const baseXpx = cellW * col + cellW * 0.5 + (rand() - 0.5) * cellW * 0.4;
+      const baseYpx = 60 + cellH * row + cellH * 0.5 + (rand() - 0.5) * cellH * 0.4;
 
+      let xpx = Math.max(actualSize * 0.6, Math.min(stageWidth - actualSize * 0.6, baseXpx));
+      let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6, baseYpx));
+
+      // 衝突チェック・回避
       let attempts = 0;
-      while(attempts < 80){
-        const xpx = (x / 100) * stageWidth;
-        const ypx = (y / 100) * stageHeight;
+      while(attempts < 60){
         let tooClose = false;
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          const requiredDist = minDist * Math.max(myScale, p.scale);
-          if(Math.sqrt(dx*dx + dy*dy) < requiredDist){
+          const required = (actualSize + p.size) * 0.9;
+          if(Math.sqrt(dx*dx + dy*dy) < required){
             tooClose = true;
             break;
           }
         }
         if(!tooClose) break;
-        x = Math.max(padding, Math.min(100 - padding, x + (rand() - 0.5) * 12));
-        y = Math.max(8, Math.min(92, y + (rand() - 0.5) * 10));
+        xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6, xpx + (rand()-0.5)*cellW*0.6));
+        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6, ypx + (rand()-0.5)*cellH*0.6));
         attempts++;
       }
 
-      placed.push({xpx:(x/100)*stageWidth, ypx:(y/100)*stageHeight, scale:myScale});
+      placed.push({xpx, ypx, size: actualSize});
+      const x = xpx / stageWidth * 100;
+      const y = ypx / stageHeight * 100;
       room.appendChild(createCandle(rec, x, y, myScale));
     });
 
@@ -703,10 +694,16 @@ function createCandle(record, xPercent, yPercent, scale=1){
 
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
+  const swayDelay = -(Math.random() * 6);
+  const swayDur = 5 + Math.random() * 3;
+  const glowDelay = -(Math.random() * 3);
+  const glowDur = 2.5 + Math.random() * 2;
+  wax.style.animation = `candle-sway ${swayDur}s ease-in-out ${swayDelay}s infinite`;
   const img = document.createElement('img');
   img.src = `assets/img/candle_${record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
   img.draggable = false;
+  img.style.animation = `glow-pulse ${glowDur}s ease-in-out ${glowDelay}s infinite`;
   wax.appendChild(img);
   candle.appendChild(wax);
 
@@ -1065,6 +1062,21 @@ function initRoom(){
   allRecords = loadRecords();
   updateNav();
   placeCandles();
+  // 星生成
+  const starsEl = document.getElementById('roomStars');
+  if(starsEl && starsEl.children.length === 0){
+    for(let i=0;i<40;i++){
+      const s = document.createElement('span');
+      s.style.left = Math.random()*100+'%';
+      s.style.top = Math.random()*100+'%';
+      const sz = 1+Math.random()*2;
+      s.style.width = sz+'px';
+      s.style.height = sz+'px';
+      s.style.setProperty('--dur', (2+Math.random()*4).toFixed(1)+'s');
+      s.style.setProperty('--delay', -(Math.random()*4).toFixed(1)+'s');
+      starsEl.appendChild(s);
+    }
+  }
 }
 
 document.getElementById('skipBtn').addEventListener('click',()=>{
