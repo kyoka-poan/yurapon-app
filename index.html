@@ -119,11 +119,11 @@ body.room-mode .page{display:none}
 .room.scrollable{flex:none}
 .room.fading{opacity:0}
 
-.candle{position:absolute;cursor:pointer;transition:opacity .4s ease;will-change:transform}
+.candle{position:absolute;cursor:grab;will-change:transform}.candle.dragging{cursor:grabbing;transition:none;z-index:1000!important}
 .candle.size-month{width:70px;height:90px}
 .candle.size-year{width:55px;height:70px}
 .candle:active{opacity:.7}
-.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom}
+.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block}
 
 
@@ -703,14 +703,79 @@ function createCandle(record, xPercent, yPercent, scale=1){
   wax.appendChild(img);
   candle.appendChild(wax);
 
+  let isDragging = false;
+  let dragStartX, dragStartY, startLeft, startTop;
+
+  // マウスドラッグ
+  candle.addEventListener('mousedown',(e)=>{
+    isDragging = false;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
+    startLeft = parseFloat(candle.style.left);
+    startTop = parseFloat(candle.style.top);
+    const room = document.getElementById('room');
+    const roomRect = room.getBoundingClientRect();
+
+    const onMove = (e)=>{
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      if(Math.abs(dx)>3||Math.abs(dy)>3) isDragging=true;
+      if(!isDragging) return;
+      candle.classList.add('dragging');
+      const newLeft = startLeft + dx/roomRect.width*100;
+      const newTop = startTop + dy/room.offsetHeight*100;
+      candle.style.left = Math.max(0,Math.min(100,newLeft))+'%';
+      candle.style.top = Math.max(0,Math.min(100,newTop))+'%';
+    };
+    const onUp = ()=>{
+      candle.classList.remove('dragging');
+      document.removeEventListener('mousemove',onMove);
+      document.removeEventListener('mouseup',onUp);
+    };
+    document.addEventListener('mousemove',onMove);
+    document.addEventListener('mouseup',onUp);
+  });
+
+  // タッチドラッグ
+  candle.addEventListener('touchstart',(e)=>{
+    isDragging = false;
+    const t = e.touches[0];
+    dragStartX = t.clientX;
+    dragStartY = t.clientY;
+    startLeft = parseFloat(candle.style.left);
+    startTop = parseFloat(candle.style.top);
+    const room = document.getElementById('room');
+    const roomRect = room.getBoundingClientRect();
+
+    const onMove = (e)=>{
+      const t = e.touches[0];
+      const dx = t.clientX - dragStartX;
+      const dy = t.clientY - dragStartY;
+      if(Math.abs(dx)>5||Math.abs(dy)>5){ isDragging=true; e.preventDefault(); }
+      if(!isDragging) return;
+      candle.classList.add('dragging');
+      const newLeft = startLeft + dx/roomRect.width*100;
+      const newTop = startTop + dy/room.offsetHeight*100;
+      candle.style.left = Math.max(0,Math.min(100,newLeft))+'%';
+      candle.style.top = Math.max(0,Math.min(100,newTop))+'%';
+    };
+    const onEnd = ()=>{
+      candle.classList.remove('dragging');
+      candle.removeEventListener('touchmove',onMove);
+      candle.removeEventListener('touchend',onEnd);
+    };
+    candle.addEventListener('touchmove',onMove,{passive:false});
+    candle.addEventListener('touchend',onEnd);
+  },{passive:true});
+
   candle.addEventListener('click',(e)=>{
+    if(isDragging) return;
     e.preventDefault();
     e.stopPropagation();
     openPopup(record);
   });
   candle.addEventListener('touchend',(e)=>{
-    e.preventDefault();
-    e.stopPropagation();
+    if(isDragging) return;
     openPopup(record);
   });
   return candle;
