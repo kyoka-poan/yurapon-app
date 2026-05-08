@@ -123,15 +123,10 @@ body.room-mode .page{display:none}
 .candle.size-month{width:auto;height:auto}
 .candle.size-year{width:auto;height:auto}
 .candle:active{opacity:.7}
-.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom;animation:candle-sway 6s ease-in-out infinite}
-.candle-wax img{width:100%;height:100%;object-fit:contain;display:block}
+.candle-wax{width:100%;height:100%;position:relative;transform-origin:center bottom}
+.candle-wax img{width:100%;height:100%;object-fit:contain;display:block;animation:glow-pulse 3s ease-in-out infinite}
 
 
-  50%{transform:rotate(3.5deg) translateY(0)}
-  75%{transform:rotate(-1.5deg) translateY(-1px)}
-}
-
-50%{opacity:.9;transform:scale(1.4)}}
 @keyframes candle-sway{0%,100%{transform:rotate(-2deg) translateY(0)}25%{transform:rotate(1.5deg) translateY(-1px)}50%{transform:rotate(2.5deg) translateY(0)}75%{transform:rotate(-1deg) translateY(-1px)}}
 @keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,200,120,.25)) drop-shadow(0 0 6px rgba(255,180,100,.1))}50%{filter:drop-shadow(0 0 8px rgba(255,200,120,.55)) drop-shadow(0 0 16px rgba(255,180,100,.3))}}
 .popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
@@ -697,12 +692,20 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const swayDur = 5 + Math.random() * 3;
   const glowDelay = -(Math.random() * 3);
   const glowDur = 2.5 + Math.random() * 2;
-  wax.style.animation = `candle-sway ${swayDur}s ease-in-out ${swayDelay}s infinite`;
+  wax.style.animationName = 'candle-sway';
+  wax.style.animationDuration = swayDur + 's';
+  wax.style.animationTimingFunction = 'ease-in-out';
+  wax.style.animationDelay = swayDelay + 's';
+  wax.style.animationIterationCount = 'infinite';
   const img = document.createElement('img');
   img.src = `assets/img/candle_${record.candleType >= 10 ? String(record.candleType).padStart(3,'0') : String(record.candleType).padStart(2,'0')}.png`;
   img.alt = '';
   img.draggable = false;
-  img.style.animation = `glow-pulse ${glowDur}s ease-in-out ${glowDelay}s infinite`;
+  img.style.animationName = 'glow-pulse';
+  img.style.animationDuration = glowDur + 's';
+  img.style.animationTimingFunction = 'ease-in-out';
+  img.style.animationDelay = glowDelay + 's';
+  img.style.animationIterationCount = 'infinite';
   wax.appendChild(img);
   candle.appendChild(wax);
 
