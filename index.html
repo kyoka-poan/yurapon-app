@@ -115,7 +115,7 @@ body.room-mode .page{display:none}
 .year-toggle.active{background:rgba(255,220,180,.12);border-color:rgba(255,220,180,.35);color:rgba(255,240,220,.95)}
 .tap-hint{margin:0 auto 12px;padding:5px 16px;text-align:center;font-size:13px;color:rgba(232,224,245,.85);letter-spacing:.1em;font-weight:400;border:1px solid rgba(232,224,245,.25);border-radius:14px;display:block;width:fit-content;background:transparent}
 
-.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1;overflow:hidden}
+.room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1}
 .room.scrollable{flex:none}
 .room.fading{opacity:0}
 
@@ -657,7 +657,7 @@ function placeCandles(){
 
       const candlePadX = Math.ceil(candleSize / stageWidth * 50) + 2;
       let x = Math.max(candlePadX, Math.min(100 - candlePadX, baseX + xJitter));
-      let y = Math.max(2, Math.min(98, baseY + yJitter));
+      let y = Math.max(8, Math.min(92, baseY + yJitter));
 
       let attempts = 0;
       while(attempts < 30){
@@ -675,7 +675,7 @@ function placeCandles(){
         }
         if(!tooClose) break;
         x = Math.max(padding, Math.min(100 - padding, x + (rand() - 0.5) * 12));
-        y = Math.max(2, Math.min(98, y + (rand() - 0.5) * 4));
+        y = Math.max(8, Math.min(92, y + (rand() - 0.5) * 4));
         attempts++;
       }
 
