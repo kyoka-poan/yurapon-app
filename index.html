@@ -37,7 +37,7 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid rgba(154,125,185,.12);border-radius:20px;background:rgba(255,255,255,.24);color:var(--ink);text-decoration:none;box-shadow:0 10px 26px rgba(80,60,130,.05);cursor:pointer;font:inherit}
 .card{margin:0 0 20px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
-.card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center}
+.card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#6d608d}
 .card h3{margin:36px 0 3.6em;font-size:16px;line-height:1.5;color:#51466f;letter-spacing:.02em;text-align:center}
 .card h3:first-child{margin-top:0}
 .lead{margin:0 0 1.9em;font-size:15.5px;line-height:2.2;color:#51466f;text-align:center}
@@ -65,7 +65,7 @@ button.choice:active{transform:translateY(1px)}
 
 .wish-area{margin-top:32px;padding-top:20px;border-top:1px dashed rgba(134,112,170,.15)}
 .wish-area label{display:block;font-size:13.5px;color:#6d608d;font-weight:700;margin-top:1.9em;margin-bottom:10px;letter-spacing:.02em}
-.wish-input{width:100%;border:1px solid rgba(169,127,218,.22);border-radius:14px;padding:12px 14px;font:inherit;font-size:14.5px;color:var(--ink);background:rgba(255,255,255,.55);min-height:60px;max-height:80px;resize:none;line-height:1.7}
+.wish-input{width:100%;border:1px solid rgba(169,127,218,.22);border-radius:14px;padding:12px 14px;font:inherit;font-size:14.5px;color:#6d608d;background:rgba(255,255,255,.55);min-height:60px;max-height:80px;resize:none;line-height:1.7}
 .wish-input:focus{outline:none;border-color:rgba(169,127,218,.45);background:rgba(255,255,255,.75)}
 .wish-counter{font-size:11px;color:#9d8db8;text-align:right;margin-top:4px;margin-bottom:1.9em;letter-spacing:.05em}
 
@@ -79,13 +79,13 @@ button.choice:active{transform:translateY(1px)}
 
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(34,28,54,.20)}
 .modal.show{display:flex}
-.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:42px 37px 48px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,#f0e8f5;box-shadow:0 24px 80px rgba(44,31,72,.20);color:var(--ink);line-height:2.0;position:relative}
+.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:42px 37px 48px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,#f0e8f5;box-shadow:0 24px 80px rgba(44,31,72,.20);color:#6d608d;line-height:2.0;position:relative}
 .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
-.modal-head h2{font-size:22px;margin:0;line-height:1.4;text-align:center}
-.close-btn{width:69px;min-height:34px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(135,116,166,.22);color:#6e4d8f;font:inherit;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.05em;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.modal-head h2{font-size:22px;margin:0;line-height:1.4;text-align:center;color:#6d608d}
+.close-btn{width:69px;min-height:34px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(135,116,166,.22);color:#6d608d;font:inherit;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.05em;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .modal-section{margin:0 0 24px;padding:26px 24px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
-.modal-section h3{margin:0 0 16px;font-size:18px;line-height:1.5}
-.modal-section p{margin:0;font-size:14.5px;line-height:2.1;font-weight:650;color:#51466f}
+.modal-section h3{margin:0 0 16px;font-size:18px;line-height:1.5;color:#6d608d}
+.modal-section p{margin:0;font-size:14.5px;line-height:2.1;font-weight:700;color:#6d608d}
 
 .more-btn{width:100%;min-height:54px;background:linear-gradient(180deg,rgba(255,246,255,.68),rgba(234,207,255,.56));color:#6e4d8f;border:1px solid rgba(190,139,222,.22);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;margin-top:6px}
 
@@ -609,7 +609,7 @@ function placeCandles(){
     const rand = dailySeed(seedKey);
 
     const candleSize = viewMode === 'year' ? 55 : 70;
-    const minDist = candleSize * 1.6;
+    const minDist = candleSize * 2.2;
     const padding = 14;
 
     let calculatedHeight;
@@ -651,7 +651,7 @@ function placeCandles(){
 
       // ランダムサイズ：シード基準で決定的に割り当て
       const scaleSeed = rand();
-      const myScale = scaleSeed < 0.28 ? 1.7 : scaleSeed < 0.56 ? 1.3 : 1.0;
+      const myScale = scaleSeed < 0.28 ? 1.5 : scaleSeed < 0.56 ? 1.2 : 1.0;
 
       const baseX = padding + rand() * (100 - padding*2);
       const yJitter = (rand() - 0.5) * (norm < 0.6 ? 6 : 12);
@@ -662,7 +662,7 @@ function placeCandles(){
       let y = Math.max(8, Math.min(92, baseY + yJitter));
 
       let attempts = 0;
-      while(attempts < 30){
+      while(attempts < 80){
         const xpx = (x / 100) * stageWidth;
         const ypx = (y / 100) * stageHeight;
         let tooClose = false;
@@ -677,7 +677,7 @@ function placeCandles(){
         }
         if(!tooClose) break;
         x = Math.max(padding, Math.min(100 - padding, x + (rand() - 0.5) * 12));
-        y = Math.max(8, Math.min(92, y + (rand() - 0.5) * 4));
+        y = Math.max(8, Math.min(92, y + (rand() - 0.5) * 10));
         attempts++;
       }
 
