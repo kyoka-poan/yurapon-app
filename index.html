@@ -419,11 +419,16 @@ function playBgm(id){
   const all = ['mainBgm','roomBgm'];
   all.forEach(i=>{ const a=document.getElementById(i); if(a&&i!==id){ a.pause(); a.currentTime=0; } });
   const bgm = document.getElementById(id);
-  if(bgm){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
+  if(bgm && bgm.paused){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
+}
+function stopBgm(id){
+  const bgm = document.getElementById(id);
+  if(bgm){ bgm.pause(); bgm.currentTime=0; }
 }
 
 function goToRoom(recordMode=false){
   document.body.classList.add('room-mode');
+  stopBgm('mainBgm');
   window.scrollTo(0, 0);
   if(history.state?.page !== 'room'){
     history.pushState({page: 'room'}, '', '#room');
@@ -450,6 +455,7 @@ function goToRoom(recordMode=false){
 
 function goToMain(){
   document.body.classList.remove('room-mode');
+  stopBgm('roomBgm');
   playBgm('mainBgm');
   window.scrollTo(0, 0);
   if(history.state?.page === 'room'){
@@ -476,11 +482,22 @@ if(window.location.hash === '#room'){
   }, 50);
 }
 
-// ページロード時に即再生試みる
-setTimeout(()=>{ playBgm('mainBgm'); }, 300);
-// ブロックされた場合はクリックで再生
-document.addEventListener('click', ()=>{ playBgm('mainBgm'); }, { once: true });
-document.addEventListener('touchstart', ()=>{ playBgm('mainBgm'); }, { once: true });
+// autoplay試行（複数タイミングで）
+const tryAutoplay = ()=>{
+  const bgm = document.getElementById('mainBgm');
+  if(!bgm || !bgm.paused) return;
+  bgm.volume = 0.4;
+  bgm.play().catch(()=>{});
+};
+setTimeout(tryAutoplay, 100);
+setTimeout(tryAutoplay, 500);
+setTimeout(tryAutoplay, 1500);
+// ユーザー操作でも試行
+['click','touchstart','keydown','scroll'].forEach(ev=>{
+  document.addEventListener(ev, ()=>{
+    if(!document.body.classList.contains('room-mode')) playBgm('mainBgm');
+  }, { once: true });
+});
 
 document.querySelectorAll('[data-goto-room]').forEach(el=>{
   el.addEventListener('click', ()=>goToRoom(false));
