@@ -307,15 +307,43 @@ body.room-mode .page{display:none}
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-function playBgm(id){
-  const all = ['mainBgm','roomBgm'];
-  all.forEach(i=>{ const a=document.getElementById(i); if(a&&i!==id){ a.pause(); a.currentTime=0; } });
-  const bgm = document.getElementById(id);
-  if(bgm && bgm.paused){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
+// BGM管理
+let bgmUnlocked = false;
+const BGM_VOL = 0.35;
+
+function unlockAudio(){
+  if(bgmUnlocked) return;
+  bgmUnlocked = true;
+  // 現在のページに応じてBGM再生
+  if(document.body.classList.contains('room-mode')){
+    _startBgm('roomBgm');
+  } else {
+    _startBgm('mainBgm');
+  }
 }
+
+function _startBgm(id){
+  const all = ['mainBgm','roomBgm'];
+  all.forEach(i=>{
+    const a = document.getElementById(i);
+    if(!a) return;
+    if(i !== id){ a.pause(); a.currentTime = 0; }
+  });
+  const bgm = document.getElementById(id);
+  if(!bgm) return;
+  if(!bgm.paused) return; // 既に再生中
+  bgm.volume = BGM_VOL;
+  bgm.play().catch(()=>{});
+}
+
+function playBgm(id){
+  if(!bgmUnlocked) return; // unlock前は再生しない
+  _startBgm(id);
+}
+
 function stopBgm(id){
   const bgm = document.getElementById(id);
-  if(bgm){ bgm.pause(); bgm.currentTime=0; }
+  if(bgm){ bgm.pause(); bgm.currentTime = 0; }
 }
 
 const stateData = {
@@ -482,21 +510,9 @@ if(window.location.hash === '#room'){
   }, 50);
 }
 
-// autoplay試行（複数タイミングで）
-const tryAutoplay = ()=>{
-  const bgm = document.getElementById('mainBgm');
-  if(!bgm || !bgm.paused) return;
-  bgm.volume = 0.4;
-  bgm.play().catch(()=>{});
-};
-setTimeout(tryAutoplay, 100);
-setTimeout(tryAutoplay, 500);
-setTimeout(tryAutoplay, 1500);
-// ユーザー操作でも試行
-['click','touchstart','keydown','scroll'].forEach(ev=>{
-  document.addEventListener(ev, ()=>{
-    if(!document.body.classList.contains('room-mode')) playBgm('mainBgm');
-  }, { once: true });
+// 最初のユーザー操作でaudio unlock
+['click','touchstart','touchend','keydown'].forEach(ev=>{
+  document.addEventListener(ev, unlockAudio, { once: true });
 });
 
 document.querySelectorAll('[data-goto-room]').forEach(el=>{
