@@ -424,7 +424,6 @@ function playBgm(id){
 
 function goToRoom(recordMode=false){
   document.body.classList.add('room-mode');
-  playBgm('roomBgm');
   window.scrollTo(0, 0);
   if(history.state?.page !== 'room'){
     history.pushState({page: 'room'}, '', '#room');
@@ -438,7 +437,14 @@ function goToRoom(recordMode=false){
   if(recordMode && pendingRecord){
     setTimeout(startRecordFlow, 500);
   } else {
-    setTimeout(checkVideoTrigger, 300);
+    setTimeout(()=>{
+      checkVideoTrigger();
+      // videoが流れない場合はすぐroomBgm再生
+      setTimeout(()=>{
+        const vo = document.getElementById('videoOverlay');
+        if(!vo || !vo.classList.contains('show')) playBgm('roomBgm');
+      }, 600);
+    }, 300);
   }
 }
 
@@ -470,6 +476,9 @@ if(window.location.hash === '#room'){
   }, 50);
 }
 
+// ページロード時に即再生試みる
+setTimeout(()=>{ playBgm('mainBgm'); }, 300);
+// ブロックされた場合はクリックで再生
 document.addEventListener('click', ()=>{ playBgm('mainBgm'); }, { once: true });
 document.addEventListener('touchstart', ()=>{ playBgm('mainBgm'); }, { once: true });
 
@@ -920,6 +929,7 @@ function onCandlePicked(candleType){
       overlay.classList.remove('fading-out');
       try{ video.pause(); }catch(e){}
       video.src = '';
+      playBgm('roomBgm');
 
       pendingRecord.candleType = candleType;
       allRecords.push({...pendingRecord});
