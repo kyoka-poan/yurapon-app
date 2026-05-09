@@ -160,6 +160,8 @@ body.room-mode .page{display:none}
 </style>
 </head>
 <body>
+  <audio id="mainBgm" src="assets/audio/yurapon_main.mp3" loop preload="auto"></audio>
+  <audio id="roomBgm" src="assets/audio/yurapon_room.mp3" loop preload="auto"></audio>
   <div class="bg-layer" aria-hidden="true"></div>
   <div class="room-bg-layer" aria-hidden="true"></div>
 
@@ -413,8 +415,16 @@ document.getElementById('moreBtn').addEventListener('click',()=>modal.classList.
 document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('show'));
 modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('show')});
 
+function playBgm(id){
+  const all = ['mainBgm','roomBgm'];
+  all.forEach(i=>{ const a=document.getElementById(i); if(a&&i!==id){ a.pause(); a.currentTime=0; } });
+  const bgm = document.getElementById(id);
+  if(bgm){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
+}
+
 function goToRoom(recordMode=false){
   document.body.classList.add('room-mode');
+  playBgm('roomBgm');
   window.scrollTo(0, 0);
   if(history.state?.page !== 'room'){
     history.pushState({page: 'room'}, '', '#room');
@@ -434,6 +444,7 @@ function goToRoom(recordMode=false){
 
 function goToMain(){
   document.body.classList.remove('room-mode');
+  playBgm('mainBgm');
   window.scrollTo(0, 0);
   if(history.state?.page === 'room'){
     history.back();
@@ -458,6 +469,9 @@ if(window.location.hash === '#room'){
     setTimeout(checkVideoTrigger, 300);
   }, 50);
 }
+
+document.addEventListener('click', ()=>{ playBgm('mainBgm'); }, { once: true });
+document.addEventListener('touchstart', ()=>{ playBgm('mainBgm'); }, { once: true });
 
 document.querySelectorAll('[data-goto-room]').forEach(el=>{
   el.addEventListener('click', ()=>goToRoom(false));
