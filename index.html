@@ -919,6 +919,7 @@ function showCandleSelect(){
 
 function onCandlePicked(candleType){
   document.getElementById('candleSelect').classList.remove('show');
+  stopBgm('roomBgm'); // アニメ開始時にBGM停止
 
   const overlay = document.getElementById('videoOverlay');
   const video = document.getElementById('ritualVideo');
