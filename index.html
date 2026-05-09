@@ -308,39 +308,20 @@ body.room-mode .page{display:none}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 // BGM管理
-let bgmUnlocked = false;
 const BGM_VOL = 0.35;
 
-function unlockAudio(){
-  if(bgmUnlocked) return;
-  bgmUnlocked = true;
-  // 現在のページに応じてBGM再生
-  if(document.body.classList.contains('room-mode')){
-    _startBgm('roomBgm');
-  } else {
-    _startBgm('mainBgm');
-  }
-}
-
 function _startBgm(id){
-  const all = ['mainBgm','roomBgm'];
-  all.forEach(i=>{
+  ['mainBgm','roomBgm'].forEach(i=>{
     const a = document.getElementById(i);
-    if(!a) return;
-    if(i !== id){ a.pause(); a.currentTime = 0; }
+    if(a && i !== id){ a.pause(); a.currentTime = 0; }
   });
   const bgm = document.getElementById(id);
-  if(!bgm) return;
-  if(!bgm.paused) return; // 既に再生中
+  if(!bgm || !bgm.paused) return;
   bgm.volume = BGM_VOL;
   bgm.play().catch(()=>{});
 }
 
-function playBgm(id){
-  if(!bgmUnlocked) return; // unlock前は再生しない
-  _startBgm(id);
-}
-
+function playBgm(id){ _startBgm(id); }
 function stopBgm(id){
   const bgm = document.getElementById(id);
   if(bgm){ bgm.pause(); bgm.currentTime = 0; }
@@ -510,10 +491,9 @@ if(window.location.hash === '#room'){
   }, 50);
 }
 
-// 最初のユーザー操作でaudio unlock
-['click','touchstart','touchend','keydown'].forEach(ev=>{
-  document.addEventListener(ev, unlockAudio, { once: true });
-});
+// 最初のクリックでmainBgm再生
+document.addEventListener('click', ()=>{ _startBgm('mainBgm'); }, { once: true });
+document.addEventListener('touchend', ()=>{ _startBgm('mainBgm'); }, { once: true });
 
 document.querySelectorAll('[data-goto-room]').forEach(el=>{
   el.addEventListener('click', ()=>goToRoom(false));
