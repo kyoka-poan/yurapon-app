@@ -1066,6 +1066,7 @@ document.getElementById('navLabel').addEventListener('click',()=>{
 function playVideo(src, onEnd){
   const overlay = document.getElementById('videoOverlay');
   const video = document.getElementById('ritualVideo');
+  stopBgm('roomBgm'); // アニメ開始時にroomBgm停止
   video.src = src;
   video.muted = false;
   video.controls = false;
@@ -1083,7 +1084,7 @@ function playVideo(src, onEnd){
       overlay.classList.remove('fading-out');
       try{ video.pause(); }catch(e){}
       video.src = '';
-      if(onEnd) onEnd();
+      if(onEnd){ onEnd(); } else { _startBgm('roomBgm'); }
     }, 1000);
   };
 
