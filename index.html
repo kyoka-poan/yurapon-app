@@ -307,6 +307,17 @@ body.room-mode .page{display:none}
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+function playBgm(id){
+  const all = ['mainBgm','roomBgm'];
+  all.forEach(i=>{ const a=document.getElementById(i); if(a&&i!==id){ a.pause(); a.currentTime=0; } });
+  const bgm = document.getElementById(id);
+  if(bgm && bgm.paused){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
+}
+function stopBgm(id){
+  const bgm = document.getElementById(id);
+  if(bgm){ bgm.pause(); bgm.currentTime=0; }
+}
+
 const stateData = {
   sad:{label:'かなしい',title:'ぽあん。\n雨みたいな灯が、ここにある',air:'しっとりしてる',light:'泣きたいのも、きれいな灯だよ',yura:'しょんぼりの日も、灯は消えてないよ。',scores:[3,2,3]},
   tired:{label:'つかれた',title:'ぽあん。\nからだが休みたいって言ってる',air:'すこし重ため',light:'ゆらゆら小さい灯が見える',yura:'今日は充電の灯だね。',scores:[2,1,2]},
@@ -415,17 +426,6 @@ document.getElementById('moreBtn').addEventListener('click',()=>modal.classList.
 document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('show'));
 modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('show')});
 
-function playBgm(id){
-  const all = ['mainBgm','roomBgm'];
-  all.forEach(i=>{ const a=document.getElementById(i); if(a&&i!==id){ a.pause(); a.currentTime=0; } });
-  const bgm = document.getElementById(id);
-  if(bgm && bgm.paused){ bgm.volume=0.4; bgm.play().catch(()=>{}); }
-}
-function stopBgm(id){
-  const bgm = document.getElementById(id);
-  if(bgm){ bgm.pause(); bgm.currentTime=0; }
-}
-
 function goToRoom(recordMode=false){
   document.body.classList.add('room-mode');
   stopBgm('mainBgm');
@@ -448,7 +448,7 @@ function goToRoom(recordMode=false){
       setTimeout(()=>{
         const vo = document.getElementById('videoOverlay');
         if(!vo || !vo.classList.contains('show')) playBgm('roomBgm');
-      }, 600);
+      }, 400);
     }, 300);
   }
 }
@@ -1119,7 +1119,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/video/yurapon_lantern.mp4');
+    playVideo('assets/video/yurapon_lantern.mp4', ()=>{ playBgm('roomBgm'); });
     return;
   }
 
@@ -1130,7 +1130,7 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/video/yurapon_single.mov');
+    playVideo('assets/video/yurapon_single.mov', ()=>{ playBgm('roomBgm'); });
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
