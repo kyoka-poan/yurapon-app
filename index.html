@@ -464,6 +464,8 @@ function goToMain(){
 window.addEventListener('popstate',(e)=>{
   if(document.body.classList.contains('room-mode')){
     document.body.classList.remove('room-mode');
+    stopBgm('roomBgm');
+    playBgm('mainBgm');
     window.scrollTo(0, 0);
   }
 });
