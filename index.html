@@ -442,15 +442,13 @@ function goToRoom(recordMode=false){
   if(recordMode && pendingRecord){
     setTimeout(startRecordFlow, 500);
   } else {
-    setTimeout(()=>{
-      checkVideoTrigger();
-      // videoが流れない場合はすぐroomBgm再生
-      setTimeout(()=>{
-        const vo = document.getElementById('videoOverlay');
-        if(!vo || !vo.classList.contains('show')) playBgm('roomBgm');
-      }, 400);
-    }, 300);
+    setTimeout(checkVideoTrigger, 300);
   }
+  // アニメがない場合1秒後にroomBgm再生
+  setTimeout(()=>{
+    const vo = document.getElementById('videoOverlay');
+    if(!vo || !vo.classList.contains('show')) playBgm('roomBgm');
+  }, 1000);
 }
 
 function goToMain(){
