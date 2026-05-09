@@ -475,14 +475,14 @@ function goToRoom(recordMode=false){
   // アニメがない場合1秒後にroomBgm再生
   setTimeout(()=>{
     const vo = document.getElementById('videoOverlay');
-    if(!vo || !vo.classList.contains('show')) playBgm('roomBgm');
+    if(!vo || !vo.classList.contains('show')) _startBgm('roomBgm');
   }, 1000);
 }
 
 function goToMain(){
   document.body.classList.remove('room-mode');
   stopBgm('roomBgm');
-  playBgm('mainBgm');
+  _startBgm('mainBgm');
   window.scrollTo(0, 0);
   if(history.state?.page === 'room'){
     history.back();
@@ -493,7 +493,7 @@ window.addEventListener('popstate',(e)=>{
   if(document.body.classList.contains('room-mode')){
     document.body.classList.remove('room-mode');
     stopBgm('roomBgm');
-    playBgm('mainBgm');
+    _startBgm('mainBgm');
     window.scrollTo(0, 0);
   }
 });
@@ -962,7 +962,7 @@ function onCandlePicked(candleType){
       overlay.classList.remove('fading-out');
       try{ video.pause(); }catch(e){}
       video.src = '';
-      playBgm('roomBgm');
+      _startBgm('roomBgm');
 
       pendingRecord.candleType = candleType;
       allRecords.push({...pendingRecord});
@@ -1135,7 +1135,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/video/yurapon_lantern.mp4', ()=>{ playBgm('roomBgm'); });
+    playVideo('assets/video/yurapon_lantern.mp4', ()=>{ _startBgm('roomBgm'); });
     return;
   }
 
@@ -1146,7 +1146,7 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/video/yurapon_single.mov', ()=>{ playBgm('roomBgm'); });
+    playVideo('assets/video/yurapon_single.mov', ()=>{ _startBgm('roomBgm'); });
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
