@@ -124,7 +124,7 @@ body.room-mode .page{display:none}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;animation:glow-pulse 3s ease-in-out infinite}
 
 
-@keyframes candle-sway{0%,100%{transform:rotate(-4deg) translateY(0)}25%{transform:rotate(3deg) translateY(-2px)}50%{transform:rotate(5deg) translateY(0)}75%{transform:rotate(-2deg) translateY(-2px)}}
+@keyframes candle-sway{0%,100%{transform:rotate(-8deg) translateY(0)}25%{transform:rotate(6deg) translateY(-4px)}50%{transform:rotate(9deg) translateY(1px)}75%{transform:rotate(-5deg) translateY(-3px)}}
 @keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,200,120,.25)) drop-shadow(0 0 6px rgba(255,180,100,.1))}50%{filter:drop-shadow(0 0 8px rgba(255,200,120,.55)) drop-shadow(0 0 16px rgba(255,180,100,.3))}}
 .popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
 .popup-overlay.show{display:flex;opacity:1;pointer-events:auto}
@@ -500,45 +500,120 @@ document.querySelectorAll('[data-goto-main]').forEach(el=>{
 });
 
 const SAMPLE_WORDS = [
-  "たくさん眠れた",
-  "窓から光が入ってきた",
-  "ひとり時間がうれしかった",
-  "電車の窓がきれいだった",
-  "今日は声を使いすぎた",
-  "お風呂にゆっくり入った",
-  "夕焼けを見てた",
-  "ねこの動画を見てた",
-  "誰かの言葉が頭に残ってた",
-  "気づいたら夕方だった",
-  "ごはんが美味しかった",
-  "少しだけ外を歩いた",
-  "なんか静かな気持ちだった",
-  "好きな曲がかかった",
-  "人が多くて疲れた",
-  "帰ってからずっとぼーっとしてた",
-  "布団からなかなか出られなかった",
-  "空気がひんやりしてた",
-  "誰かのことがふと気になった",
-  "コーヒーをゆっくり飲んだ",
-  "すごく眠かった",
-  "頭がぐるぐるしてた",
-  "なんか涙が出た",
-  "散歩したら少し落ち着いた",
-  "好きなものを食べた",
-  "久しぶりに声を出して笑った",
-  "花が咲いてた",
-  "読みかけの本を少し読んだ",
-  "日差しがやわらかかった",
-  "音楽ずっと聴いてた",
-  "ゆっくり朝ごはん食べた",
-  "なんかぼんやりしてた",
-  "空がひろかった",
-  "今日はたくさん寝た"
+  "愛されたいし抱きしめられたい",
+  "世界一かわいくなりたい",
+  "宇宙一かわいいですが何か？",
+  "今日は自分を甘やかしたい",
+  "誰かにだいすきって言われたい日",
+  "かわいく生きる才能だけはある",
+  "まず眠れてから世界救う",
+  "キラキラしたいし静かに暮らしたい",
+  "今日は姫モードでいきたい",
+  "未来のわたし美少女説",
+  "愛される練習中",
+  "とりあえずかわいい服ほしい",
+  "生きるのむずいけどネイルは見たい",
+  "宇宙規模でみたら今日もかわいい",
+  "灯とメイクは薄めが好き",
+  "人類みんな一回ハグされてほしい",
+  "今日はやさしく扱われたい",
+  "かわいく歳をとりたい",
+  "なんかもう全部まるっと愛されたい",
+  "ぽあん界では今日も優勝",
+  "ラーメン食べたいけど浮腫みも気になる",
+  "寝たいのに脳だけ元気",
+  "とりあえず一回ぜんぶぽあんしたい",
+  "おなかすいたのに食べる元気がない",
+  "眠れない星をぐるぐるしてる",
+  "今日は重力つよめ",
+  "甘いものと人生のバランスむずかしい",
+  "なんかずっと脳が喋ってる",
+  "ハワイ行きたいし布団から出たくない",
+  "そろそろ回復イベント来てほしい",
+  "人生いったん休憩ボタンない？",
+  "ぽあん不足で充電きれそう",
+  "何もしないをしてたら夜だった",
+  "今日は灯だけ置いて帰る",
+  "元気になったらやりたいことはある",
+  "未来の自分たのんだ",
+  "寝れないの、仕様じゃないよね…？",
+  "とりあえず深呼吸からやってみる",
+  "灯ちいさめ営業中",
+  "なんか心だけ先に疲れてる",
+  "生きるの下手でもお寿司は食べたい",
+  "今日は低気圧に負けてる気がする",
+  "うっすら元気になりたい",
+  "回復まであと何ぽあん？",
+  "自分にやさしくする難易度たかい",
+  "休みたいのに休み方を忘れてる",
+  "とりあえずあったかくしておく",
+  "灯、今日は省エネモード",
+  "ちょっと未来に期待してる",
+  "なんとか今日も浮いてる",
+  "お寿司降ってこないかな",
+  "一ヶ月くらい南の島にいたい",
+  "今日はポテトの気分",
+  "なんか全部あとまわしにしたい",
+  "おふとんに吸われたい",
+  "とりあえず温泉いきたい",
+  "でっかいプリン食べたい",
+  "なんも考えず海みたい",
+  "猫になりたい日",
+  "ぽあん補給したい",
+  "今日の願いはラーメン",
+  "なにもせず浮いてたい",
+  "あったかい空気ほしい",
+  "宇宙旅行より睡眠",
+  "ゆっくりお茶したい",
+  "ハワイいきたい",
+  "お寿司で世界平和",
+  "灯がもちもちしてる",
+  "今日は静かにとけたい",
+  "誰にも急かされたくない",
+  "とにかく眠りたい星人",
+  "かわいいものに囲まれたい",
+  "ぽあん不足注意報",
+  "今日はふわふわしてたい",
+  "だれかとくだらない話したい",
+  "ケーキで回復したい",
+  "今日は灯を置くだけ",
+  "おなかすいた宇宙",
+  "なにかいいこと起きないかな",
+  "今日は生存だけで天才",
+  "ラーメン食べたらちょっと復活",
+  "今日は灯がやわらかい",
+  "願いを忘れてなかった",
+  "最近ちょっと気分いいかも",
+  "友達に会えてうれしかった",
+  "寝れないのは気のせい…？",
+  "なにもしてないのに一日おわった",
+  "今日はたくさん眠りたい",
+  "気づいたら深呼吸してた",
+  "灯ちいさいけど消えてない",
+  "ぽあん不足なので補給したい",
+  "今日は静かに浮いてる",
+  "なんか心がせまかった日",
+  "うまくいかない日もある",
+  "ぼーっと宇宙みてた",
+  "誰にも言ってない願いがある",
+  "思ったより疲れてたみたい",
+  "ちょっと灯が戻ってきた",
+  "なんか今日、空気よかった",
+  "ひとりになりたかった日",
+  "ラーメンは世界を救うかもしれない",
+  "休みかたがわからない日",
+  "未来の自分に灯を置いとく",
+  "ぽあんってしてたら夜だった",
+  "なんか泣きそうで泣かなかった",
+  "心がふわっと動いた日",
+  "灯ってたぶんこういうこと",
+  "今日は少し、自分に戻れた",
+  "呼吸を思い出した日"
 ];
 const SAMPLE_ONOMAT = ['ぽあぽあ','ふわ','もやもや','だる〜','ぽわ','ほわ','ざわ','ぎゅ','しゅわ','ぽっ'];
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 12;
-const STORAGE_KEY = 'yurapon_akari_records_v4';
+const STORAGE_KEY = 'yurapon_akari_records_v6';
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
 
@@ -662,11 +737,12 @@ function placeCandles(){
 
     const baseCandle = viewMode === 'year' ? 48 : 58;
     const stageWidth = Math.min(480, window.innerWidth);
+    const n = sortedByDate.length;
 
-    const cellSize = Math.round(baseCandle * 1.7);
-    const cols = Math.max(2, Math.floor(stageWidth / cellSize));
-    const rows = Math.ceil(records.length / cols);
-    const calculatedHeight = Math.max(availableH, rows * cellSize + 80);
+    // 必要な高さ: キャンドル1個あたり約baseCandle*2.2の面積を確保
+    const areaPerCandle = baseCandle * baseCandle * 2.5;
+    const minContentH = Math.ceil(n * areaPerCandle / stageWidth);
+    const calculatedHeight = Math.max(availableH, minContentH + 100);
 
     room.classList.add('scrollable');
     roomStage.classList.add('scrollable');
@@ -674,36 +750,39 @@ function placeCandles(){
     room.style.minHeight = calculatedHeight + 'px';
 
     const stageHeight = calculatedHeight;
+    const contentH = stageHeight - 60; // 上マージン60px
     const placed = [];
 
     sortedByDate.forEach((rec, idx)=>{
       const scaleSeed = rand();
-      const myScale = scaleSeed < 0.12 ? 1.3 : scaleSeed < 0.38 ? 1.1 : 1.0;
+      const myScale = scaleSeed < 0.15 ? 1.4 : scaleSeed < 0.42 ? 1.2 : 1.0;
       const actualSize = baseCandle * myScale;
+      const minDist = (actualSize + baseCandle) * 0.6; // 近接許容距離（感覚的に近くていい）
 
-      const col = idx % cols;
-      const row = Math.floor(idx / cols);
-      const cellW = stageWidth / cols;
-      const cellH = cellSize;
+      // 最近のものほど上: idx/nの割合でバンドを決め、その中でランダムに散らす
+      const bandRatio = idx / Math.max(n - 1, 1); // 0=最新(上), 1=最古(下)
+      const bandCenter = 60 + bandRatio * contentH;
+      const jitterRange = contentH / Math.max(n * 0.4, 4);
 
-      const baseXpx = cellW * col + cellW * 0.5 + (rand() - 0.5) * cellW * 0.35;
-      const baseYpx = 60 + cellH * row + cellH * 0.5 + (rand() - 0.5) * cellH * 0.35;
+      let xpx = actualSize * 0.6 + rand() * (stageWidth - actualSize * 1.2);
+      let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6,
+        bandCenter + (rand() - 0.5) * jitterRange * 2));
 
-      let xpx = Math.max(actualSize * 0.6, Math.min(stageWidth - actualSize * 0.6, baseXpx));
-      let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6, baseYpx));
-
-      let attempts = 0;
-      while(attempts < 100){
+      // 重なり回避: 最大120回試行
+      for(let attempt = 0; attempt < 120; attempt++){
         let tooClose = false;
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          if(Math.sqrt(dx*dx + dy*dy) < (actualSize * 0.5 + p.size * 0.5) * 1.15){ tooClose = true; break; }
+          if(Math.sqrt(dx*dx + dy*dy) < minDist){ tooClose = true; break; }
         }
         if(!tooClose) break;
-        xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6, xpx + (rand()-0.5)*cellW*0.8));
-        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6, ypx + (rand()-0.5)*cellH*0.8));
-        attempts++;
+        // 試行が増えるほど探索範囲を広げる
+        const spread = stageWidth * 0.25 * (1 + attempt * 0.02);
+        xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6,
+          xpx + (rand()-0.5)*spread));
+        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6,
+          ypx + (rand()-0.5)*spread*0.6));
       }
 
       placed.push({xpx, ypx, size: actualSize});
