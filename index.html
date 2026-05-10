@@ -500,40 +500,45 @@ document.querySelectorAll('[data-goto-main]').forEach(el=>{
 });
 
 const SAMPLE_WORDS = [
-  "電車でなんか泣けた",
-  "気がついたら夜だった",
-  "ごはんをちゃんと食べた",
-  "また夜更かしした",
-  "昨日のことを引きずってた",
-  "怒ったけど、それだけ",
-  "外に出られた",
-  "コーヒーが美味しかった",
-  "急になんかやれた",
-  "また同じことで悩んでた",
-  "空がきれいだった",
-  "誰かに話せた",
-  "眠れなかった",
-  "誰かのことを急に思い出した",
-  "ぼーっとしてたら時間が過ぎた",
-  "ちょっとだけ笑えた",
-  "全部放り投げたくなった",
-  "静かな夜だった",
-  "久しぶりに泣いた",
-  "あの人のこと考えてた",
-  "今日はわりと動けた",
-  "ずっと横になってた",
-  "なんか急にしんどくなった",
-  "ひとりがちょうどよかった",
-  "なんとなく歩いた",
-  "何を食べたか覚えてない",
-  "朝起きたら少し楽だった",
-  "夜だけ少しだけ元気だった",
-  ""
+  "たくさん眠れた",
+  "窓から光が入ってきた",
+  "ひとり時間がうれしかった",
+  "電車の窓がきれいだった",
+  "今日は声を使いすぎた",
+  "お風呂にゆっくり入った",
+  "夕焼けを見てた",
+  "ねこの動画を見てた",
+  "誰かの言葉が頭に残ってた",
+  "気づいたら夕方だった",
+  "ごはんが美味しかった",
+  "少しだけ外を歩いた",
+  "なんか静かな気持ちだった",
+  "好きな曲がかかった",
+  "人が多くて疲れた",
+  "帰ってからずっとぼーっとしてた",
+  "布団からなかなか出られなかった",
+  "空気がひんやりしてた",
+  "誰かのことがふと気になった",
+  "コーヒーをゆっくり飲んだ",
+  "すごく眠かった",
+  "頭がぐるぐるしてた",
+  "なんか涙が出た",
+  "散歩したら少し落ち着いた",
+  "好きなものを食べた",
+  "久しぶりに声を出して笑った",
+  "花が咲いてた",
+  "読みかけの本を少し読んだ",
+  "日差しがやわらかかった",
+  "音楽ずっと聴いてた",
+  "ゆっくり朝ごはん食べた",
+  "なんかぼんやりしてた",
+  "空がひろかった",
+  "今日はたくさん寝た"
 ];
-const SAMPLE_ONOMAT = ['ぎゅ','ぽあぽあ','ドクン','しゅん','だる〜〜','ざわざわ'];
+const SAMPLE_ONOMAT = ['ぽあぽあ','ふわ','もやもや','だる〜','ぽわ','ほわ','ざわ','ぎゅ','しゅわ','ぽっ'];
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 12;
-const STORAGE_KEY = 'yurapon_akari_records_v3';
+const STORAGE_KEY = 'yurapon_akari_records_v4';
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
 
@@ -644,8 +649,9 @@ function placeCandles(){
 
     if(records.length === 0){
       room.classList.remove('scrollable');
-      room.style.minHeight = '';
-      room.style.height = '';
+      roomStage.classList.remove('scrollable');
+      room.style.minHeight = availableH + 'px';
+      room.style.height = availableH + 'px';
       room.classList.remove('fading');
       return;
     }
@@ -654,10 +660,10 @@ function placeCandles(){
     const seedKey = viewMode + '-' + currentYear + '-' + currentMonth;
     const rand = dailySeed(seedKey);
 
-    const baseCandle = viewMode === 'year' ? 55 : 70;
+    const baseCandle = viewMode === 'year' ? 48 : 58;
     const stageWidth = Math.min(480, window.innerWidth);
 
-    const cellSize = Math.round(baseCandle * 1.65);
+    const cellSize = Math.round(baseCandle * 1.7);
     const cols = Math.max(2, Math.floor(stageWidth / cellSize));
     const rows = Math.ceil(records.length / cols);
     const calculatedHeight = Math.max(availableH, rows * cellSize + 80);
@@ -672,7 +678,7 @@ function placeCandles(){
 
     sortedByDate.forEach((rec, idx)=>{
       const scaleSeed = rand();
-      const myScale = scaleSeed < 0.28 ? 1.5 : scaleSeed < 0.56 ? 1.2 : 1.0;
+      const myScale = scaleSeed < 0.12 ? 1.3 : scaleSeed < 0.38 ? 1.1 : 1.0;
       const actualSize = baseCandle * myScale;
 
       const col = idx % cols;
@@ -680,23 +686,23 @@ function placeCandles(){
       const cellW = stageWidth / cols;
       const cellH = cellSize;
 
-      const baseXpx = cellW * col + cellW * 0.5 + (rand() - 0.5) * cellW * 0.4;
-      const baseYpx = 60 + cellH * row + cellH * 0.5 + (rand() - 0.5) * cellH * 0.4;
+      const baseXpx = cellW * col + cellW * 0.5 + (rand() - 0.5) * cellW * 0.35;
+      const baseYpx = 60 + cellH * row + cellH * 0.5 + (rand() - 0.5) * cellH * 0.35;
 
       let xpx = Math.max(actualSize * 0.6, Math.min(stageWidth - actualSize * 0.6, baseXpx));
       let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6, baseYpx));
 
       let attempts = 0;
-      while(attempts < 60){
+      while(attempts < 100){
         let tooClose = false;
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          if(Math.sqrt(dx*dx + dy*dy) < (actualSize + p.size) * 0.9){ tooClose = true; break; }
+          if(Math.sqrt(dx*dx + dy*dy) < (actualSize * 0.5 + p.size * 0.5) * 1.15){ tooClose = true; break; }
         }
         if(!tooClose) break;
-        xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6, xpx + (rand()-0.5)*cellW*0.6));
-        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6, ypx + (rand()-0.5)*cellH*0.6));
+        xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6, xpx + (rand()-0.5)*cellW*0.8));
+        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6, ypx + (rand()-0.5)*cellH*0.8));
         attempts++;
       }
 
@@ -720,8 +726,8 @@ function createCandle(record, xPercent, yPercent, scale=1){
   candle.style.top = yPercent + '%';
   candle.style.transform = `translate(-50%,-50%)`;
   candle.style.zIndex = Math.round(scale * 10);
-  const baseW = viewMode === 'year' ? 55 : 70;
-  const baseH = viewMode === 'year' ? 70 : 90;
+  const baseW = viewMode === 'year' ? 48 : 58;
+  const baseH = viewMode === 'year' ? 62 : 75;
   candle.style.width = (baseW * scale) + 'px';
   candle.style.height = (baseH * scale) + 'px';
 
