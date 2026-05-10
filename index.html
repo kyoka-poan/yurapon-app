@@ -742,7 +742,7 @@ function placeCandles(){
     // 必要な高さ: キャンドル1個あたり約baseCandle*2.2の面積を確保
     const areaPerCandle = baseCandle * baseCandle * 2.5;
     const minContentH = Math.ceil(n * areaPerCandle / stageWidth);
-    const calculatedHeight = Math.max(availableH, minContentH + 100);
+    const calculatedHeight = Math.max(availableH, minContentH + 180);
 
     room.classList.add('scrollable');
     roomStage.classList.add('scrollable');
@@ -813,7 +813,7 @@ function createCandle(record, xPercent, yPercent, scale=1){
   const wax = document.createElement('div');
   wax.className = 'candle-wax';
   const swayDelay = -(Math.random() * 6);
-  const swayDur = 5 + Math.random() * 3;
+  const swayDur = 9 + Math.random() * 5;
   const glowDelay = -(Math.random() * 3);
   const glowDur = 2.5 + Math.random() * 2;
   wax.style.animationName = 'candle-sway';
