@@ -13,7 +13,7 @@ html{overflow-x:hidden}
 
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:auto 100%;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:100% auto;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -769,7 +769,7 @@ function placeCandles(){
     const placed = [];
 
     // スケール配列を事前生成: XL固定個数、中小は同数
-    const xlCount = Math.min(viewMode === 'year' ? 15 : 5, n);
+    const xlCount = Math.min(viewMode === 'year' ? 30 : 5, n);
     const remain = n - xlCount;
     const medCount = Math.floor(remain / 2);
     const smCount = remain - medCount;
