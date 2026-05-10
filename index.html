@@ -764,8 +764,9 @@ function placeCandles(){
       const bandCenter = 60 + bandRatio * contentH;
       const jitterRange = contentH / Math.max(n * 0.4, 4);
 
+      const bottomPad = 100;
       let xpx = actualSize * 0.6 + rand() * (stageWidth - actualSize * 1.2);
-      let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6,
+      let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6 - bottomPad,
         bandCenter + (rand() - 0.5) * jitterRange * 2));
 
       // 重なり回避: 最大120回試行
@@ -781,7 +782,7 @@ function placeCandles(){
         const spread = stageWidth * 0.25 * (1 + attempt * 0.02);
         xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6,
           xpx + (rand()-0.5)*spread));
-        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6,
+        ypx = Math.max(actualSize*0.6, Math.min(stageHeight - actualSize*0.6 - bottomPad,
           ypx + (rand()-0.5)*spread*0.6));
       }
 
