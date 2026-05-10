@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>灯観測装置 ゆらぽん</title>
 <style>
-:root{--ink:#3f365f;--line:rgba(134,112,170,.14);--shadow:0 16px 42px rgba(55,38,92,.08)}
+:root{--ink:#3f365f;--line:rgba(134,112,170,.32);--shadow:0 16px 42px rgba(55,38,92,.08)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%}html{background:#bcc6e8}
 body{margin:0;min-height:100svh;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif;font-weight:700;line-height:1.9;background-color:#bcc6e8;background-image:url("assets/img/bg_main.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
@@ -37,12 +37,13 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#5a4e78;text-decoration:none;box-shadow:0 10px 30px rgba(56,40,96,.045);cursor:pointer;font:inherit}
 .card{margin:0 0 20px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
+.card h2{display:block;border:1px solid var(--line);border-radius:16px;padding:10px 20px;}
 .card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#5a4e78}
 .card h3{margin:36px 0 3.6em;font-size:16px;line-height:1.5;color:#5a4e78;letter-spacing:.02em;text-align:center}
 .card h3:first-child{margin-top:0}
 .lead{margin:0 0 1.9em;font-size:15.5px;line-height:2.2;color:#5a4e78;text-align:center;font-weight:700}
 
-.result-block{display:none;opacity:0;transform:translateY(8px);transition:opacity .42s ease,transform .42s ease;margin-bottom:24px;padding-bottom:24px;border-bottom:1px dashed rgba(134,112,170,.2)}
+.result-block{display:none;opacity:0;transform:translateY(8px);transition:opacity .42s ease,transform .42s ease;margin-bottom:24px;padding-bottom:24px;border-bottom:1px dashed rgba(134,112,170,.42)}
 .result-block.show{display:block}
 .result-block.visible{opacity:1;transform:translateY(0)}
 .result-title{font-size:22px;line-height:1.65;margin:0 0 20px;color:#5a4e78}
@@ -57,13 +58,13 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .go-room-btn{width:100%;min-height:58px;margin-top:18px;border:0;border-radius:18px;background:linear-gradient(180deg,rgba(255,242,172,.82),rgba(239,209,93,.72));color:#5b4920;box-shadow:0 8px 18px rgba(184,148,42,.12);font-size:15px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
 
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 4px}
-.choices-divider{margin:1.9em 0 0;border:none;border-top:1px dashed rgba(134,112,170,.2);}
+.choices-divider{margin:1.9em 0 0;border:none;border-top:1px dashed rgba(134,112,170,.42);}
 .choices.three-col{grid-template-columns:1fr 1fr 1fr}
 button.choice{appearance:none;border:1px solid rgba(135,116,166,.14);border-radius:18px;min-height:54px;padding:10px 8px;font:inherit;font-size:14.5px;line-height:1.45;color:#5a4e78;background:rgba(255,255,255,.54);cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 6px 16px rgba(64,45,96,.025)}
 button.choice:active{transform:translateY(1px)}
 .choice.selected{background:rgba(236,218,255,.46);border-color:rgba(169,127,218,.25)}
 
-.wish-area{margin-top:32px;padding-top:20px;border-top:1px dashed rgba(134,112,170,.15)}
+.wish-area{margin-top:32px;padding-top:20px;border-top:1px dashed rgba(134,112,170,.42)}
 .wish-area label{display:block;font-size:13.5px;color:#5a4e78;font-weight:700;margin-top:1.9em;margin-bottom:10px;letter-spacing:.02em}
 .wish-input{width:100%;border:1px solid rgba(169,127,218,.22);border-radius:14px;padding:12px 14px;font:inherit;font-size:14.5px;color:#5a4e78;background:rgba(255,255,255,.55);min-height:60px;max-height:80px;resize:none;line-height:1.7}
 .wish-input:focus{outline:none;border-color:rgba(169,127,218,.45);background:rgba(255,255,255,.75)}
@@ -182,8 +183,9 @@ body.room-mode .page{display:none}
     </section>
 
     <section class="card">
-      <h2>今日のあなた</h2>
-      <h3>今の状態をえらんでね</h3>
+      <h2>いまの自分</h2>
+      <h3 style="margin-top:16px;margin-bottom:4px;">灯をみつけてみよう</h3>
+      <h3 style="margin-top:0;">いまの状態をえらんでね</h3>
       <div class="choices three-col" id="onomatChoices">
         <button class="choice" data-onomat="ぎゅ">ぎゅ</button>
         <button class="choice" data-onomat="ぽあぽあ">ぽあぽあ</button>
@@ -193,7 +195,7 @@ body.room-mode .page{display:none}
         <button class="choice" data-onomat="ざわざわ">ざわざわ</button>
       </div>
       <hr class="choices-divider">
-      <h3>灯の声</h3>
+      <h3>灯の声をえらんでね</h3>
       <div class="choices" id="wishChoices">
         <button class="choice" data-key="fun">たのしかった</button>
         <button class="choice" data-key="smile">ちょっとわらえた</button>
@@ -203,16 +205,17 @@ body.room-mode .page{display:none}
         <button class="choice" data-key="compare">くらべてしんどかった</button>
       </div>
       <div class="wish-area">
-        <label for="wishInput">ひとこと(60字まで)</label>
+        <label for="wishInput">ひとこと（任意・60字まで）</label>
+        <br>
         <textarea id="wishInput" class="wish-input" maxlength="60" rows="2" placeholder="休みたい、ゆっくりしよ、など"></textarea>
         <div class="wish-counter"><span id="wishCount">0</span>/60</div>
       </div>
-      <p class="selected-line" id="selectedLine">状態と灯の声を選んでね</p>
+      <p class="selected-line" id="selectedLine">今日の灯</p>
       <button class="poan-btn" id="poanBtn" disabled>ぽあんでみる</button>
     </section>
 
     <section class="card">
-      <h2>いま見えてるもの</h2>
+      <h2>いまみえてるもの</h2>
       <div class="result-block" id="resultBlock" aria-live="polite">
         <p class="result-title" id="resultTitle">ぽあん。</p>
         <div class="meters">
@@ -220,14 +223,14 @@ body.room-mode .page{display:none}
           <div class="meter-row"><b>疲れちゃった / 元気</b><div class="track"><div class="fill f2" id="m2"></div></div></div>
           <div class="meter-row"><b>ぽあんしてる具合</b><div class="track"><div class="fill f3" id="m3"></div></div></div>
         </div>
-        <button class="go-room-btn" id="goRoomBtn">灯の部屋へ送る ・</button>
+        <button class="go-room-btn" id="goRoomBtn">今日の灯をおく</button>
       </div>
       <div class="seen-grid">
         <b>空気</b><span id="airText">まだみえてないよ</span>
         <b>灯</b><span id="lightText">まだみえてないよ</span>
         <b>ゆらぽん</b><span id="yuraText">まだみえてないよ</span>
       </div>
-      <button class="more-btn" id="moreBtn">もっと見る</button>
+      <button class="more-btn" id="moreBtn">もっとみる</button>
     </section>
   </main>
 
@@ -294,14 +297,15 @@ body.room-mode .page{display:none}
   <div class="modal" id="moreModal" role="dialog" aria-modal="true" aria-label="もっと見る">
     <div class="modal-panel">
       <div class="modal-head">
-        <h2>もっと見る</h2>
+        <h2>もっとみる</h2>
         <button class="close-btn" id="closeModal">閉じる</button>
       </div>
       <section class="modal-section"><h3>🕯️ 灯(あかり)ってなに？</h3><p>「なんか今、心が動いたな」って瞬間。<br><br>大切にしたい、小さな"願い"そのもの。<br><br>最初から自分の中にあった、<br>"命の創造エネルギー"。</p></section>
-      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気づかないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>あなたの存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
+      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気づかないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>自分の存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
+      <section class="modal-section"><h3>🌟 灯の部屋って？</h3><p>今日の灯を、<br>そっと置いておける場所。<br><br>あとから見返したとき、<br><br>「あの日、<br>ちゃんとここにいたんだ」<br><br>って、<br>時間を超えて自分と会えることがある。<br><br>キャンドルは、<br>誰かに見せるためじゃない。<br><br>自分の灯を、<br>自分のためだけにともせる。<br><br>宇宙みたいに広い、<br>自分だけの静かな部屋。</p></section>
       <section class="modal-section"><h3>💖 どうなるの？</h3><p>自分の人生の"操縦席"に、戻る。<br><br>「ちゃんとしなきゃ」という、<br>社会のルールや、他人の評価から離れる。<br><br>重たい心の鎧を少しおろしたら、<br>ぽあんっ🫧と呼吸がしやすくなる。<br><br>地球が重たくなるのは、<br>案外、大事なものを全部ポケットに<br>つっこんでるからだったり。</p></section>
-      <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>あなたの『灯』を見つけるのは大好き。<br><br>「あ、今の灯だね」と、<br>一緒に見つめる相棒。</p></section>
-      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"を、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。<br>本当に大事なものは、離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
+      <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>『灯』を見つけるのは大好き。<br><br>「あ、今の灯だね」と、<br>一緒に見つめる相棒。</p></section>
+      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"は、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。<br>本当に大事なものは、離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
     </div>
   </div>
 
@@ -358,11 +362,11 @@ function updateSelectedLine(){
   if(currentOnomat) parts.push(currentOnomat);
   if(currentWish && stateData[currentWish]) parts.push(stateData[currentWish].label);
   if(parts.length === 0){
-    selectedLine.textContent = '状態と灯の声を選んでね';
+    selectedLine.textContent = '今日の灯';
   } else if(parts.length === 1){
-    selectedLine.textContent = '選択中：' + parts[0] + '(あとひとつ)';
+    selectedLine.textContent = '今日の灯：' + parts[0] + '(あとひとつ)';
   } else {
-    selectedLine.textContent = '選択中：' + parts.join(' / ');
+    selectedLine.textContent = '今日の灯：' + parts.join(' / ');
   }
   poanBtn.disabled = !(currentOnomat && currentWish);
 }
