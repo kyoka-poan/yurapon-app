@@ -99,17 +99,17 @@ body.room-mode .page{display:none}
 .room-stage.scrollable{height:auto}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
-.room-top-bar{position:sticky;top:0;z-index:50;display:flex;justify-content:center;align-items:center;gap:20px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0;font-family:"Hiragino Maru Gothic Pro","Hiragino Sans",sans-serif}
-.room-back{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.08em;padding:6px 18px;cursor:pointer;font-family:inherit;font-weight:400;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:10px}
+.room-top-bar{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;padding:18px 8px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0;font-family:"Hiragino Maru Gothic Pro","Hiragino Sans",sans-serif}
+.room-back{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.08em;padding:6px 18px;cursor:pointer;font-family:inherit;font-weight:400;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:10px;justify-self:center}
 .back-arrow{flex-shrink:0;margin-left:-4px}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
-.month-control{display:flex;align-items:center;width:180px;flex-shrink:0}
-.nav-arrow{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.75);font-size:13px;font-weight:400;letter-spacing:.08em;padding:6px 0;cursor:pointer;line-height:1.5;font-family:inherit;flex:0 0 36px;text-align:center}
+.month-control{display:flex;align-items:center;justify-self:center;width:180px;flex-shrink:0}
+.nav-arrow{background:transparent;border:none;color:rgba(232,224,245,.75);font-size:13px;font-weight:400;letter-spacing:.08em;padding:6px 0;cursor:pointer;line-height:1.5;font-family:inherit;flex:0 0 32px;text-align:center}
 .nav-arrow:disabled{opacity:.2;cursor:default}
-.nav-label{font-size:13px;color:rgba(232,224,245,.9);letter-spacing:.08em;font-weight:400;text-align:center;padding:6px 8px;cursor:pointer;border-radius:999px;border:1px solid transparent;background:transparent;font-family:inherit;flex:1}
+.nav-label{font-size:13px;color:rgba(232,224,245,.9);letter-spacing:.08em;font-weight:400;text-align:center;padding:6px 4px;cursor:pointer;border-radius:999px;border:none;background:transparent;font-family:inherit;flex:1}
 .nav-divider{width:1px;height:16px;background:rgba(232,224,245,.2);margin:0 8px}
-.year-toggle{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.75);font-size:13px;letter-spacing:.08em;padding:6px 0;cursor:pointer;font-family:inherit;font-weight:400;width:72px;text-align:center;outline:none;line-height:1.5;flex-shrink:0}
+.year-toggle{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.75);font-size:13px;letter-spacing:.08em;padding:6px 0;cursor:pointer;font-family:inherit;font-weight:400;width:72px;text-align:center;outline:none;line-height:1.5;flex-shrink:0;justify-self:center}
 .tap-hint{margin:-2px 16px 6px auto;padding:0;text-align:right;font-size:11px;color:rgba(232,224,245,.55);letter-spacing:.08em;font-weight:400;border:none;display:block;width:fit-content;background:transparent}
 
 .room{position:relative;width:100%;padding:0;transition:opacity .3s ease;flex:1}
@@ -533,7 +533,7 @@ const SAMPLE_WORDS = [
 const SAMPLE_ONOMAT = ['ぎゅ','ぽあぽあ','ドクン','しゅん','だる〜〜','ざわざわ'];
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 12;
-const STORAGE_KEY = 'yurapon_akari_records_v2';
+const STORAGE_KEY = 'yurapon_akari_records_v3';
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
 
@@ -545,24 +545,25 @@ let roomInitialized = false;
 
 function generateSampleData(){
   const arr = [];
-  const start = new Date('2025-01-01');
-  const end = new Date('2025-12-31');
-  for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
-    if(Math.random() < 0.55){
-      const dateStr = d.toISOString().split('T')[0];
-      const wk = SAMPLE_WISH_KEYS[Math.floor(Math.random()*SAMPLE_WISH_KEYS.length)];
-      const om = SAMPLE_ONOMAT[Math.floor(Math.random()*SAMPLE_ONOMAT.length)];
-      arr.push({
-        date: dateStr,
-        onomat: om,
-        wishKey: wk,
-        wishLabel: stateData[wk].label,
-        word: SAMPLE_WORDS[Math.floor(Math.random()*SAMPLE_WORDS.length)],
-        candleType: Math.floor(Math.random()*CANDLE_COUNT)+1,
-        isSample: true
-      });
+  ['2023','2024','2025'].forEach(year=>{
+    const start = new Date(`${year}-01-01`);
+    const end = new Date(`${year}-12-31`);
+    for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
+      if(Math.random() < 0.55){
+        const wk = SAMPLE_WISH_KEYS[Math.floor(Math.random()*SAMPLE_WISH_KEYS.length)];
+        const om = SAMPLE_ONOMAT[Math.floor(Math.random()*SAMPLE_ONOMAT.length)];
+        arr.push({
+          date: d.toISOString().split('T')[0],
+          onomat: om,
+          wishKey: wk,
+          wishLabel: stateData[wk].label,
+          word: SAMPLE_WORDS[Math.floor(Math.random()*SAMPLE_WORDS.length)],
+          candleType: Math.floor(Math.random()*CANDLE_COUNT)+1,
+          isSample: true
+        });
+      }
     }
-  }
+  });
   return arr;
 }
 
@@ -656,9 +657,7 @@ function placeCandles(){
     const baseCandle = viewMode === 'year' ? 55 : 70;
     const stageWidth = Math.min(480, window.innerWidth);
 
-    // キャンドル1個あたりに必要な面積から高さを計算
-    const maxScale = 1.5;
-    const cellSize = Math.round(baseCandle * 1.65); // 適度な間隔
+    const cellSize = Math.round(baseCandle * 1.65);
     const cols = Math.max(2, Math.floor(stageWidth / cellSize));
     const rows = Math.ceil(records.length / cols);
     const calculatedHeight = Math.max(availableH, rows * cellSize + 80);
@@ -672,13 +671,10 @@ function placeCandles(){
     const placed = [];
 
     sortedByDate.forEach((rec, idx)=>{
-      // ランダムサイズ
       const scaleSeed = rand();
       const myScale = scaleSeed < 0.28 ? 1.5 : scaleSeed < 0.56 ? 1.2 : 1.0;
       const actualSize = baseCandle * myScale;
-      const minDist = actualSize * 1.8;
 
-      // グリッドベースの初期位置（ランダムにずらす）
       const col = idx % cols;
       const row = Math.floor(idx / cols);
       const cellW = stageWidth / cols;
@@ -690,18 +686,13 @@ function placeCandles(){
       let xpx = Math.max(actualSize * 0.6, Math.min(stageWidth - actualSize * 0.6, baseXpx));
       let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6, baseYpx));
 
-      // 衝突チェック・回避
       let attempts = 0;
       while(attempts < 60){
         let tooClose = false;
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
-          const required = (actualSize + p.size) * 0.9;
-          if(Math.sqrt(dx*dx + dy*dy) < required){
-            tooClose = true;
-            break;
-          }
+          if(Math.sqrt(dx*dx + dy*dy) < (actualSize + p.size) * 0.9){ tooClose = true; break; }
         }
         if(!tooClose) break;
         xpx = Math.max(actualSize*0.6, Math.min(stageWidth - actualSize*0.6, xpx + (rand()-0.5)*cellW*0.6));
@@ -1203,6 +1194,16 @@ document.getElementById('yearToggle').addEventListener('click',()=>{
 
 function initRoom(){
   allRecords = loadRecords();
+  const curRecs = allRecords.filter(r=>{
+    const d = new Date(r.date);
+    return d.getFullYear()===currentYear && d.getMonth()===currentMonth;
+  });
+  if(curRecs.length === 0 && allRecords.length > 0){
+    const latest = new Date([...allRecords].sort((a,b)=>new Date(b.date)-new Date(a.date))[0].date);
+    currentYear = latest.getFullYear();
+    currentMonth = latest.getMonth();
+    viewMode = 'month';
+  }
   updateNav();
   placeCandles();
 }
