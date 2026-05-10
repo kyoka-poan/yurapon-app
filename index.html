@@ -100,7 +100,8 @@ body.room-mode .page{display:none}
 @media (min-aspect-ratio:1/1){.room-stage{max-width:min(480px,50vh)}}
 
 .room-top-bar{position:sticky;top:0;z-index:50;display:flex;justify-content:center;align-items:center;gap:20px;padding:18px 16px 14px;background:linear-gradient(to bottom,rgba(10,6,24,.55) 0%,rgba(10,6,24,.25) 70%,transparent 100%);backdrop-filter:blur(2px);flex-shrink:0;font-family:"Hiragino Maru Gothic Pro","Hiragino Sans",sans-serif}
-.room-back{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.08em;padding:6px 18px;cursor:pointer;font-family:inherit;font-weight:400;white-space:nowrap;line-height:1.5;word-spacing:8px}
+.room-back{background:transparent;border:1px solid transparent;border-radius:999px;color:rgba(232,224,245,.85);font-size:13px;letter-spacing:.08em;padding:6px 18px;cursor:pointer;font-family:inherit;font-weight:400;white-space:nowrap;line-height:1;display:inline-flex;align-items:center;gap:10px}
+.back-arrow{flex-shrink:0;margin-left:-4px}
 
 .room-nav-inner{display:flex;align-items:center;justify-content:center}
 .month-control{display:flex;align-items:center;width:180px;flex-shrink:0}
@@ -232,7 +233,7 @@ body.room-mode .page{display:none}
   <div class="room-stage-wrapper">
     <div class="room-stage">
       <div class="room-top-bar">
-        <button class="room-back" data-goto-main aria-label="戻る">‹ もどる</button>
+        <button class="room-back" data-goto-main aria-label="戻る"><span class="back-arrow">‹</span><span>もどる</span></button>
         <div class="month-control">
           <button class="nav-arrow" id="prevBtn" aria-label="前">‹</button>
           <div class="nav-label" id="navLabel">2026.04</div>
@@ -499,18 +500,40 @@ document.querySelectorAll('[data-goto-main]').forEach(el=>{
 });
 
 const SAMPLE_WORDS = [
-  "もういいよ、で今日は閉じる","ゆっくりしよ","そのうちでいいんだ",
-  "なんかちょっと疲れた、それだけ","わたしはわたしのままでいい","今日はここまで",
-  "静かにしてていい日","ふっと息を吐く","戻ってきた感じがする",
-  "なにもしなくていい","ぼんやりしていた","灯がついてるだけで十分",
-  "言葉にならない日もある","ゆれてた、ただそれだけ","落ち着く場所があるって、いいな",
-  "ちょっと泣いた","なんでもない一日もある","じわっと、あったかかった",
-  "止まっていい","ここに戻ってこれる",""
+  "電車でなんか泣けた",
+  "気がついたら夜だった",
+  "ごはんをちゃんと食べた",
+  "また夜更かしした",
+  "昨日のことを引きずってた",
+  "怒ったけど、それだけ",
+  "外に出られた",
+  "コーヒーが美味しかった",
+  "急になんかやれた",
+  "また同じことで悩んでた",
+  "空がきれいだった",
+  "誰かに話せた",
+  "眠れなかった",
+  "誰かのことを急に思い出した",
+  "ぼーっとしてたら時間が過ぎた",
+  "ちょっとだけ笑えた",
+  "全部放り投げたくなった",
+  "静かな夜だった",
+  "久しぶりに泣いた",
+  "あの人のこと考えてた",
+  "今日はわりと動けた",
+  "ずっと横になってた",
+  "なんか急にしんどくなった",
+  "ひとりがちょうどよかった",
+  "なんとなく歩いた",
+  "何を食べたか覚えてない",
+  "朝起きたら少し楽だった",
+  "夜だけ少しだけ元気だった",
+  ""
 ];
 const SAMPLE_ONOMAT = ['ぎゅ','ぽあぽあ','ドクン','しゅん','だる〜〜','ざわざわ'];
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 12;
-const STORAGE_KEY = 'yurapon_akari_records';
+const STORAGE_KEY = 'yurapon_akari_records_v2';
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
 
@@ -522,20 +545,21 @@ let roomInitialized = false;
 
 function generateSampleData(){
   const arr = [];
-  const today = new Date();
-  for(let i=1; i<150; i++){
-    if(Math.random() < 0.6){
-      const d = new Date(today);
-      d.setDate(d.getDate()-i);
+  const start = new Date('2025-01-01');
+  const end = new Date('2025-12-31');
+  for(let d = new Date(start); d <= end; d.setDate(d.getDate()+1)){
+    if(Math.random() < 0.55){
+      const dateStr = d.toISOString().split('T')[0];
       const wk = SAMPLE_WISH_KEYS[Math.floor(Math.random()*SAMPLE_WISH_KEYS.length)];
       const om = SAMPLE_ONOMAT[Math.floor(Math.random()*SAMPLE_ONOMAT.length)];
       arr.push({
-        date: d.toISOString().split('T')[0],
+        date: dateStr,
         onomat: om,
         wishKey: wk,
         wishLabel: stateData[wk].label,
         word: SAMPLE_WORDS[Math.floor(Math.random()*SAMPLE_WORDS.length)],
-        candleType: Math.floor(Math.random()*CANDLE_COUNT)+1
+        candleType: Math.floor(Math.random()*CANDLE_COUNT)+1,
+        isSample: true
       });
     }
   }
