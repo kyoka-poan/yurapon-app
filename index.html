@@ -13,7 +13,7 @@ html{overflow-x:hidden}
 
 .bg-layer{position:fixed;inset:0;z-index:-1;background:rgba(255,255,255,.30);pointer-events:none}
 
-body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:100% auto;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
+body.room-mode{color:#e8e0f5;background-color:#1a1638;background-image:url("assets/img/bg_room.jpg");background-size:cover;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 body.room-mode .bg-layer{display:none}
 .room-bg-layer{display:none}
 
@@ -786,7 +786,6 @@ function placeCandles(){
     sortedByDate.forEach((rec, idx)=>{
       const myScale = scaleArr[idx];
       const actualSize = baseCandle * myScale;
-      const minDist = (actualSize + baseCandle) * 0.6; // 近接許容距離（感覚的に近くていい）
 
       // 最近のものほど上: idx/nの割合でバンドを決め、その中でランダムに散らす
       const bandRatio = idx / Math.max(n - 1, 1); // 0=最新(上), 1=最古(下)
@@ -798,12 +797,13 @@ function placeCandles(){
       let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6 - bottomPad,
         bandCenter + (rand() - 0.5) * jitterRange * 2));
 
-      // 重なり回避: 最大120回試行
+      // 重なり回避: 最大120回試行（各キャンドルの実サイズで判定）
       for(let attempt = 0; attempt < 120; attempt++){
         let tooClose = false;
         for(const p of placed){
           const dx = p.xpx - xpx;
           const dy = p.ypx - ypx;
+          const minDist = (actualSize * 0.5 + p.size * 0.5) * 1.05;
           if(Math.sqrt(dx*dx + dy*dy) < minDist){ tooClose = true; break; }
         }
         if(!tooClose) break;
