@@ -35,29 +35,30 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
 h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22);text-align:center;color:#4a3f6b}
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
-.room-top{display:flex;width:100%;min-height:58px;align-items:center;justify-content:center;margin:0 0 28px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#5a4e78;text-decoration:none;box-shadow:0 10px 30px rgba(56,40,96,.045);cursor:pointer;font:inherit}
-.card{margin:0 0 20px;padding:29px 24px 32px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.38);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(56,40,96,.045)}
-.card h2{display:block;border:1px solid var(--line);border-radius:16px;padding:10px 20px;}
-.card h2{margin:0 0 20px;font-size:25px;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#5a4e78}
-.card h3{margin:36px 0 3.6em;font-size:16px;line-height:1.5;color:#5a4e78;letter-spacing:.02em;text-align:center}
+.room-top{display:flex;width:100%;min-height:70px;align-items:center;justify-content:center;margin:3.9em 0 3.45em;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#5a4e78;text-decoration:none;box-shadow:0 10px 30px rgba(56,40,96,.045);cursor:pointer;font:inherit}
+.card{margin:0 0 70px;padding:36px 32px 40px;border-radius:26px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(80,60,120,.10)}
+.card h2{display:table;padding:14px 38px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.card h2{margin:0.2em auto 1.8em;font-size:22px;font-weight:700;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#5a4e78}
+.card h2::after{content:none}
+.card h3{margin:4em 0 3.6em;font-size:16px;line-height:1.5;color:#5a4e78;letter-spacing:.02em;text-align:center}
 .card h3:first-child{margin-top:0}
 .lead{margin:0 0 1.9em;font-size:15.5px;line-height:2.2;color:#5a4e78;text-align:center;font-weight:700}
 
 .result-block{display:none;opacity:0;transform:translateY(8px);transition:opacity .42s ease,transform .42s ease;margin-bottom:24px;padding-bottom:24px;border-bottom:1px dashed rgba(134,112,170,.42)}
 .result-block.show{display:block}
 .result-block.visible{opacity:1;transform:translateY(0)}
-.result-title{font-size:22px;line-height:1.65;margin:0 0 20px;color:#5a4e78}
-.meters{display:grid;gap:14px;margin-top:16px;margin-bottom:18px}
-.meter-row{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;font-size:13.5px;line-height:1.5}
+.result-title{font-size:18px;line-height:1.65;margin:0.95em 0 3.8em;color:#5a4e78;overflow-wrap:break-word;text-wrap:pretty}
+.meters{display:grid;gap:18px;margin-top:1px;margin-bottom:3.8em;padding:0 6%}
+.meter-row{display:grid;grid-template-columns:70px 1fr;gap:14px;align-items:center;font-size:13.5px;line-height:1.5}
 .track{height:12px;border-radius:999px;background:rgba(202,194,218,.34);overflow:hidden}
 .fill{height:100%;border-radius:inherit;width:60%;transition:width .8s ease}
 .f1{background:linear-gradient(90deg,rgba(170,232,214,.72),rgba(200,179,255,.72))}
 .f2{background:linear-gradient(90deg,rgba(245,194,144,.72),rgba(238,141,202,.72))}
 .f3{background:linear-gradient(90deg,rgba(243,215,128,.72),rgba(227,129,220,.72))}
 
-.go-room-btn{width:100%;min-height:58px;margin-top:18px;border:0;border-radius:18px;background:linear-gradient(180deg,rgba(255,242,172,.82),rgba(239,209,93,.72));color:#5b4920;box-shadow:0 8px 18px rgba(184,148,42,.12);font-size:15px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
+.go-room-btn{width:100%;min-height:58px;margin-top:18px;margin-bottom:3.8em;border:0;border-radius:18px;background:linear-gradient(180deg,rgba(255,242,172,.82),rgba(239,209,93,.72));color:#5b4920;box-shadow:0 8px 18px rgba(184,148,42,.12);font-size:15px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
 
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 4px}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:6px 0 3.8em}
 .choices-divider{margin:1.9em 0 0;border:none;border-top:1px dashed rgba(134,112,170,.42);}
 .choices.three-col{grid-template-columns:1fr 1fr 1fr}
 button.choice{appearance:none;border:1px solid rgba(135,116,166,.14);border-radius:18px;min-height:54px;padding:10px 8px;font:inherit;font-size:14.5px;line-height:1.45;color:#5a4e78;background:rgba(255,255,255,.54);cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 6px 16px rgba(64,45,96,.025)}
@@ -76,19 +77,19 @@ button.choice:active{transform:translateY(1px)}
 .poan-btn.loading{opacity:.72}
 
 .seen-grid{display:grid;grid-template-columns:72px 1fr;gap:12px 14px;font-size:14.5px;line-height:2.05;margin-top:1.9em;margin-bottom:22px;color:#5a4e78}
-.seen-grid b{color:#5a4e78;font-weight:700}.meter-row b{color:#5a4e78;font-weight:700}
+.seen-grid b{color:#5a4e78;font-weight:700}.meter-row b{color:#5a4e78;font-weight:700;font-size:15px}
 
 .modal{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(34,28,54,.20)}
 .modal.show{display:flex}
-.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:42px 37px 48px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,#f0e8f5;box-shadow:0 24px 80px rgba(44,31,72,.20);color:#5a4e78;line-height:2.0;position:relative}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
-.modal-head h2{font-size:22px;margin:0;line-height:1.4;text-align:center;color:#5a4e78}
-.close-btn{width:69px;min-height:34px;border-radius:999px;background:rgba(255,255,255,.55);border:1px solid rgba(135,116,166,.22);color:#6d608d;font:inherit;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.05em;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.modal-section{margin:0 0 24px;padding:26px 24px;background:rgba(255,255,255,.15);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
-.modal-section h3{margin:0 0 16px;font-size:18px;line-height:1.5;color:#5a4e78}
-.modal-section p{margin:0;font-size:14.5px;line-height:2.1;font-weight:700;color:#5a4e78}
+.modal-panel{width:min(100%,430px);max-height:86svh;overflow:auto;border-radius:26px;padding:42px 41px 48px;background:url("assets/img/bg_caption.jpg") center center/cover no-repeat,#f0e8f5;box-shadow:0 24px 80px rgba(44,31,72,.20);color:#5a4e78;line-height:2.0;position:relative}
+.modal-head{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:3.8em;padding:18px 20px;background:rgba(255,255,255,.20);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
+.modal-head h2{display:inline-block;padding:14px 28px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:20px;margin:0;line-height:1.4;white-space:nowrap;color:#5a4e78}
+.close-btn{position:absolute;top:calc(100% + 10px);right:0;width:69px;min-height:34px;border-radius:999px;background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.20);color:#5a4e78;font:inherit;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.05em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.modal-section{margin:0 0 40px;padding:26px 24px;background:rgba(255,255,255,.20);border-radius:20px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 4px 16px rgba(60,40,90,.08);border:1px solid rgba(255,255,255,.4)}
+.modal-section h3{display:block;width:fit-content;max-width:100%;padding:20px 24px;border:1px solid rgba(255,255,255,.20);border-radius:20px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin:0.95em auto 1.9em;font-size:20px;line-height:1.5;color:#5a4e78}
+.modal-section p{margin:3.8em 0 3.8em;font-size:14.5px;line-height:2.1;font-weight:700;color:#5a4e78}
 
-.more-btn{width:100%;min-height:54px;background:linear-gradient(180deg,rgba(255,246,255,.68),rgba(234,207,255,.56));color:#6e4d8f;border:1px solid rgba(190,139,222,.22);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;margin-top:6px}
+.more-btn{width:100%;min-height:70px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#5a4e78;border:1px solid rgba(255,255,255,.20);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;margin-top:15px;margin-bottom:2em;padding-left:1em}
 
 @media (max-width:360px){.page{padding-left:16px;padding-right:16px}.hero{grid-template-columns:1fr 88px;gap:14px}.yurapon-wrap{width:106px;height:106px}h1{font-size:30px}.choices{gap:10px}button.choice{font-size:13.5px;min-height:50px}}
 
@@ -197,8 +198,8 @@ body.room-mode .page{display:none}
         <button class="choice" data-key="smile">ちょっとわらえた</button>
         <button class="choice" data-key="sad">かなしい</button>
         <button class="choice" data-key="tired">つかれた</button>
-        <button class="choice" data-key="nothing">なにもできなかった</button>
-        <button class="choice" data-key="compare">くらべてしんどかった</button>
+        <button class="choice" data-key="nothing">何もできなかった</button>
+        <button class="choice" data-key="compare">しんどかった</button>
       </div>
       <div class="wish-area">
         <label for="wishInput">ひとこと（任意・60字まで）</label>
@@ -215,9 +216,9 @@ body.room-mode .page{display:none}
       <div class="result-block" id="resultBlock" aria-live="polite">
         <p class="result-title" id="resultTitle">ぽあん。</p>
         <div class="meters">
-          <div class="meter-row"><b>灯のともり具合</b><div class="track"><div class="fill f1" id="m1"></div></div></div>
-          <div class="meter-row"><b>疲れちゃった / 元気</b><div class="track"><div class="fill f2" id="m2"></div></div></div>
-          <div class="meter-row"><b>ぽあんしてる具合</b><div class="track"><div class="fill f3" id="m3"></div></div></div>
+          <div class="meter-row"><b>ともり</b><div class="track"><div class="fill f1" id="m1"></div></div></div>
+          <div class="meter-row"><b>ながれ</b><div class="track"><div class="fill f2" id="m2"></div></div></div>
+          <div class="meter-row"><b>ぽあん</b><div class="track"><div class="fill f3" id="m3"></div></div></div>
         </div>
         <button class="go-room-btn" id="goRoomBtn">今日の灯をおく</button>
       </div>
@@ -226,8 +227,8 @@ body.room-mode .page{display:none}
         <b>灯</b><span id="lightText">まだみえてないよ</span>
         <b>ゆらぽん</b><span id="yuraText">まだみえてないよ</span>
       </div>
-      <button class="more-btn" id="moreBtn">もっとみる</button>
     </section>
+    <button class="more-btn" id="moreBtn">もっとみる</button>
   </main>
 
   <div class="room-stage-wrapper">
@@ -288,17 +289,19 @@ body.room-mode .page{display:none}
   </style>
 
   <div class="modal" id="moreModal" role="dialog" aria-modal="true" aria-label="もっと見る">
+    <div style="position:relative;width:min(100%,430px)">
     <div class="modal-panel">
       <div class="modal-head">
         <h2>もっとみる</h2>
-        <button class="close-btn" id="closeModal">閉じる</button>
       </div>
       <section class="modal-section"><h3>🕯️ 灯(あかり)ってなに？</h3><p>「なんか今、心が動いたな」って瞬間。<br><br>大切にしたい、小さな"願い"そのもの。<br><br>最初から自分の中にあった、<br>"命の創造エネルギー"。</p></section>
-      <section class="modal-section"><h3>🌌 なんで灯観測するといいの？</h3><p>気づかないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>自分の存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
+      <section class="modal-section"><h3>🌌 なんで灯観測するの？</h3><p>気づかないうちに、<br>灯は見えなくなっちゃうことがある。<br><br>だから、<br>「あ、いま私の心が動いたな」と、<br>見つけてあげる。<br>私の感覚を信じていいんだ、と、<br>安心できるもの。<br><br>自分の存在が、<br>"今、たしかにここにある"と、<br>認識できるから。</p></section>
       <section class="modal-section"><h3>🌟 灯の部屋って？</h3><p>今日の灯を、<br>そっと置いておける場所。<br><br>あとから見返したとき、<br><br>「あの日、<br>ちゃんとここにいたんだ」<br><br>って、<br>時間を超えて自分と会えることがある。<br><br>キャンドルは、<br>誰かに見せるためじゃない。<br><br>自分の灯を、<br>自分のためだけにともせる。<br><br>宇宙みたいに広い、<br>自分だけの静かな部屋。</p></section>
       <section class="modal-section"><h3>💖 どうなるの？</h3><p>自分の人生の"操縦席"に、戻る。<br><br>「ちゃんとしなきゃ」という、<br>社会のルールや、他人の評価から離れる。<br><br>重たい心の鎧を少しおろしたら、<br>ぽあんっ🫧と呼吸がしやすくなる。<br><br>地球が重たくなるのは、<br>案外、大事なものを全部ポケットに<br>つっこんでるからだったり。</p></section>
       <section class="modal-section"><h3>🛸 ゆらぽんって？</h3><p>未来の"ぽあん星"から地球に遊びに来た、<br>ちょっと不器用な宇宙人の子。<br><br>地球を選んだのは、<br>ちょっとカオスで混沌としている星の方が、<br>灯は綺麗に見えるとか、、、。<br><br>地球の重力や時間に、慣れていないみたい。<br>たまにラーメンをこぼしたりするけれど、<br>『灯』を見つけるのは大好き。<br><br>「あ、今の灯だね」と、<br>一緒に見つめる相棒。</p></section>
-      <section class="modal-section"><h3>🎈 なんで手放すと楽になるの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"は、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。<br>本当に大事なものは、離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
+      <section class="modal-section"><h3>🎈 なんで手放すの？</h3><p>いつも、なぜかぐったり。<br>「こうあるべき」という重たい荷物を、<br>一人で背負いすぎているからかも。<br><br>大事すぎるものも、だからこそ怖いものも、<br>この星にはたくさん溢れているから。<br><br>"本当は自分が背負わなくていいもの"は、<br>ぽいって手を放してみる。<br><br>あの人の感情も、言葉も、あの人のもの。<br>大丈夫。<br>本当に大事なものは、離れていかない。<br><br>ふっと、心も体も緩んで。<br>深く息ができる時間を過ごそ。<br><br>いつでも、ここにいるよ。</p></section>
+    </div>
+    <button class="close-btn" id="closeModal">とじる</button>
     </div>
   </div>
 
@@ -395,7 +398,7 @@ poanBtn.addEventListener('click',()=>{
     resultTitle.innerHTML = r.title.replace(/\n/g,'<br>');
     airText.textContent = r.air;
     lightText.textContent = r.light;
-    yuraText.textContent = r.yura;
+    yuraText.innerHTML = r.yura.replace(/([。、])/g, '$1<br>');
     r.scores.forEach((v,i)=>{
       fills[i].style.width = (v*20)+'%';
     });
@@ -404,8 +407,8 @@ poanBtn.addEventListener('click',()=>{
     poanBtn.classList.remove('loading');
     poanBtn.textContent = 'ぽあんでみる';
     setTimeout(()=>{
-      const rect = resultBlock.getBoundingClientRect();
-      const targetY = window.scrollY + rect.top - 40;
+      const rect = resultBlock.closest('.card').getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - 24;
       window.scrollTo({top: targetY, behavior: 'smooth'});
     }, 200);
   },700);
