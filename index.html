@@ -125,6 +125,7 @@ body.room-mode .page{display:none}
 .candle-wax img{width:100%;height:100%;object-fit:contain;display:block;animation:glow-pulse 3s ease-in-out infinite}
 
 
+@keyframes yurapon-float{0%{transform:translateX(0) translateY(-14px) rotate(0deg)}12%{transform:translateX(24px) translateY(-5px) rotate(1.5deg)}25%{transform:translateX(46px) translateY(-18px) rotate(2.5deg)}37%{transform:translateX(32px) translateY(-34px) rotate(1.5deg)}50%{transform:translateX(0) translateY(-30px) rotate(0deg)}62%{transform:translateX(-32px) translateY(-34px) rotate(-1.5deg)}75%{transform:translateX(-46px) translateY(-18px) rotate(-2.5deg)}87%{transform:translateX(-24px) translateY(-5px) rotate(-1.5deg)}100%{transform:translateX(0) translateY(-14px) rotate(0deg)}}
 @keyframes candle-sway{0%,100%{transform:rotate(-8deg) translateY(0)}25%{transform:rotate(6deg) translateY(-4px)}50%{transform:rotate(9deg) translateY(1px)}75%{transform:rotate(-5deg) translateY(-3px)}}
 @keyframes glow-pulse{0%,100%{filter:drop-shadow(0 0 3px rgba(255,200,120,.25)) drop-shadow(0 0 6px rgba(255,180,100,.1))}50%{filter:drop-shadow(0 0 8px rgba(255,200,120,.55)) drop-shadow(0 0 16px rgba(255,180,100,.3))}}
 .popup-overlay{position:fixed;inset:0;background:rgba(10,6,24,.85);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:400;opacity:0;pointer-events:none;transition:opacity .6s ease;padding:24px}
@@ -160,10 +161,10 @@ body.room-mode .page{display:none}
 .candle-pick:nth-child(7n) img{animation-delay:-1.8s,-3.2s}
 .yurapon-talk-area{margin-top:100px;margin-bottom:2.4em;display:flex;flex-direction:column;align-items:center}
 .yurapon-talk-area .go-room-btn{margin-top:28px;margin-bottom:0.4em}
-.bubble-wrap{position:relative;width:100%;max-width:320px;margin:28px auto 56px}
-.bubble-bg{display:block;width:100%;height:auto;opacity:1;pointer-events:none}
-.bubble-wrap .seen-grid{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);width:58%;margin:0}
-.yurapon-stand-img{display:block;width:160px;height:160px;object-fit:contain;margin:0 auto 24px;opacity:1}
+.bubble-wrap{position:relative;width:100%;max-width:320px;margin:28px auto 56px;padding:28px 36px 48px}
+.bubble-bg{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;opacity:1;pointer-events:none}
+.bubble-wrap .seen-grid{position:relative;width:100%;margin:0;z-index:1}
+.yurapon-stand-img{display:block;width:160px;height:160px;object-fit:contain;margin:0 auto 24px;opacity:1;animation:yurapon-float 14s linear infinite}
 </style>
 </head>
 <body>
