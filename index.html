@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>灯観測装置 ゆらぽん</title>
 <link rel="apple-touch-icon" href="assets/img/ogp_yurapon.jpg">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <link rel="icon" href="assets/img/ogp_yurapon.jpg">
 <meta property="og:title" content="灯観測装置 ゆらぽん" />
 <meta property="og:description" content="毎日の灯を、そっと観測するアプリ。" />
@@ -695,6 +697,100 @@ function getDeviceId(){
   return id;
 }
 
+// Firebase初期化
+const firebaseConfig = {
+  apiKey: "AIzaSyBZceE6SW4gx5UlBPwb3LJndFqd0zGvInA",
+  authDomain: "yurapon-app.firebaseapp.com",
+  projectId: "yurapon-app",
+  storageBucket: "yurapon-app.firebasestorage.app",
+  messagingSenderId: "485975588481",
+  appId: "1:485975588481:web:3a0f144c2c458226e25780"
+};
+let db = null;
+let syncUnsubscribe = null;
+try{
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+}catch(e){ console.warn('Firebase init error', e); }
+
+// 自分のデータをFirestoreにプッシュ
+async function pushToFirestore(){
+  if(!db) return;
+  const id = getDeviceId();
+  const realRecords = (allRecords||[]).filter(r=>!r.isSample);
+  try{
+    await db.collection('devices').doc(id).set({
+      records: realRecords,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }catch(e){ console.warn('Firestore push error', e); }
+}
+
+// リモート記録をマージ（日付ベースで重複排除）
+function mergeRecords(remoteRecords){
+  const map = {};
+  (allRecords||[]).filter(r=>!r.isSample).forEach(r=>{ map[r.date]=r; });
+  (remoteRecords||[]).filter(r=>!r.isSample).forEach(r=>{
+    if(!map[r.date]) map[r.date]=r;
+  });
+  allRecords = Object.values(map).sort((a,b)=>a.date.localeCompare(b.date));
+  // localStorageのみに保存（Firestoreループ防止）
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allRecords));
+}
+
+// リアルタイム同期リスナー設定
+function setupRealtimeSync(partnerId){
+  if(!db) return;
+  if(syncUnsubscribe){ syncUnsubscribe(); syncUnsubscribe=null; }
+  syncUnsubscribe = db.collection('devices').doc(partnerId).onSnapshot(doc=>{
+    if(doc.exists){
+      const data = doc.data();
+      if(data && data.records && data.records.length > 0){
+        const prevLen = (allRecords||[]).filter(r=>!r.isSample).length;
+        mergeRecords(data.records);
+        const newLen = allRecords.filter(r=>!r.isSample).length;
+        if(newLen > prevLen && roomInitialized){ placeCandles(); }
+      }
+    }
+  }, err=>{ console.warn('sync listener error', err); });
+}
+
+// コードで端末接続
+async function connectToPartner(code){
+  if(!db){
+    document.getElementById('syncStatus').textContent = 'オフライン中です';
+    return;
+  }
+  const status = document.getElementById('syncStatus');
+  status.textContent = '接続中...';
+  try{
+    await pushToFirestore();
+    const doc = await db.collection('devices').doc(code).get();
+    if(!doc.exists){
+      status.textContent = 'そのコードは見つかりませんでした';
+      return;
+    }
+    const data = doc.data();
+    if(data && data.records) mergeRecords(data.records);
+    localStorage.setItem('yurapon_linked_with', code);
+    setupRealtimeSync(code);
+    if(roomInitialized) placeCandles();
+    status.textContent = 'つながりました ✦';
+    setTimeout(()=>{
+      document.getElementById('syncModalOverlay').classList.remove('show');
+    }, 1800);
+  }catch(e){
+    console.warn('connect error', e);
+    status.textContent = 'エラーが発生しました。もう一度お試しください';
+  }
+}
+
+// ページロード時に同期再開
+(function(){
+  const linked = localStorage.getItem('yurapon_linked_with');
+  if(linked){ setTimeout(()=>setupRealtimeSync(linked), 500); }
+})();
+
 // 同期ポップアップ
 document.getElementById('syncPopupYes').addEventListener('click',()=>{
   localStorage.setItem('yurapon_sync_asked','yes');
@@ -708,6 +804,8 @@ document.getElementById('syncPopupNo').addEventListener('click',()=>{
 
 // 同期モーダル
 function openSyncModal(){
+  // 相手が自分のデータを見つけられるよう先にプッシュ
+  pushToFirestore().catch(()=>{});
   const id = getDeviceId();
   document.getElementById('syncCodeBox').textContent = id;
   document.getElementById('syncCodeBoxQr').textContent = id;
@@ -747,8 +845,8 @@ document.getElementById('syncCodeBox').addEventListener('click',()=>{
 document.getElementById('syncConnectBtn').addEventListener('click',()=>{
   const code = document.getElementById('syncInput').value.trim().toUpperCase();
   if(code.length < 6){ document.getElementById('syncStatus').textContent = 'コードを入力してください'; return; }
-  // TODO: Firebase連携
-  document.getElementById('syncStatus').textContent = '接続機能は準備中です';
+  if(code === getDeviceId()){ document.getElementById('syncStatus').textContent = '自分のコードは使えません'; return; }
+  connectToPartner(code);
 });
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
@@ -795,6 +893,9 @@ function loadRecords(){
 
 function saveRecords(){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allRecords));
+  if(localStorage.getItem('yurapon_linked_with')){
+    pushToFirestore().catch(()=>{});
+  }
 }
 
 function getFilteredRecords(){
