@@ -49,7 +49,7 @@ body.room-mode::before{content:'';position:fixed;inset:0;z-index:-1;pointer-even
 h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.045em;text-shadow:0 2px 0 rgba(255,255,255,.22);text-align:center;color:#4a3f6b}
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
-.room-top{display:flex;width:100%;min-height:70px;align-items:center;justify-content:center;margin:3.9em 0 3.45em;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#6e6898;text-decoration:none;box-shadow:0 10px 30px rgba(56,40,96,.045);cursor:pointer;font:inherit}
+.room-top{display:flex;width:100%;min-height:70px;align-items:center;justify-content:center;margin:3.9em 0 3.45em;border:0;border-radius:20px;background:linear-gradient(180deg,rgba(255,242,172,.82),rgba(239,209,93,.72));color:#5b4920;text-decoration:none;box-shadow:0 8px 18px rgba(184,148,42,.12);cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
 .card{margin:0 0 70px;padding:52px 32px 40px;border-radius:26px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(80,60,120,.10)}
 .card h2{display:table;padding:14px 38px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .card h2{margin:0.2em auto 1.8em;font-size:22px;font-weight:700;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#6e6898}
@@ -180,7 +180,7 @@ body.room-mode .page{display:none}
 .bubble-wrap .seen-grid{position:relative;width:100%;margin:0;z-index:1}
 .yurapon-stand-img{display:block;width:160px;height:160px;object-fit:contain;margin:0 auto 24px;opacity:1;animation:yurapon-float 14s linear infinite}
 
-.sync-btn{width:100%;min-height:52px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#6e6898;border:1px solid rgba(255,255,255,.20);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:14px;margin-top:6px;margin-bottom:2em;padding-left:1em;display:block;text-align:center}
+.sync-btn{width:100%;min-height:52px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#6e6898;border:1px solid rgba(255,255,255,.20);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:14px;margin-top:6px;margin-bottom:calc(1.6em + env(safe-area-inset-bottom,20px));padding-left:1em;display:block;text-align:center}
 
 .sync-popup-overlay{position:fixed;inset:0;z-index:500;background:rgba(80,60,120,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:32px}
 .sync-popup-overlay.show{display:flex}
@@ -191,7 +191,7 @@ body.room-mode .page{display:none}
 
 .sync-modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(80,60,120,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:32px}
 .sync-modal-overlay.show{display:flex}
-.sync-modal-card{background:rgba(255,255,255,.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.30);border-radius:26px;padding:40px 28px 36px;text-align:center;width:100%;max-width:340px}
+.sync-modal-card{background:rgba(255,255,255,.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.30);border-radius:26px;padding:40px 28px 36px;text-align:center;width:100%;max-width:340px;overscroll-behavior:contain;overflow-y:auto;max-height:90svh}
 .sync-modal-card h2{font-size:18px;font-weight:700;color:#6e6898;margin:0 0 28px;display:table;padding:12px 28px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);margin:0 auto 28px}
 .sync-section-label{font-size:12px;color:#6e6898;letter-spacing:.12em;margin:0 0 10px;opacity:.7}
 .sync-code-box{font-size:26px;font-weight:700;letter-spacing:.18em;color:#6e6898;background:rgba(255,255,255,.40);border:1px solid rgba(255,255,255,.30);border-radius:14px;padding:16px 20px;margin:0 0 28px;cursor:pointer;user-select:all}
@@ -361,6 +361,7 @@ body.room-mode .page{display:none}
   <div class="modal" id="moreModal" role="dialog" aria-modal="true" aria-label="もっと見る">
     <div style="position:relative;width:min(100%,430px)">
     <div class="modal-panel">
+      <button class="sync-x-btn" id="closeModalX" style="position:absolute;top:16px;right:16px">×</button>
       <div class="modal-head">
         <h2>もっとみる</h2>
       </div>
@@ -503,6 +504,7 @@ goRoomBtn.addEventListener('click',()=>{
 const modal = document.getElementById('moreModal');
 document.getElementById('moreBtn').addEventListener('click',()=>modal.classList.add('show'));
 document.getElementById('closeModal').addEventListener('click',()=>modal.classList.remove('show'));
+document.getElementById('closeModalX').addEventListener('click',()=>modal.classList.remove('show'));
 modal.addEventListener('click',e=>{if(e.target===modal) modal.classList.remove('show')});
 
 function goToRoom(recordMode=false){
@@ -838,7 +840,6 @@ function openSyncModal(){
   pushToFirestore().catch(()=>{});
   const id = getDeviceId();
   document.getElementById('syncCodeBox').textContent = id;
-  document.getElementById('syncCodeBoxQr').textContent = id;
   const syncUrl = `https://kyoka-poan.github.io/yurapon_app/?sync=${id}`;
   document.getElementById('syncQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(syncUrl)}&bgcolor=ffffff&color=5a4e78&margin=10`;
   document.getElementById('syncInput').value = '';
@@ -849,6 +850,7 @@ function openSyncModal(){
   document.getElementById('syncTabCode').classList.add('active');
   document.getElementById('syncTabQr').classList.remove('active');
   document.getElementById('syncModalOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
 }
 // 成功表示
 function showSyncSuccess(){
@@ -929,6 +931,7 @@ function scanLoop(){
 function closeSyncModal(){
   stopCamera();
   document.getElementById('syncModalOverlay').classList.remove('show');
+  document.body.style.overflow='';
   setTimeout(()=>{
     document.getElementById('syncSuccessMsg').classList.remove('show');
     document.getElementById('syncMainContent').style.display = '';
@@ -938,8 +941,8 @@ function closeSyncModal(){
 }
 
 // せっていモーダル
-function openSetteiModal(){ document.getElementById('setteiModalOverlay').classList.add('show'); }
-function closeSetteiModal(){ document.getElementById('setteiModalOverlay').classList.remove('show'); }
+function openSetteiModal(){ document.getElementById('setteiModalOverlay').classList.add('show'); document.body.style.overflow='hidden'; }
+function closeSetteiModal(){ document.getElementById('setteiModalOverlay').classList.remove('show'); document.body.style.overflow=''; }
 
 document.getElementById('setteiBtn').addEventListener('click', openSetteiModal);
 document.getElementById('setteiCloseBtn').addEventListener('click', closeSetteiModal);
@@ -1741,15 +1744,13 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
         </div>
         <!-- QRパネル -->
         <div id="syncPanelQr" style="display:none">
-          <div class="sync-qr-wrap">
+          <div class="sync-qr-wrap" style="margin-top:12px">
             <img class="sync-qr-img" id="syncQrImg" src="" alt="QRコード">
             <div class="sync-qr-hint">別の端末でカメラを向けてスキャン</div>
           </div>
-          <div class="sync-section-label">あなたのコード</div>
-          <div class="sync-code-box" style="margin-bottom:16px;font-size:20px" id="syncCodeBoxQr">--------</div>
           <video class="sync-camera-video" id="syncCameraVideo" playsinline muted></video>
           <div class="sync-status-qr" id="syncStatusQr"></div>
-          <button class="sync-camera-btn" id="syncCameraBtn">📷 相手のQRを読み取る</button>
+          <button class="sync-camera-btn" id="syncCameraBtn">📸 カメラでスキャン</button>
         </div>
       </div>
       <button class="sync-close-btn" id="syncCloseBtn">とじる</button>
