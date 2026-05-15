@@ -47,7 +47,7 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .yurapon-wrap{width:127px;height:127px;border-radius:999px;background:#9b9b9b;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(42,32,64,.18);overflow:hidden;flex:none}
 .yurapon{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;}
 .room-top{display:flex;width:100%;min-height:70px;align-items:center;justify-content:center;margin:3.9em 0 3.45em;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);color:#6e6898;text-decoration:none;box-shadow:0 10px 30px rgba(56,40,96,.045);cursor:pointer;font:inherit}
-.card{margin:0 0 70px;padding:36px 32px 40px;border-radius:26px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(80,60,120,.10)}
+.card{margin:0 0 70px;padding:52px 32px 40px;border-radius:26px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.20);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(80,60,120,.10)}
 .card h2{display:table;padding:14px 38px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .card h2{margin:0.2em auto 1.8em;font-size:22px;font-weight:700;line-height:1.45;letter-spacing:-.02em;text-align:center;color:#6e6898}
 .card h2::after{content:none}
@@ -67,7 +67,7 @@ h1{margin:0;font-size:clamp(32px,8.5vw,42px);line-height:1.28;letter-spacing:-.0
 .f2{background:linear-gradient(90deg,rgba(245,194,144,.72),rgba(238,141,202,.72))}
 .f3{background:linear-gradient(90deg,rgba(243,215,128,.72),rgba(227,129,220,.72))}
 
-.go-room-btn{width:100%;min-height:70px;margin-top:18px;margin-bottom:3.8em;border:1px solid rgba(255,255,255,.20);border-radius:18px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#6e6898;font-size:15px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
+.go-room-btn{width:100%;min-height:70px;margin-top:18px;margin-bottom:3.8em;border:0;border-radius:18px;background:linear-gradient(180deg,rgba(255,242,172,.82),rgba(239,209,93,.72));color:#5b4920;box-shadow:0 8px 18px rgba(184,148,42,.12);font-size:15px;cursor:pointer;font:inherit;font-weight:700;letter-spacing:.05em}
 
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:6px 0 3.8em}
 .choices-divider{margin:1.9em 0 0;border:none;border-top:1px dashed rgba(134,112,170,.42);}
@@ -170,12 +170,33 @@ body.room-mode .page{display:none}
 .candle-pick:nth-child(3n) img{animation-delay:-2s,-2.8s}
 .candle-pick:nth-child(5n) img{animation-delay:-0.5s,-0.7s}
 .candle-pick:nth-child(7n) img{animation-delay:-1.8s,-3.2s}
-.yurapon-talk-area{margin-top:50px;margin-bottom:2.4em;display:flex;flex-direction:column;align-items:center}
+.yurapon-talk-area{margin-top:32px;margin-bottom:2.4em;display:flex;flex-direction:column;align-items:center}
 .yurapon-talk-area .go-room-btn{margin-top:28px;margin-bottom:0.4em}
 .bubble-wrap{position:relative;width:100%;max-width:380px;margin:28px auto 25px;padding:96px 58px 148px}
 .bubble-bg{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;opacity:1;pointer-events:none}
 .bubble-wrap .seen-grid{position:relative;width:100%;margin:0;z-index:1}
 .yurapon-stand-img{display:block;width:160px;height:160px;object-fit:contain;margin:0 auto 24px;opacity:1;animation:yurapon-float 14s linear infinite}
+
+.sync-btn{width:100%;min-height:70px;background:rgba(255,255,255,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#6e6898;border:1px solid rgba(255,255,255,.20);border-radius:18px;cursor:pointer;font:inherit;font-weight:700;font-size:15px;margin-top:8px;margin-bottom:2em;padding-left:1em;display:block;text-align:center}
+
+.sync-popup-overlay{position:fixed;inset:0;z-index:500;background:rgba(80,60,120,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:32px}
+.sync-popup-overlay.show{display:flex}
+.sync-popup-card{background:rgba(255,255,255,.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.30);border-radius:26px;padding:40px 28px 36px;text-align:center;width:100%;max-width:320px}
+.sync-popup-title{font-size:16px;font-weight:700;color:#6e6898;line-height:1.8;margin:0 0 28px}
+.sync-popup-yes{width:100%;min-height:54px;margin-bottom:12px;border:0;border-radius:16px;background:linear-gradient(180deg,rgba(255,242,172,.90),rgba(239,209,93,.80));color:#5b4920;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.sync-popup-no{width:100%;min-height:54px;border:1px solid rgba(255,255,255,.20);border-radius:16px;background:rgba(255,255,255,.28);color:#6e6898;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+
+.sync-modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(80,60,120,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:32px}
+.sync-modal-overlay.show{display:flex}
+.sync-modal-card{background:rgba(255,255,255,.32);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.30);border-radius:26px;padding:40px 28px 36px;text-align:center;width:100%;max-width:340px}
+.sync-modal-card h2{font-size:18px;font-weight:700;color:#6e6898;margin:0 0 28px;display:table;padding:12px 28px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28);margin:0 auto 28px}
+.sync-section-label{font-size:12px;color:#6e6898;letter-spacing:.12em;margin:0 0 10px;opacity:.7}
+.sync-code-box{font-size:26px;font-weight:700;letter-spacing:.18em;color:#6e6898;background:rgba(255,255,255,.40);border:1px solid rgba(255,255,255,.30);border-radius:14px;padding:16px 20px;margin:0 0 28px;cursor:pointer;user-select:all}
+.sync-code-hint{font-size:12px;color:#6e6898;opacity:.6;margin:-18px 0 28px}
+.sync-input{width:100%;padding:14px 16px;border:1px solid rgba(134,112,170,.30);border-radius:14px;background:rgba(255,255,255,.50);font:inherit;font-size:17px;font-weight:700;letter-spacing:.15em;color:#6e6898;text-align:center;margin-bottom:12px;outline:none;text-transform:uppercase}
+.sync-connect-btn{width:100%;min-height:54px;border:0;border-radius:16px;background:linear-gradient(180deg,rgba(255,242,172,.90),rgba(239,209,93,.80));color:#5b4920;font:inherit;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:12px}
+.sync-close-btn{width:100%;min-height:48px;border:1px solid rgba(255,255,255,.20);border-radius:16px;background:rgba(255,255,255,.28);color:#6e6898;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.sync-status{font-size:13px;color:#6e6898;margin:0 0 16px;min-height:20px}
 </style>
 </head>
 <body>
@@ -256,6 +277,7 @@ body.room-mode .page{display:none}
       <button class="go-room-btn" id="goRoomBtn">今日の灯をおく</button>
     </div>
     <button class="more-btn" id="moreBtn">もっとみる</button>
+    <button class="sync-btn" id="syncBtn">ほかの端末とつなぐ</button>
   </main>
 
   <div class="room-stage-wrapper">
@@ -659,6 +681,48 @@ const SAMPLE_ONOMAT = ['ぽあぽあ','ふわ','もやもや','だる〜','ぽ�
 const SAMPLE_WISH_KEYS = ['sad','tired','fun','smile','nothing','compare'];
 const CANDLE_COUNT = 12;
 const STORAGE_KEY = 'yurapon_akari_records_v6';
+
+// デバイスID
+function getDeviceId(){
+  let id = localStorage.getItem('yurapon_device_id');
+  if(!id){ id = Math.random().toString(36).substr(2,8).toUpperCase(); localStorage.setItem('yurapon_device_id',id); }
+  return id;
+}
+
+// 同期ポップアップ
+document.getElementById('syncPopupYes').addEventListener('click',()=>{
+  localStorage.setItem('yurapon_sync_asked','yes');
+  document.getElementById('syncPopupOverlay').classList.remove('show');
+  openSyncModal();
+});
+document.getElementById('syncPopupNo').addEventListener('click',()=>{
+  localStorage.setItem('yurapon_sync_asked','later');
+  document.getElementById('syncPopupOverlay').classList.remove('show');
+});
+
+// 同期モーダル
+function openSyncModal(){
+  document.getElementById('syncCodeBox').textContent = getDeviceId();
+  document.getElementById('syncInput').value = '';
+  document.getElementById('syncStatus').textContent = '';
+  document.getElementById('syncModalOverlay').classList.add('show');
+}
+document.getElementById('syncBtn').addEventListener('click', openSyncModal);
+document.getElementById('syncCloseBtn').addEventListener('click',()=>{
+  document.getElementById('syncModalOverlay').classList.remove('show');
+});
+document.getElementById('syncCodeBox').addEventListener('click',()=>{
+  navigator.clipboard.writeText(getDeviceId()).then(()=>{
+    document.getElementById('syncStatus').textContent = 'コピーしました';
+    setTimeout(()=>{ document.getElementById('syncStatus').textContent=''; },2000);
+  }).catch(()=>{});
+});
+document.getElementById('syncConnectBtn').addEventListener('click',()=>{
+  const code = document.getElementById('syncInput').value.trim().toUpperCase();
+  if(code.length < 6){ document.getElementById('syncStatus').textContent = 'コードを入力してください'; return; }
+  // TODO: Firebase連携
+  document.getElementById('syncStatus').textContent = '接続機能は準備中です';
+});
 const VISIT_KEY = 'yurapon_last_visit';
 const VIEWED_COUNT_KEY = 'yurapon_viewed_count';
 
@@ -1096,6 +1160,9 @@ function onCandlePicked(candleType){
       pendingRecord.candleType = candleType;
       allRecords.push({...pendingRecord});
       saveRecords();
+      if(!localStorage.getItem('yurapon_sync_asked') && allRecords.length === 1){
+        setTimeout(()=>{ document.getElementById('syncPopupOverlay').classList.add('show'); }, 1800);
+      }
       pendingRecord = null;
 
       const today = new Date();
@@ -1366,6 +1433,30 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 });
 }); // DOMContentLoaded
 </script>
+
+  <!-- 初回保存後 同期ポップアップ -->
+  <div class="sync-popup-overlay" id="syncPopupOverlay">
+    <div class="sync-popup-card">
+      <div class="sync-popup-title">この灯を、ほかの端末でも見られるようにする？</div>
+      <button class="sync-popup-yes" id="syncPopupYes">する</button>
+      <button class="sync-popup-no" id="syncPopupNo">あとで</button>
+    </div>
+  </div>
+
+  <!-- 端末連携モーダル -->
+  <div class="sync-modal-overlay" id="syncModalOverlay">
+    <div class="sync-modal-card">
+      <h2>ほかの端末とつなぐ</h2>
+      <div class="sync-section-label">あなたのコード</div>
+      <div class="sync-code-box" id="syncCodeBox">--------</div>
+      <div class="sync-code-hint">タップでコピー</div>
+      <div class="sync-section-label">別の端末のコードを入力</div>
+      <input class="sync-input" id="syncInput" type="text" placeholder="コードを入力" maxlength="8">
+      <div class="sync-status" id="syncStatus"></div>
+      <button class="sync-connect-btn" id="syncConnectBtn">つなぐ</button>
+      <button class="sync-close-btn" id="syncCloseBtn">とじる</button>
+    </div>
+  </div>
 
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
