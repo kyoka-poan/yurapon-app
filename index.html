@@ -197,6 +197,12 @@ body.room-mode .page{display:none}
 .sync-connect-btn{width:100%;min-height:54px;border:0;border-radius:16px;background:linear-gradient(180deg,rgba(255,242,172,.90),rgba(239,209,93,.80));color:#5b4920;font:inherit;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:12px}
 .sync-close-btn{width:100%;min-height:48px;border:1px solid rgba(255,255,255,.20);border-radius:16px;background:rgba(255,255,255,.28);color:#6e6898;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
 .sync-status{font-size:13px;color:#6e6898;margin:0 0 16px;min-height:20px}
+.sync-tabs{display:flex;gap:6px;background:rgba(255,255,255,.30);border-radius:14px;padding:4px;margin-bottom:24px}
+.sync-tab{flex:1;padding:10px 6px;border:none;border-radius:10px;font:inherit;font-size:14px;font-weight:700;color:#6e6898;background:transparent;cursor:pointer;transition:background .2s,box-shadow .2s}
+.sync-tab.active{background:rgba(255,255,255,.65);box-shadow:0 2px 8px rgba(80,60,120,.10)}
+.sync-qr-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+.sync-qr-img{width:180px;height:180px;border-radius:14px;background:rgba(255,255,255,.50)}
+.sync-qr-hint{font-size:12px;color:#6e6898;opacity:.65;margin-top:10px;margin-bottom:20px}
 </style>
 </head>
 <body>
@@ -702,14 +708,35 @@ document.getElementById('syncPopupNo').addEventListener('click',()=>{
 
 // 同期モーダル
 function openSyncModal(){
-  document.getElementById('syncCodeBox').textContent = getDeviceId();
+  const id = getDeviceId();
+  document.getElementById('syncCodeBox').textContent = id;
+  document.getElementById('syncCodeBoxQr').textContent = id;
+  document.getElementById('syncQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${id}&bgcolor=ffffff&color=5a4e78&margin=10`;
   document.getElementById('syncInput').value = '';
   document.getElementById('syncStatus').textContent = '';
+  // コードタブをデフォルトに
+  document.getElementById('syncPanelCode').style.display = '';
+  document.getElementById('syncPanelQr').style.display = 'none';
+  document.getElementById('syncTabCode').classList.add('active');
+  document.getElementById('syncTabQr').classList.remove('active');
   document.getElementById('syncModalOverlay').classList.add('show');
 }
 document.getElementById('syncBtn').addEventListener('click', openSyncModal);
 document.getElementById('syncCloseBtn').addEventListener('click',()=>{
   document.getElementById('syncModalOverlay').classList.remove('show');
+});
+// タブ切り替え
+document.getElementById('syncTabCode').addEventListener('click',()=>{
+  document.getElementById('syncPanelCode').style.display = '';
+  document.getElementById('syncPanelQr').style.display = 'none';
+  document.getElementById('syncTabCode').classList.add('active');
+  document.getElementById('syncTabQr').classList.remove('active');
+});
+document.getElementById('syncTabQr').addEventListener('click',()=>{
+  document.getElementById('syncPanelCode').style.display = 'none';
+  document.getElementById('syncPanelQr').style.display = '';
+  document.getElementById('syncTabQr').classList.add('active');
+  document.getElementById('syncTabCode').classList.remove('active');
 });
 document.getElementById('syncCodeBox').addEventListener('click',()=>{
   navigator.clipboard.writeText(getDeviceId()).then(()=>{
@@ -1447,13 +1474,29 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   <div class="sync-modal-overlay" id="syncModalOverlay">
     <div class="sync-modal-card">
       <h2>ほかの端末とつなぐ</h2>
-      <div class="sync-section-label">あなたのコード</div>
-      <div class="sync-code-box" id="syncCodeBox">--------</div>
-      <div class="sync-code-hint">タップでコピー</div>
-      <div class="sync-section-label">別の端末のコードを入力</div>
-      <input class="sync-input" id="syncInput" type="text" placeholder="コードを入力" maxlength="8">
-      <div class="sync-status" id="syncStatus"></div>
-      <button class="sync-connect-btn" id="syncConnectBtn">つなぐ</button>
+      <div class="sync-tabs">
+        <button class="sync-tab active" id="syncTabCode">コードで</button>
+        <button class="sync-tab" id="syncTabQr">QRコードで</button>
+      </div>
+      <!-- コードパネル -->
+      <div id="syncPanelCode">
+        <div class="sync-section-label">あなたのコード</div>
+        <div class="sync-code-box" id="syncCodeBox">--------</div>
+        <div class="sync-code-hint">タップでコピー</div>
+        <div class="sync-section-label">別の端末のコードを入力</div>
+        <input class="sync-input" id="syncInput" type="text" placeholder="コードを入力" maxlength="8">
+        <div class="sync-status" id="syncStatus"></div>
+        <button class="sync-connect-btn" id="syncConnectBtn">つなぐ</button>
+      </div>
+      <!-- QRパネル -->
+      <div id="syncPanelQr" style="display:none">
+        <div class="sync-qr-wrap">
+          <img class="sync-qr-img" id="syncQrImg" src="" alt="QRコード">
+          <div class="sync-qr-hint">別の端末でカメラを向けてスキャン</div>
+        </div>
+        <div class="sync-section-label">あなたのコード</div>
+        <div class="sync-code-box" style="margin-bottom:8px;font-size:20px" id="syncCodeBoxQr">--------</div>
+      </div>
       <button class="sync-close-btn" id="syncCloseBtn">とじる</button>
     </div>
   </div>
