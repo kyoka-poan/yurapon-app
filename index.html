@@ -785,10 +785,24 @@ async function connectToPartner(code){
   }
 }
 
-// ページロード時に同期再開
+// ページロード時に同期再開 & URLパラメータで自動接続
 (function(){
   const linked = localStorage.getItem('yurapon_linked_with');
   if(linked){ setTimeout(()=>setupRealtimeSync(linked), 500); }
+
+  const syncParam = new URLSearchParams(location.search).get('sync');
+  if(syncParam){
+    const code = syncParam.trim().toUpperCase();
+    // URLをクリーン（コードをURLに残さない）
+    history.replaceState(null,'', location.pathname);
+    // モーダルを開いてコードをセット、自動接続開始
+    setTimeout(()=>{
+      openSyncModal();
+      document.getElementById('syncInput').value = code;
+      document.getElementById('syncStatus').textContent = 'QRコードから接続中...';
+      connectToPartner(code);
+    }, 600);
+  }
 })();
 
 // 同期ポップアップ
@@ -809,7 +823,8 @@ function openSyncModal(){
   const id = getDeviceId();
   document.getElementById('syncCodeBox').textContent = id;
   document.getElementById('syncCodeBoxQr').textContent = id;
-  document.getElementById('syncQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${id}&bgcolor=ffffff&color=5a4e78&margin=10`;
+  const syncUrl = `https://kyoka-poan.github.io/yurapon_app/?sync=${id}`;
+  document.getElementById('syncQrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(syncUrl)}&bgcolor=ffffff&color=5a4e78&margin=10`;
   document.getElementById('syncInput').value = '';
   document.getElementById('syncStatus').textContent = '';
   // コードタブをデフォルトに
