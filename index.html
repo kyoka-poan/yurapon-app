@@ -220,6 +220,16 @@ body.room-mode .page{display:none}
 .modal-panel::-webkit-scrollbar-track{background:transparent;margin:26px}
 .modal-panel::-webkit-scrollbar-thumb{background:rgba(134,112,170,.18);border-radius:999px}
 .sync-qr-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+
+.tut-bubble{position:fixed;z-index:296;width:280px;padding:18px 22px;background:rgba(255,212,225,.65);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.55);border-radius:22px;color:#6e6898;font-size:17px;font-weight:700;line-height:1.8;text-align:center;white-space:pre-line;box-shadow:0 12px 36px rgba(180,80,120,.18),0 2px 12px rgba(255,170,195,.24);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+.tut-bubble.show{opacity:1;transform:translateY(0)}
+.tut-arrow-ptr{position:fixed;z-index:297;pointer-events:none;font-size:32px;line-height:1;color:rgba(200,170,60,.95);text-shadow:0 0 14px rgba(255,220,80,.7),0 2px 6px rgba(180,140,20,.3);transform:translateX(-50%);display:none;animation:tut-ptr-bob .8s ease-in-out infinite}
+@keyframes tut-ptr-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
+.tut-glow{outline:5px solid rgba(255,220,90,.95)!important;outline-offset:5px!important;filter:drop-shadow(0 0 10px rgba(255,200,50,.7))!important;animation:tut-glow-pulse 1.4s ease-in-out infinite!important}
+@keyframes tut-glow-pulse{0%,100%{outline-color:rgba(255,210,80,.9)}50%{outline-color:rgba(255,250,160,1)}}
+.tut-skip-btn{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);right:18px;z-index:299;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.32);border-radius:999px;color:#6e6898;font:inherit;font-size:12px;font-weight:600;padding:7px 20px;cursor:pointer;letter-spacing:.06em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .35s ease;pointer-events:none}
+.tut-skip-btn.show{opacity:1;pointer-events:auto}
+.tut-action-btn{position:fixed;z-index:298;border:none;border-radius:18px;background:linear-gradient(180deg,rgba(255,246,190,.92),rgba(240,206,85,.82));color:#5b4920;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);letter-spacing:.04em;padding:12px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -901,6 +911,11 @@ document.getElementById('setteiBtn').addEventListener('click', openSetteiModal);
 document.getElementById('setteiModalXBtn').addEventListener('click', closeSetteiModal);
 document.getElementById('setteiCloseBtn').addEventListener('click', closeSetteiModal);
 document.getElementById('setteiSyncBtn').addEventListener('click', function(){ closeSetteiModal(); openSyncModal(); });
+document.getElementById('tutRestartBtn').addEventListener('click',()=>{
+  localStorage.removeItem('yurapon_tutorial_done');
+  closeSetteiModal();
+  window.location.href = window.location.pathname;
+});
 document.getElementById('syncCloseBtn').addEventListener('click', closeSyncModal);
 // タブ切り替え
 document.getElementById('syncTabCode').addEventListener('click',()=>{
@@ -1544,7 +1559,7 @@ function checkVideoTrigger(){
   localStorage.setItem(VISIT_KEY, todayStr);
 
   if(isFirstOfMonth){
-    playVideo('assets/video/yurapon_lantern.mp4', ()=>{ _startBgm('roomBgm'); });
+    playVideo('assets/video/yurapon.rantan.mp4', ()=>{ _startBgm('roomBgm'); });
     return;
   }
 
@@ -1555,7 +1570,7 @@ function checkVideoTrigger(){
 
   if(milestonesPassed > lastMilestone){
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
-    playVideo('assets/video/yurapon_single.mov', ()=>{ _startBgm('roomBgm'); });
+    playVideo('assets/video/yurapon.single.mov', ()=>{ _startBgm('roomBgm'); });
   } else {
     localStorage.setItem(VIEWED_COUNT_KEY, recordCount.toString());
   }
@@ -1624,6 +1639,256 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     video.src = '';
   }, 500);
 });
+
+// チュートリアル（初回のみ）
+(function(){
+  if(localStorage.getItem('yurapon_tutorial_done')) return;
+  if(window.location.hash === '#room') return;
+  let step = 0;
+
+  const bubble = document.createElement('div');
+  bubble.className = 'tut-bubble';
+  document.body.appendChild(bubble);
+
+  const arrowPtr = document.createElement('div');
+  arrowPtr.className = 'tut-arrow-ptr';
+  arrowPtr.textContent = '▼';
+  arrowPtr.style.display = 'none';
+  document.body.appendChild(arrowPtr);
+
+  // スポットライト：ターゲット以外を暗くする
+  const spotlight = document.createElement('div');
+  spotlight.style.cssText = 'position:fixed;z-index:292;pointer-events:none;background:transparent;border-radius:20px;box-shadow:0 0 0 9999px rgba(10,6,28,.54);opacity:0;transition:opacity .4s ease,left .35s ease,top .35s ease,width .35s ease,height .35s ease,border-radius .35s ease';
+  document.body.appendChild(spotlight);
+
+  function setSpotlight(el){
+    if(!el){ spotlight.style.opacity='0'; return; }
+    const r=el.getBoundingClientRect(), pad=12;
+    const br=Math.max((parseInt(getComputedStyle(el).borderRadius)||0)+pad, 16);
+    spotlight.style.left=(r.left-pad)+'px';
+    spotlight.style.top=(r.top-pad)+'px';
+    spotlight.style.width=(r.width+pad*2)+'px';
+    spotlight.style.height=(r.height+pad*2)+'px';
+    spotlight.style.borderRadius=br+'px';
+    spotlight.style.opacity='1';
+  }
+
+  // 操作ブロッカー：光ってる場所以外タップ不可・スクロール不可
+  const blocker = document.createElement('div');
+  blocker.style.cssText = 'position:fixed;inset:0;z-index:294;pointer-events:none';
+  blocker._target = null;
+  document.body.appendChild(blocker);
+
+  blocker.addEventListener('touchmove', e=>e.preventDefault(), {passive:false});
+  blocker.addEventListener('wheel', e=>e.preventDefault(), {passive:false});
+  blocker.addEventListener('touchend', e=>{
+    e.preventDefault();
+    if(!blocker._target) return;
+    const t = e.changedTouches[0];
+    const r = blocker._target.getBoundingClientRect();
+    if(t.clientX>=r.left && t.clientX<=r.right && t.clientY>=r.top && t.clientY<=r.bottom){
+      blocker.style.pointerEvents='none';
+      const el=document.elementFromPoint(t.clientX,t.clientY);
+      blocker.style.pointerEvents='all';
+      if(el) el.click();
+    }
+  },{passive:false});
+  blocker.addEventListener('click', e=>{
+    if(!blocker._target) return;
+    const r=blocker._target.getBoundingClientRect();
+    if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom){
+      blocker.style.pointerEvents='none';
+      const el=document.elementFromPoint(e.clientX,e.clientY);
+      blocker.style.pointerEvents='all';
+      if(el) el.click();
+    }
+  });
+
+  function setBlocker(active, targetEl){
+    blocker._target = targetEl;
+    blocker.style.pointerEvents = active ? 'all' : 'none';
+  }
+
+  let glowEl = null;
+  let reposData = null;
+  const STEP_NUMS = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
+
+  function setBubble(labelIdx, msg){
+    bubble.textContent = (labelIdx!=null && STEP_NUMS[labelIdx])
+      ? STEP_NUMS[labelIdx]+' '+msg : msg;
+  }
+
+  function stopRepos(){
+    if(reposData){ window.removeEventListener('scroll',reposData.fn,true); reposData=null; }
+  }
+
+  function posIndicators(el){
+    const r=el.getBoundingClientRect();
+    const bw=280, bh=110, ax=r.left+r.width/2;
+    const above=r.top > bh+60;
+    arrowPtr.textContent = above?'▼':'▲';
+    arrowPtr.style.left = ax+'px';
+    arrowPtr.style.top = (above ? r.top-54 : r.bottom+8)+'px';
+    let ty = above ? r.top-44-bh-12 : r.bottom+56;
+    ty = Math.max(10, Math.min(window.innerHeight-bh-10, ty));
+    bubble.style.top = ty+'px';
+    bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, ax-bw/2))+'px';
+    setSpotlight(el);
+  }
+
+  function startRepos(el){
+    stopRepos();
+    const fn=()=>posIndicators(el);
+    window.addEventListener('scroll',fn,true);
+    reposData={fn};
+  }
+
+  function clearGlow(){
+    if(glowEl){ glowEl.classList.remove('tut-glow'); glowEl=null; }
+    arrowPtr.style.display='none';
+    setSpotlight(null);
+    setBlocker(false, null);
+    stopRepos();
+  }
+
+  function showBubble(elId, msg, labelIdx){
+    clearGlow();
+    bubble.classList.remove('show');
+    const el = elId ? (elId.startsWith('.')
+      ? document.querySelector(elId)
+      : document.getElementById(elId)) : null;
+    setBubble(labelIdx, msg);
+
+    if(!el){
+      const bw=280;
+      bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
+      bubble.style.top='72px';
+      requestAnimationFrame(()=>bubble.classList.add('show'));
+      return;
+    }
+
+    glowEl=el;
+    el.classList.add('tut-glow');
+    setSpotlight(el);
+    setBlocker(true, el);
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(()=>{
+      posIndicators(el);
+      arrowPtr.style.display='block';
+      bubble.classList.add('show');
+      startRepos(el);
+    }, 500);
+  }
+
+  const skipBtn = document.createElement('button');
+  skipBtn.className = 'tut-skip-btn';
+  skipBtn.textContent = 'とじる';
+  document.body.appendChild(skipBtn);
+
+  function done(){
+    clearGlow();
+    bubble.classList.remove('show');
+    skipBtn.classList.remove('show');
+    localStorage.setItem('yurapon_tutorial_done','1');
+  }
+
+  skipBtn.addEventListener('click', done);
+  setTimeout(()=>skipBtn.classList.add('show'), 1200);
+
+  // --- メイン画面 ---
+  showBubble('onomatChoices','まずここを押してね', 0);
+
+  onomatChoices.forEach(b=>b.addEventListener('click',()=>{
+    if(step!==0) return; step=1;
+    setTimeout(()=>showBubble('wishChoices','次はここだよ', 1),350);
+  }));
+
+  wishChoices.forEach(b=>b.addEventListener('click',()=>{
+    if(step!==1) return; step=2;
+    setTimeout(()=>showBubble('poanBtn','えらんだら、ここを押してね', 2),350);
+  }));
+
+  poanBtn.addEventListener('click',()=>{
+    if(step!==2) return; step=3;
+    setTimeout(()=>showBubble('goRoomBtn','灯の部屋に、灯をおきに行ってみよう', 3),1100);
+  });
+
+  goRoomBtn.addEventListener('click',()=>{
+    if(step!==3) return; step=4;
+    clearGlow(); bubble.classList.remove('show');
+    setTimeout(()=>{
+      const t=document.querySelector('.candle-select-title');
+      if(t) t.textContent='キャンドルを気分で選んでね';
+    }, 700);
+  });
+
+  // step4: キャンドル選択画面
+  new MutationObserver(()=>{
+    if(step===4 && document.getElementById('candleSelect').classList.contains('show')){
+      setTimeout(()=>showBubble('candleSelectArea','1個おしてね', 4), 600);
+    }
+  }).observe(document.getElementById('candleSelect'),{attributes:true,attributeFilter:['class']});
+
+  document.getElementById('candleSelectArea').addEventListener('click',()=>{
+    if(step===4){ clearGlow(); bubble.classList.remove('show'); }
+  });
+
+  // 動画終了 → 灯の部屋 → step5
+  new MutationObserver(()=>{
+    if(step===4 && !document.getElementById('videoOverlay').classList.contains('show')){
+      step=5;
+      setTimeout(()=>showBubble('.candle','ここにいままでの灯が浮かんでるよ。\nキャンドルを押してみてね', 5), 900);
+    }
+  }).observe(document.getElementById('videoOverlay'),{attributes:true,attributeFilter:['class']});
+
+  // step5: キャンドルタップ → popup open → hint → popup close → step6 yearToggle
+  let _popupOpened=false;
+  new MutationObserver(()=>{
+    const po=document.getElementById('popupOverlay');
+    if(step===5 && po.classList.contains('show') && !_popupOpened){
+      _popupOpened=true;
+      clearGlow();
+      // popup上に「外側を押してもどれるよ」ヒント
+      setTimeout(()=>{
+        setBubble(null,'そとがわを押してもどれるよ');
+        const bw=280;
+        bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
+        bubble.style.top='28px';
+        bubble.style.zIndex='401';
+        requestAnimationFrame(()=>bubble.classList.add('show'));
+      }, 350);
+    }
+    if(step===5 && _popupOpened && !po.classList.contains('show')){
+      bubble.classList.remove('show');
+      bubble.style.zIndex='';
+      step=6;
+      setTimeout(()=>showBubble('yearToggle','右のボタンで\n年と月を切りかえられるよ', 6), 400);
+    }
+  }).observe(document.getElementById('popupOverlay'),{attributes:true,attributeFilter:['class']});
+
+  // step6: yearToggle → メイン自動遷移 → settei
+  document.getElementById('yearToggle')?.addEventListener('click',()=>{
+    if(step!==6) return; step=7;
+    clearGlow(); bubble.classList.remove('show');
+    goToMain();
+    setTimeout(()=>{
+      showBubble('setteiBtn','これでばっちりだね。\n下の「せってい」から見返せるよ\nさぁ、今日のぶんをやってみよう', 7);
+      // 最終カードは大きめ・上めに固定
+      setTimeout(()=>{
+        const bw=320;
+        bubble.style.width=bw+'px';
+        bubble.style.top='44px';
+        bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
+      }, 560);
+    }, 1000);
+  });
+
+  // step7: setteiBtn タップで完了
+  document.getElementById('setteiBtn')?.addEventListener('click',()=>{
+    if(step===7) done();
+  });
+})();
+
 }); // DOMContentLoaded
 </script>
 
@@ -1633,6 +1898,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       <button class="sync-x-btn" id="setteiModalXBtn">×</button>
       <h2 style="font-size:18px;font-weight:700;color:#6e6898;margin:0 auto 28px;display:table;padding:12px 28px;border:1px solid rgba(255,255,255,.20);border-radius:999px;background:rgba(255,255,255,.28)">せってい</h2>
       <button class="sync-connect-btn" id="setteiSyncBtn" style="margin-top:8px">ほかの端末とつなぐ</button>
+      <button class="sync-connect-btn" id="tutRestartBtn" style="margin-top:10px;opacity:.82">つかいかた</button>
       <button class="sync-close-btn" id="setteiCloseBtn">とじる</button>
     </div>
   </div>
