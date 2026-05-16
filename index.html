@@ -159,10 +159,10 @@ body.room-mode .page{display:none}
 .video-overlay video{width:70%;max-width:380px;max-height:70vh;object-fit:contain;border-radius:18px;box-shadow:0 0 60px rgba(255,200,120,.25),0 0 0 1px rgba(255,210,160,.2)}
 @media (max-width:480px){.video-overlay video{width:80%}}
 
-.candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;align-items:center;padding:30px 20px 40px;opacity:0;transition:opacity .8s ease;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 40px;opacity:0;transition:opacity .8s ease;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .candle-select.show{display:flex;opacity:1}
 .candle-select-title{color:rgba(232,224,245,.75);font-size:14px;letter-spacing:.2em;margin-bottom:30px;font-weight:300;text-align:center;flex-shrink:0}
-.candle-select-area{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 12px;width:100%;max-width:380px;padding:4px}
+.candle-select-area{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 12px;width:100%;max-width:380px;padding:4px;place-items:center}
 .candle-pick{position:relative;background:transparent;border:none;cursor:pointer;padding:8px 4px;display:flex;align-items:center;justify-content:center;transition:transform .3s;--rotate:0deg;--scale:1}
 .candle-pick:hover{z-index:2}
 .candle-pick:active{transform:rotate(var(--rotate)) scale(calc(var(--scale) * 0.92))}
