@@ -1701,6 +1701,13 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   blocker._target = null;
   document.body.appendChild(blocker);
 
+  blocker._missCount = 0;
+  function _flashTarget(){
+    if(!blocker._target) return;
+    blocker._target.style.transition='transform .12s ease';
+    blocker._target.style.transform='scale(1.08)';
+    setTimeout(()=>{ if(blocker._target) blocker._target.style.transform=''; }, 180);
+  }
   blocker.addEventListener('touchmove', e=>e.preventDefault(), {passive:false});
   blocker.addEventListener('wheel', e=>e.preventDefault(), {passive:false});
   blocker.addEventListener('touchend', e=>{
@@ -1709,10 +1716,14 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     const t = e.changedTouches[0];
     const r = blocker._target.getBoundingClientRect();
     if(t.clientX>=r.left && t.clientX<=r.right && t.clientY>=r.top && t.clientY<=r.bottom){
+      blocker._missCount=0;
       blocker.style.pointerEvents='none';
       const el=document.elementFromPoint(t.clientX,t.clientY);
       blocker.style.pointerEvents='all';
       if(el) el.click();
+    } else {
+      blocker._missCount++;
+      if(blocker._missCount>=3){ blocker._missCount=0; _flashTarget(); }
     }
   },{passive:false});
   blocker.addEventListener('click', e=>{
@@ -1803,13 +1814,13 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     glowEl=el;
     el.classList.add('tut-glow');
     setBlocker(true, el);
-    el.scrollIntoView({behavior:'smooth', block:'center'});
+    el.scrollIntoView({behavior:'instant', block:'center'});
     setTimeout(()=>{
       posIndicators(el);
       arrowPtr.style.display='block';
       bubble.classList.add('show');
       startRepos(el);
-    }, 500);
+    }, 200);
   }
 
   const skipBtn = document.createElement('button');
@@ -1876,7 +1887,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   // step4: キャンドル選択画面
   new MutationObserver(()=>{
     if(step===4 && document.getElementById('candleSelect').classList.contains('show')){
-      setTimeout(()=>showBubble('candleSelectArea','今日の灯を、\n1個えらんでね。', 4), 600);
+      setTimeout(()=>{ if(step!==4) return; showBubble('candleSelectArea','今日の灯を、\n1個えらんでね。', 4); }, 600);
     }
   }).observe(document.getElementById('candleSelect'),{attributes:true,attributeFilter:['class']});
 
@@ -1895,7 +1906,14 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       if(_vc) _vc.style.display='none';
       step=5;
       setTimeout(()=>{
+        if(step!==5) return;
         showBubble('.candle','今日おいた灯だよ。\nタップしてみてね。', 5);
+        // バブルをスクリーン中央に固定（キャンドルx位置に依存しない）
+        setTimeout(()=>{
+          if(step!==5) return;
+          const bw=280;
+          bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
+        }, 560);
       }, 900);
     }
   }).observe(document.getElementById('videoOverlay'),{attributes:true,attributeFilter:['class']});
@@ -1922,6 +1940,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       bubble.style.zIndex='';
       step=6;
       setTimeout(()=>{
+        if(step!==6) return; // レースコンディション防止
         window.scrollTo({top:0, behavior:'instant'});
         const el = document.getElementById('yearToggle');
         if(!el) return;
@@ -1930,10 +1949,15 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
         glowEl=el; el.classList.add('tut-glow');
         setBlocker(true, el);
         setTimeout(()=>{
+          if(step!==6) return; // 内側タイムアウトも守る
           posIndicators(el);
+          // バブルと矢印をスクリーン中央に固定
+          const bw=280;
+          bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
+          arrowPtr.style.left = (window.innerWidth/2)+'px';
           arrowPtr.style.display='block';
           bubble.classList.add('show');
-          startRepos(el);
+          // yearToggle は sticky なのでスクロール再計算不要
         }, 300);
       }, 600);
     }
@@ -1966,17 +1990,21 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     bubble.style.top='44px';
     requestAnimationFrame(()=>bubble.classList.add('show'));
     setTimeout(()=>{
+      if(step!==7) return;
       bubble.classList.remove('show');
       setTimeout(()=>{
+        if(step!==7) return;
         goToMain();
         // step7: syncPopup をチュートリアルとして表示
         setTimeout(()=>{
+          if(step!==7) return;
           document.getElementById('syncPopupOverlay').classList.add('show');
           const syncObs = new MutationObserver(()=>{
             if(!document.getElementById('syncPopupOverlay').classList.contains('show')){
               syncObs.disconnect();
               step=8;
               setTimeout(()=>{
+                if(step!==8) return;
                 showFinalCard('これでばっちりだね。\n\n記録を安全に保存するために、\nよかったらホーム画面に追加してね。\n\n下の「せってい」から見返せるよ。\nさぁ、今日のぶんをやってみよう。');
               }, 500);
             }
