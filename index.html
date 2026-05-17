@@ -226,8 +226,8 @@ body.room-mode .page{display:none}
 .tut-bubble.show{opacity:1;transform:translateY(0)}
 .tut-arrow-ptr{position:fixed;z-index:297;pointer-events:none;font-size:32px;line-height:1;color:rgba(200,170,60,.95);text-shadow:0 0 14px rgba(255,220,80,.7),0 2px 6px rgba(180,140,20,.3);transform:translateX(-50%);display:none;animation:tut-ptr-bob .8s ease-in-out infinite}
 @keyframes tut-ptr-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
-.tut-glow{outline:8px solid rgba(255,225,100,.45)!important;outline-offset:14px!important;filter:drop-shadow(0 0 18px rgba(255,210,60,.45))!important;animation:tut-glow-pulse 1.6s ease-in-out infinite!important}
-@keyframes tut-glow-pulse{0%,100%{outline-color:rgba(255,218,80,.4)}50%{outline-color:rgba(255,248,160,.6)}}
+.tut-glow{outline:8px solid rgba(255,225,100,.45)!important;outline-offset:14px!important;box-shadow:0 0 0 14px rgba(255,220,80,.18),0 0 32px 8px rgba(255,210,60,.35)!important;filter:drop-shadow(0 0 22px rgba(255,210,60,.55))!important;animation:tut-glow-pulse 1.6s ease-in-out infinite!important;z-index:295!important}
+@keyframes tut-glow-pulse{0%,100%{outline-color:rgba(255,218,80,.4);box-shadow:0 0 0 14px rgba(255,220,80,.14),0 0 28px 6px rgba(255,210,60,.28)!important}50%{outline-color:rgba(255,248,160,.65);box-shadow:0 0 0 18px rgba(255,248,120,.22),0 0 40px 12px rgba(255,230,60,.45)!important}}
 .tut-skip-btn{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);right:18px;z-index:299;background:rgba(255,212,225,.30);border:1.5px solid rgba(255,170,195,.35);border-radius:999px;color:rgba(255,245,250,.98);font:inherit;font-size:14px;font-weight:700;padding:9px 22px;cursor:pointer;letter-spacing:.06em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .35s ease;pointer-events:none}
 .tut-skip-btn.show{opacity:.60;pointer-events:auto}
 .tut-action-btn{position:fixed;z-index:298;border:none;border-radius:18px;background:linear-gradient(180deg,rgba(255,246,190,.92),rgba(240,206,85,.82));color:#5b4920;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);letter-spacing:.04em;padding:12px 0;text-align:center}
@@ -1708,6 +1708,19 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     blocker._target.style.transform='scale(1.08)';
     setTimeout(()=>{ if(blocker._target) blocker._target.style.transform=''; }, 180);
   }
+  function _forwardClick(cx, cy){
+    // elementFromPoint で子要素を探し、見つからなければターゲット直接
+    blocker.style.pointerEvents='none';
+    const found = document.elementFromPoint(cx, cy);
+    blocker.style.pointerEvents='all';
+    const tgt = blocker._target;
+    if(found && (found === tgt || tgt.contains(found))){
+      found.click();
+    } else {
+      // z-index 重なりで別要素が見つかった場合はターゲット直接クリック
+      tgt.click();
+    }
+  }
   blocker.addEventListener('touchmove', e=>e.preventDefault(), {passive:false});
   blocker.addEventListener('wheel', e=>e.preventDefault(), {passive:false});
   blocker.addEventListener('touchend', e=>{
@@ -1717,29 +1730,50 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     const r = blocker._target.getBoundingClientRect();
     if(t.clientX>=r.left && t.clientX<=r.right && t.clientY>=r.top && t.clientY<=r.bottom){
       blocker._missCount=0;
-      blocker.style.pointerEvents='none';
-      const el=document.elementFromPoint(t.clientX,t.clientY);
-      blocker.style.pointerEvents='all';
-      if(el) el.click();
+      _forwardClick(t.clientX, t.clientY);
     } else {
-      blocker._missCount++;
-      if(blocker._missCount>=3){ blocker._missCount=0; _flashTarget(); }
+      // ターゲットが画面外なら即スクロールバック（フリーズ防止）
+      const r2=blocker._target.getBoundingClientRect();
+      const inView=r2.bottom>0 && r2.top<window.innerHeight;
+      if(!inView){
+        blocker._missCount=0;
+        blocker._target.scrollIntoView({behavior:'instant',block:'center'});
+        setTimeout(()=>{ if(blocker._target) posIndicators(blocker._target); },80);
+      } else {
+        blocker._missCount++;
+        if(blocker._missCount>=3){ blocker._missCount=0; _flashTarget(); }
+      }
     }
   },{passive:false});
   blocker.addEventListener('click', e=>{
     if(!blocker._target) return;
     const r=blocker._target.getBoundingClientRect();
     if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom){
-      blocker.style.pointerEvents='none';
-      const el=document.elementFromPoint(e.clientX,e.clientY);
-      blocker.style.pointerEvents='all';
-      if(el) el.click();
+      _forwardClick(e.clientX, e.clientY);
     }
   });
 
+  function _onKeyScroll(e){
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','PageUp','PageDown','Home','End'].includes(e.code)){
+      e.preventDefault();
+      // ターゲットが画面外なら戻す
+      if(blocker._target){
+        const r=blocker._target.getBoundingClientRect();
+        if(r.bottom<0||r.top>window.innerHeight){
+          blocker._target.scrollIntoView({behavior:'instant',block:'center'});
+          setTimeout(()=>{ if(blocker._target) posIndicators(blocker._target); },60);
+        }
+      }
+    }
+  }
   function setBlocker(active, targetEl){
     blocker._target = targetEl;
     blocker.style.pointerEvents = active ? 'all' : 'none';
+    if(active){
+      window.addEventListener('keydown', _onKeyScroll, {passive:false});
+    } else {
+      window.removeEventListener('keydown', _onKeyScroll);
+    }
   }
 
   let glowEl = null;
@@ -1782,7 +1816,14 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   function startRepos(el){
     stopRepos();
-    const fn=()=>posIndicators(el);
+    const fn=()=>{
+      const r=el.getBoundingClientRect();
+      // 画面外に出たら即スクロールバック
+      if(r.bottom < 0 || r.top > window.innerHeight){
+        el.scrollIntoView({behavior:'instant', block:'center'});
+      }
+      posIndicators(el);
+    };
     window.addEventListener('scroll',fn,true);
     reposData={fn};
   }
@@ -1812,7 +1853,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     }
 
     glowEl=el;
-    el.classList.add('tut-glow');
+    if(!arguments[3]) el.classList.add('tut-glow'); // 第4引数 noGlow=true なら囲みなし
     setBlocker(true, el);
     el.scrollIntoView({behavior:'instant', block:'center'});
     setTimeout(()=>{
@@ -1887,7 +1928,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   // step4: キャンドル選択画面
   new MutationObserver(()=>{
     if(step===4 && document.getElementById('candleSelect').classList.contains('show')){
-      setTimeout(()=>{ if(step!==4) return; showBubble('candleSelectArea','今日の灯を、\n1個えらんでね。', 4); }, 600);
+      setTimeout(()=>{ if(step!==4) return; showBubble('candleSelectArea','今日の灯を、\n1個えらんでね。', 4, true); }, 600);
     }
   }).observe(document.getElementById('candleSelect'),{attributes:true,attributeFilter:['class']});
 
@@ -1907,112 +1948,129 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       step=5;
       setTimeout(()=>{
         if(step!==5) return;
-        showBubble('.candle','今日おいた灯だよ。\nタップしてみてね。', 5);
-        // バブルをスクリーン中央に固定（キャンドルx位置に依存しない）
-        setTimeout(()=>{
-          if(step!==5) return;
-          const bw=280;
-          bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
-        }, 560);
+        // step5: ブロッカーなし（popup MutationObserver が遷移を検知）
+        // glow + spotlight だけでキャンドルを示す
+        clearGlow();
+        bubble.classList.remove('show');
+        const candleEl = document.querySelector('.candle');
+        setBubble(5, '今日おいた灯だよ。\nタップしてみてね。');
+        const bw=280;
+        bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
+        if(candleEl){
+          glowEl=candleEl; candleEl.classList.add('tut-glow');
+          setSpotlight(candleEl);
+          candleEl.scrollIntoView({behavior:'instant', block:'center'});
+          setTimeout(()=>{
+            if(step!==5) return;
+            posIndicators(candleEl);
+            // バブルはスクリーン中央に固定
+            bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
+            arrowPtr.style.display='block';
+            bubble.classList.add('show');
+          }, 200);
+        } else {
+          bubble.style.top='72px';
+          requestAnimationFrame(()=>bubble.classList.add('show'));
+        }
+        // ブロッカーはセットしない → キャンドルを直接タップ可能
       }, 900);
     }
   }).observe(document.getElementById('videoOverlay'),{attributes:true,attributeFilter:['class']});
 
-  // step5: キャンドルタップ → popup open → hint → popup close → step6 yearToggle
+  // step5: キャンドルタップ → popup open → ヒント → popup close → step6 もどる
   let _popupOpened=false;
   new MutationObserver(()=>{
     const po=document.getElementById('popupOverlay');
     if(step===5 && po.classList.contains('show') && !_popupOpened){
       _popupOpened=true;
       clearGlow();
-      // popup上に「外側を押してもどれるよ」ヒント
+      // ポップアップ上部に「外側を押してもどろう」ヒント
       setTimeout(()=>{
-        bubble.textContent = '👆🏼\n外側を押して戻ろう。';
+        setBubble(null,'外側を押して\nもどろう。');
         const bw=280;
         bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
-        bubble.style.top='28px';
+        bubble.style.top='24px';
         bubble.style.zIndex='401';
+        // 矢印：バブルの下→ポップアップ外側を指す ▼
+        arrowPtr.textContent='▼';
+        arrowPtr.style.left=(window.innerWidth/2)+'px';
+        arrowPtr.style.top=(24+130+8)+'px';
+        arrowPtr.style.zIndex='402';
+        arrowPtr.style.display='block';
         requestAnimationFrame(()=>bubble.classList.add('show'));
       }, 350);
     }
     if(step===5 && _popupOpened && !po.classList.contains('show')){
       bubble.classList.remove('show');
       bubble.style.zIndex='';
+      arrowPtr.style.display='none';
+      arrowPtr.style.zIndex='';
       step=6;
+      // step6: 「もどるを押してね」 room-back ボタンを指示
       setTimeout(()=>{
-        if(step!==6) return; // レースコンディション防止
+        if(step!==6) return;
         window.scrollTo({top:0, behavior:'instant'});
-        const el = document.getElementById('yearToggle');
-        if(!el) return;
+        const backEl = document.querySelector('.room-back');
+        if(!backEl) return;
         clearGlow();
-        setBubble(6,'灯の部屋に、\nいままでの灯が浮かんでるよ。');
-        glowEl=el; el.classList.add('tut-glow');
-        setBlocker(true, el);
+        setBubble(null,'もどるを押してね。');
+        glowEl=backEl; backEl.classList.add('tut-glow');
+        setBlocker(true, backEl);
         setTimeout(()=>{
-          if(step!==6) return; // 内側タイムアウトも守る
-          posIndicators(el);
-          // バブルと矢印をスクリーン中央に固定
+          if(step!==6) return;
+          posIndicators(backEl);
           const bw=280;
-          bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, window.innerWidth/2-bw/2))+'px';
-          arrowPtr.style.left = (window.innerWidth/2)+'px';
+          bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
           arrowPtr.style.display='block';
           bubble.classList.add('show');
-          // yearToggle は sticky なのでスクロール再計算不要
         }, 300);
       }, 600);
     }
   }).observe(document.getElementById('popupOverlay'),{attributes:true,attributeFilter:['class']});
 
-  // step6: yearToggle → メイン自動遷移 → 最終カード（中央・4秒で自動終了）
+  // step6: もどるボタン → メイン → syncPopup → 最終カード
   function showFinalCard(msg){
     clearGlow();
     bubble.classList.remove('show');
+    bubble.style.width='';
+    bubble.style.zIndex='';
+    bubble.style.fontSize='';
+    // ピンクガラス・白文字影 → 他のチュートと同じ色に
+    bubble.style.background='rgba(255,212,225,.55)';
+    bubble.style.color='rgba(255,245,250,.88)';
+    bubble.style.textShadow='0 1px 8px rgba(180,80,160,.40),0 0 20px rgba(255,200,230,.25)';
     setBubble(null, msg);
-    const bw=320;
-    bubble.style.width=bw+'px';
+    const bw=280;
     bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
-    bubble.style.top=Math.max(40,Math.round(window.innerHeight/2)-110)+'px';
+    bubble.style.top=Math.max(40,Math.round(window.innerHeight/2)-160)+'px';
     requestAnimationFrame(()=>bubble.classList.add('show'));
     setTimeout(()=>{
       bubble.classList.remove('show');
-      setTimeout(()=>done(), 450);
-    }, 5500);
+      // フェード後にインラインスタイルをリセット
+      setTimeout(()=>{ bubble.style.background=''; bubble.style.color=''; bubble.style.textShadow=''; done(); }, 450);
+    }, 8250);
   }
 
-  document.getElementById('yearToggle')?.addEventListener('click',()=>{
-    if(step!==6) return; step=7;
+  document.querySelector('.room-back')?.addEventListener('click',()=>{
+    if(step!==6) return;
+    step=7;
     clearGlow(); bubble.classList.remove('show');
-    // 年ビューの説明カードを表示（まだルームにいる状態）
-    setBubble(null,'一年分の灯が\n見える空間だよ。\nタップで、ゆっくりながめてね。');
-    const bw=280;
-    bubble.style.width=bw+'px';
-    bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
-    bubble.style.top='44px';
-    requestAnimationFrame(()=>bubble.classList.add('show'));
+    // goToMain() は既存のリスナー(data-goto-main)が処理
     setTimeout(()=>{
       if(step!==7) return;
-      bubble.classList.remove('show');
-      setTimeout(()=>{
-        if(step!==7) return;
-        goToMain();
-        // step7: syncPopup をチュートリアルとして表示
-        setTimeout(()=>{
-          if(step!==7) return;
-          document.getElementById('syncPopupOverlay').classList.add('show');
-          const syncObs = new MutationObserver(()=>{
-            if(!document.getElementById('syncPopupOverlay').classList.contains('show')){
-              syncObs.disconnect();
-              step=8;
-              setTimeout(()=>{
-                if(step!==8) return;
-                showFinalCard('これでばっちりだね。\n\n記録を安全に保存するために、\nよかったらホーム画面に追加してね。\n\n下の「せってい」から見返せるよ。\nさぁ、今日のぶんをやってみよう。');
-              }, 500);
-            }
-          });
-          syncObs.observe(document.getElementById('syncPopupOverlay'),{attributes:true,attributeFilter:['class']});
-        }, 800);
-      }, 400);
-    }, 2800);
+      document.getElementById('syncPopupOverlay').classList.add('show');
+      const syncObs = new MutationObserver(()=>{
+        if(!document.getElementById('syncPopupOverlay').classList.contains('show')){
+          syncObs.disconnect();
+          step=8;
+          setTimeout(()=>{
+            if(step!==8) return;
+            showFinalCard('これでばっちりだね。\n\nよかったらホーム画面に追加してね。\n\n下の「せってい」から見返せるよ。\n\nさぁ、今日のぶんをやってみよう。');
+          }, 500);
+        }
+      });
+      syncObs.observe(document.getElementById('syncPopupOverlay'),{attributes:true,attributeFilter:['class']});
+    }, 800);
   });
 })();
 
