@@ -159,6 +159,7 @@ body.room-mode .page{display:none}
 .video-overlay.fading-out{opacity:0}
 .video-overlay video{width:70%;max-width:380px;max-height:70vh;object-fit:contain;border-radius:18px;box-shadow:0 0 60px rgba(255,200,120,.25),0 0 0 1px rgba(255,210,160,.2)}
 @media (max-width:480px){.video-overlay video{width:80%}}
+.video-caption{display:none;color:rgba(255,235,210,.8);font-size:15px;font-weight:600;text-align:center;margin-top:18px;line-height:1.9;letter-spacing:.1em}
 
 .candle-select{position:fixed;inset:0;z-index:150;background:radial-gradient(ellipse at center,rgba(20,12,40,.95) 0%,rgba(10,6,24,.99) 100%);display:none;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px 40px;opacity:0;transition:opacity .8s ease;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .candle-select.show{display:flex;opacity:1}
@@ -221,14 +222,14 @@ body.room-mode .page{display:none}
 .modal-panel::-webkit-scrollbar-thumb{background:rgba(134,112,170,.18);border-radius:999px}
 .sync-qr-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
 
-.tut-bubble{position:fixed;z-index:296;width:280px;padding:18px 22px;background:rgba(255,212,225,.65);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.55);border-radius:22px;color:#6e6898;font-size:17px;font-weight:700;line-height:1.8;text-align:center;white-space:pre-line;box-shadow:0 12px 36px rgba(180,80,120,.18),0 2px 12px rgba(255,170,195,.24);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+.tut-bubble{position:fixed;z-index:296;width:280px;padding:26px 28px;background:rgba(255,212,225,.22);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.30);border-radius:22px;color:rgba(255,245,250,.82);font-size:18px;font-weight:700;line-height:1.8;text-align:center;word-break:keep-all;overflow-wrap:break-word;text-shadow:0 1px 8px rgba(180,80,160,.35),0 0 20px rgba(255,200,230,.2);box-shadow:0 12px 36px rgba(180,80,120,.10);pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
 .tut-bubble.show{opacity:1;transform:translateY(0)}
 .tut-arrow-ptr{position:fixed;z-index:297;pointer-events:none;font-size:32px;line-height:1;color:rgba(200,170,60,.95);text-shadow:0 0 14px rgba(255,220,80,.7),0 2px 6px rgba(180,140,20,.3);transform:translateX(-50%);display:none;animation:tut-ptr-bob .8s ease-in-out infinite}
 @keyframes tut-ptr-bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(5px)}}
-.tut-glow{outline:5px solid rgba(255,220,90,.95)!important;outline-offset:5px!important;filter:drop-shadow(0 0 10px rgba(255,200,50,.7))!important;animation:tut-glow-pulse 1.4s ease-in-out infinite!important}
-@keyframes tut-glow-pulse{0%,100%{outline-color:rgba(255,210,80,.9)}50%{outline-color:rgba(255,250,160,1)}}
-.tut-skip-btn{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);right:18px;z-index:299;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.32);border-radius:999px;color:#6e6898;font:inherit;font-size:12px;font-weight:600;padding:7px 20px;cursor:pointer;letter-spacing:.06em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .35s ease;pointer-events:none}
-.tut-skip-btn.show{opacity:1;pointer-events:auto}
+.tut-glow{outline:8px solid rgba(255,225,100,.45)!important;outline-offset:14px!important;filter:drop-shadow(0 0 18px rgba(255,210,60,.45))!important;animation:tut-glow-pulse 1.6s ease-in-out infinite!important}
+@keyframes tut-glow-pulse{0%,100%{outline-color:rgba(255,218,80,.4)}50%{outline-color:rgba(255,248,160,.6)}}
+.tut-skip-btn{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 28px);right:18px;z-index:299;background:rgba(255,212,225,.30);border:1.5px solid rgba(255,170,195,.35);border-radius:999px;color:rgba(255,245,250,.98);font:inherit;font-size:14px;font-weight:700;padding:9px 22px;cursor:pointer;letter-spacing:.06em;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity .35s ease;pointer-events:none}
+.tut-skip-btn.show{opacity:.60;pointer-events:auto}
 .tut-action-btn{position:fixed;z-index:298;border:none;border-radius:18px;background:linear-gradient(180deg,rgba(255,246,190,.92),rgba(240,206,85,.82));color:#5b4920;font:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);letter-spacing:.04em;padding:12px 0;text-align:center}
 </style>
 </head>
@@ -335,6 +336,7 @@ body.room-mode .page{display:none}
 
   <div class="video-overlay" id="videoOverlay">
     <video id="ritualVideo" playsinline preload="auto"></video>
+    <div class="video-caption">灯をともす<br>呼吸できる時間</div>
     <button class="skip-btn" id="skipBtn">スキップ</button>
   </div>
 
@@ -913,6 +915,7 @@ document.getElementById('setteiCloseBtn').addEventListener('click', closeSetteiM
 document.getElementById('setteiSyncBtn').addEventListener('click', function(){ closeSetteiModal(); openSyncModal(); });
 document.getElementById('tutRestartBtn').addEventListener('click',()=>{
   localStorage.removeItem('yurapon_tutorial_done');
+  localStorage.setItem('yurapon_tutorial_restart','1');
   closeSetteiModal();
   window.location.href = window.location.pathname;
 });
@@ -981,6 +984,21 @@ function loadRecords(){
   const stored = localStorage.getItem(STORAGE_KEY);
   if(stored){
     try{ return JSON.parse(stored); }catch(e){}
+  }
+  // 旧バージョンキーからマイグレーション（更新しても消えないように）
+  for(let v=15; v>=1; v--){
+    const oldKey = 'yurapon_akari_records_v'+v;
+    if(oldKey === STORAGE_KEY) continue;
+    try{
+      const oldStored = localStorage.getItem(oldKey);
+      if(oldStored){
+        const oldData = JSON.parse(oldStored);
+        if(Array.isArray(oldData) && oldData.length > 0){
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(oldData));
+          return oldData;
+        }
+      }
+    }catch(e){}
   }
   const sample = generateSampleData();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sample));
@@ -1369,7 +1387,7 @@ function onCandlePicked(candleType){
       allRecords.push({...pendingRecord});
       saveRecords();
       if(!localStorage.getItem('yurapon_sync_asked') && allRecords.length === 1){
-        setTimeout(()=>{ document.getElementById('syncPopupOverlay').classList.add('show'); }, 1800);
+        setTimeout(()=>{ if(!localStorage.getItem('yurapon_tutorial_done')) return; document.getElementById('syncPopupOverlay').classList.add('show'); }, 1800);
       }
       pendingRecord = null;
 
@@ -1663,8 +1681,9 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   function setSpotlight(el){
     if(!el){ spotlight.style.opacity='0'; return; }
-    const r=el.getBoundingClientRect(), pad=12;
-    const br=Math.max((parseInt(getComputedStyle(el).borderRadius)||0)+pad, 16);
+    const r=el.getBoundingClientRect(), pad=22;
+    const elBr=parseInt(getComputedStyle(el).borderRadius)||0;
+    const br=Math.max(elBr+pad+6, 28);
     spotlight.style.left=(r.left-pad)+'px';
     spotlight.style.top=(r.top-pad)+'px';
     spotlight.style.width=(r.width+pad*2)+'px';
@@ -1714,8 +1733,11 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   const STEP_NUMS = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
 
   function setBubble(labelIdx, msg){
-    bubble.textContent = (labelIdx!=null && STEP_NUMS[labelIdx])
-      ? STEP_NUMS[labelIdx]+' '+msg : msg;
+    if(labelIdx!=null && STEP_NUMS[labelIdx]){
+      bubble.innerHTML = '<span style="font-size:1.4em;vertical-align:-.1em">'+STEP_NUMS[labelIdx]+'</span>&#x2002;'+msg.replace(/\n/g,'<br>');
+    } else {
+      bubble.innerHTML = msg.replace(/\n/g,'<br>');
+    }
   }
 
   function stopRepos(){
@@ -1724,12 +1746,20 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   function posIndicators(el){
     const r=el.getBoundingClientRect();
-    const bw=280, bh=110, ax=r.left+r.width/2;
-    const above=r.top > bh+60;
+    const bw=280, bh=120, ax=r.left+r.width/2;
+    const glowEdge=22; // spotlight pad と glow offset に合わせた視覚的余白
+    const arrowGap=18; // glow外縁→矢印の隙間
+    const bubbleGap=14; // 矢印→バブルの隙間
+    const arrowH=32;
+    const above=r.top > bh+80;
     arrowPtr.textContent = above?'▼':'▲';
     arrowPtr.style.left = ax+'px';
-    arrowPtr.style.top = (above ? r.top-54 : r.bottom+8)+'px';
-    let ty = above ? r.top-44-bh-12 : r.bottom+56;
+    arrowPtr.style.top = (above
+      ? Math.max(10, r.top - glowEdge - arrowGap - arrowH)
+      : r.bottom + glowEdge + arrowGap)+'px';
+    let ty = above
+      ? r.top - glowEdge - arrowGap - arrowH - bubbleGap - bh
+      : r.bottom + glowEdge + arrowGap + arrowH + bubbleGap;
     ty = Math.max(10, Math.min(window.innerHeight-bh-10, ty));
     bubble.style.top = ty+'px';
     bubble.style.left = Math.max(14, Math.min(window.innerWidth-bw-14, ax-bw/2))+'px';
@@ -1795,20 +1825,22 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   // --- イントロポップ ---
   const introOv = document.createElement('div');
-  introOv.style.cssText = 'position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(10,6,24,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .4s ease';
+  introOv.style.cssText = 'position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(10,6,24,.42);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .4s ease';
   const introCard = document.createElement('div');
-  introCard.style.cssText = 'background:rgba(255,212,225,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.55);border-radius:22px;padding:32px 28px;max-width:300px;width:100%;text-align:center;color:#6e6898;box-shadow:0 12px 36px rgba(180,80,120,.18)';
-  introCard.innerHTML = '<div style="font-size:20px;font-weight:800;margin-bottom:10px;line-height:1.5">チュートリアルを<br>はじめるよ</div><div style="font-size:14px;margin-bottom:24px;line-height:1.7;opacity:.85">灯をおく体験を<br>一緒に確かめよう</div><button id="tutIntroBtn" style="width:100%;padding:14px 0;border:none;border-radius:14px;background:linear-gradient(180deg,rgba(255,246,190,.95),rgba(240,206,85,.85));color:#5b4920;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);font-family:inherit;white-space:nowrap">案内にそって押していこう</button>';
+  introCard.style.cssText = 'background:rgba(255,212,225,.22);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.30);border-radius:22px;padding:48px 36px;max-width:300px;width:100%;text-align:center;color:rgba(255,245,250,.82);text-shadow:0 1px 8px rgba(180,80,160,.35),0 0 20px rgba(255,200,230,.2);box-shadow:0 12px 36px rgba(180,80,120,.10);word-break:keep-all;overflow-wrap:break-word';
+  introCard.innerHTML = '<div style="font-size:18px;font-weight:800;line-height:1.9">来てくれてありがとう🌟<br><br>まず、灯を観測のながれを、<br>やってみよう。</div><button id="tutIntroBtn" style="width:100%;margin-top:32px;padding:15px 0;border:none;border-radius:14px;background:linear-gradient(180deg,rgba(255,246,190,.95),rgba(240,206,85,.85));color:#5b4920;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);font-family:inherit;white-space:nowrap">灯しにいく</button>';
   introOv.appendChild(introCard);
   document.body.appendChild(introOv);
-  requestAnimationFrame(()=>{ introOv.style.opacity='1'; });
+  const _isRestart = localStorage.getItem('yurapon_tutorial_restart');
+  if(_isRestart) localStorage.removeItem('yurapon_tutorial_restart');
+  setTimeout(()=>{ introOv.style.opacity='1'; }, _isRestart ? 0 : 3000);
 
   document.getElementById('tutIntroBtn').addEventListener('click',()=>{
     introOv.style.opacity='0';
     setTimeout(()=>{
       introOv.remove();
       setTimeout(()=>skipBtn.classList.add('show'), 800);
-      showBubble('onomatChoices','まずここを押してね', 0);
+      showBubble('onomatChoices','まずここを押してね。', 0);
     }, 400);
   });
 
@@ -1816,17 +1848,17 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   onomatChoices.forEach(b=>b.addEventListener('click',()=>{
     if(step!==0) return; step=1;
-    setTimeout(()=>showBubble('wishChoices','次はここだよ', 1),350);
+    setTimeout(()=>showBubble('wishChoices','次はここだよ。', 1),350);
   }));
 
   wishChoices.forEach(b=>b.addEventListener('click',()=>{
     if(step!==1) return; step=2;
-    setTimeout(()=>showBubble('poanBtn','えらんだら、ここを押してね', 2),350);
+    setTimeout(()=>showBubble('poanBtn','えらんだら、\nここを押してね。', 2),350);
   }));
 
   poanBtn.addEventListener('click',()=>{
     if(step!==2) return; step=3;
-    setTimeout(()=>showBubble('goRoomBtn','灯の部屋に、灯をおきに行ってみよう', 3),1100);
+    setTimeout(()=>showBubble('goRoomBtn','灯の部屋に、\n灯をおきに行ってみよう。', 3),1100);
   });
 
   goRoomBtn.addEventListener('click',()=>{
@@ -1841,7 +1873,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   // step4: キャンドル選択画面
   new MutationObserver(()=>{
     if(step===4 && document.getElementById('candleSelect').classList.contains('show')){
-      setTimeout(()=>showBubble('candleSelectArea','1個おしてね', 4), 600);
+      setTimeout(()=>showBubble('candleSelectArea','今日の灯を、\n1個えらんでね。', 4), 600);
     }
   }).observe(document.getElementById('candleSelect'),{attributes:true,attributeFilter:['class']});
 
@@ -1850,10 +1882,18 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   });
 
   // 動画終了 → 灯の部屋 → step5
+  const _vc = document.querySelector('.video-caption');
   new MutationObserver(()=>{
-    if(step===4 && !document.getElementById('videoOverlay').classList.contains('show')){
+    const vo = document.getElementById('videoOverlay');
+    if(step===4 && vo.classList.contains('show')){
+      if(_vc) _vc.style.display='block'; // チュートリアル中だけ表示
+    }
+    if(step===4 && !vo.classList.contains('show')){
+      if(_vc) _vc.style.display='none';
       step=5;
-      setTimeout(()=>showBubble('.candle','ここにいままでの灯が浮かんでるよ。\nキャンドルを押してみてね', 5), 900);
+      setTimeout(()=>{
+        showBubble('.candle','今日おいた灯だよ。\nタップしてみてね。', 5);
+      }, 900);
     }
   }).observe(document.getElementById('videoOverlay'),{attributes:true,attributeFilter:['class']});
 
@@ -1866,7 +1906,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       clearGlow();
       // popup上に「外側を押してもどれるよ」ヒント
       setTimeout(()=>{
-        setBubble(null,'そとがわを押してもどれるよ');
+        bubble.textContent = '👆🏼\n外側を押して戻ろう。';
         const bw=280;
         bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
         bubble.style.top='28px';
@@ -1878,8 +1918,21 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       bubble.classList.remove('show');
       bubble.style.zIndex='';
       step=6;
-      window.scrollTo(0, 0);
-      setTimeout(()=>showBubble('yearToggle','右のボタンで\n年と月を切りかえられるよ', 6), 500);
+      setTimeout(()=>{
+        window.scrollTo({top:0, behavior:'instant'});
+        const el = document.getElementById('yearToggle');
+        if(!el) return;
+        clearGlow();
+        setBubble(6,'灯の部屋に、\nいままでの灯が浮かんでるよ。');
+        glowEl=el; el.classList.add('tut-glow');
+        setBlocker(true, el);
+        setTimeout(()=>{
+          posIndicators(el);
+          arrowPtr.style.display='block';
+          bubble.classList.add('show');
+          startRepos(el);
+        }, 300);
+      }, 600);
     }
   }).observe(document.getElementById('popupOverlay'),{attributes:true,attributeFilter:['class']});
 
@@ -1896,16 +1949,39 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
     setTimeout(()=>{
       bubble.classList.remove('show');
       setTimeout(()=>done(), 450);
-    }, 4000);
+    }, 5500);
   }
 
   document.getElementById('yearToggle')?.addEventListener('click',()=>{
     if(step!==6) return; step=7;
     clearGlow(); bubble.classList.remove('show');
-    goToMain();
+    // 年ビューの説明カードを表示（まだルームにいる状態）
+    setBubble(null,'一年分の灯が\n見える空間だよ。\nタップで、ゆっくりながめてね。');
+    const bw=280;
+    bubble.style.width=bw+'px';
+    bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
+    bubble.style.top='44px';
+    requestAnimationFrame(()=>bubble.classList.add('show'));
     setTimeout(()=>{
-      showFinalCard('これでばっちりだね。\n\n下の「せってい」から\n見返せるよ\n\nさぁ、今日のぶんを\nやってみよう');
-    }, 1000);
+      bubble.classList.remove('show');
+      setTimeout(()=>{
+        goToMain();
+        // step7: syncPopup をチュートリアルとして表示
+        setTimeout(()=>{
+          document.getElementById('syncPopupOverlay').classList.add('show');
+          const syncObs = new MutationObserver(()=>{
+            if(!document.getElementById('syncPopupOverlay').classList.contains('show')){
+              syncObs.disconnect();
+              step=8;
+              setTimeout(()=>{
+                showFinalCard('これでばっちりだね。\n\n記録を安全に保存するために、\nよかったらホーム画面に追加してね。\n\n下の「せってい」から見返せるよ。\nさぁ、今日のぶんをやってみよう。');
+              }, 500);
+            }
+          });
+          syncObs.observe(document.getElementById('syncPopupOverlay'),{attributes:true,attributeFilter:['class']});
+        }, 800);
+      }, 400);
+    }, 2800);
   });
 })();
 
