@@ -1129,7 +1129,10 @@ function placeCandles(){
       const jitterRange = contentH / Math.max(n * 0.4, 4);
 
       const bottomPad = 70;
-      let xpx = actualSize * 0.6 + rand() * (stageWidth - actualSize * 1.2);
+      // 最新キャンドル（idx=0）は中央右寄りに配置（バブルが左端にクランプされないよう）
+      let xpx = (idx === 0)
+        ? stageWidth * 0.42 + rand() * stageWidth * 0.30
+        : actualSize * 0.6 + rand() * (stageWidth - actualSize * 1.2);
       let ypx = Math.max(actualSize * 0.6, Math.min(stageHeight - actualSize * 0.6 - bottomPad,
         bandCenter + (rand() - 0.5) * jitterRange * 2));
 
