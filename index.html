@@ -1658,7 +1658,7 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
   // スポットライト：ターゲット以外を暗くする
   const spotlight = document.createElement('div');
-  spotlight.style.cssText = 'position:fixed;z-index:292;pointer-events:none;background:transparent;border-radius:20px;box-shadow:0 0 0 9999px rgba(10,6,28,.54);opacity:0;transition:opacity .4s ease,left .35s ease,top .35s ease,width .35s ease,height .35s ease,border-radius .35s ease';
+  spotlight.style.cssText = 'position:fixed;z-index:292;pointer-events:none;background:transparent;border-radius:20px;box-shadow:0 0 0 9999px rgba(10,6,28,.38);opacity:0;transition:opacity .4s ease';
   document.body.appendChild(spotlight);
 
   function setSpotlight(el){
@@ -1769,7 +1769,6 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
 
     glowEl=el;
     el.classList.add('tut-glow');
-    setSpotlight(el);
     setBlocker(true, el);
     el.scrollIntoView({behavior:'smooth', block:'center'});
     setTimeout(()=>{
@@ -1793,10 +1792,27 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
   }
 
   skipBtn.addEventListener('click', done);
-  setTimeout(()=>skipBtn.classList.add('show'), 1200);
+
+  // --- イントロポップ ---
+  const introOv = document.createElement('div');
+  introOv.style.cssText = 'position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(10,6,24,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .4s ease';
+  const introCard = document.createElement('div');
+  introCard.style.cssText = 'background:rgba(255,212,225,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1.5px solid rgba(255,170,195,.55);border-radius:22px;padding:32px 28px;max-width:300px;width:100%;text-align:center;color:#6e6898;box-shadow:0 12px 36px rgba(180,80,120,.18)';
+  introCard.innerHTML = '<div style="font-size:20px;font-weight:800;margin-bottom:10px;line-height:1.5">チュートリアルを<br>はじめるよ</div><div style="font-size:14px;margin-bottom:24px;line-height:1.7;opacity:.85">灯をおく体験を<br>一緒に確かめよう</div><button id="tutIntroBtn" style="width:100%;padding:14px 0;border:none;border-radius:14px;background:linear-gradient(180deg,rgba(255,246,190,.95),rgba(240,206,85,.85));color:#5b4920;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(184,148,42,.20);font-family:inherit;white-space:nowrap">案内にそって押していこう</button>';
+  introOv.appendChild(introCard);
+  document.body.appendChild(introOv);
+  requestAnimationFrame(()=>{ introOv.style.opacity='1'; });
+
+  document.getElementById('tutIntroBtn').addEventListener('click',()=>{
+    introOv.style.opacity='0';
+    setTimeout(()=>{
+      introOv.remove();
+      setTimeout(()=>skipBtn.classList.add('show'), 800);
+      showBubble('onomatChoices','まずここを押してね', 0);
+    }, 400);
+  });
 
   // --- メイン画面 ---
-  showBubble('onomatChoices','まずここを押してね', 0);
 
   onomatChoices.forEach(b=>b.addEventListener('click',()=>{
     if(step!==0) return; step=1;
@@ -1862,30 +1878,34 @@ document.getElementById('skipBtn').addEventListener('click',()=>{
       bubble.classList.remove('show');
       bubble.style.zIndex='';
       step=6;
-      setTimeout(()=>showBubble('yearToggle','右のボタンで\n年と月を切りかえられるよ', 6), 400);
+      window.scrollTo(0, 0);
+      setTimeout(()=>showBubble('yearToggle','右のボタンで\n年と月を切りかえられるよ', 6), 500);
     }
   }).observe(document.getElementById('popupOverlay'),{attributes:true,attributeFilter:['class']});
 
-  // step6: yearToggle → メイン自動遷移 → settei
+  // step6: yearToggle → メイン自動遷移 → 最終カード（中央・4秒で自動終了）
+  function showFinalCard(msg){
+    clearGlow();
+    bubble.classList.remove('show');
+    setBubble(null, msg);
+    const bw=320;
+    bubble.style.width=bw+'px';
+    bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
+    bubble.style.top=Math.max(40,Math.round(window.innerHeight/2)-110)+'px';
+    requestAnimationFrame(()=>bubble.classList.add('show'));
+    setTimeout(()=>{
+      bubble.classList.remove('show');
+      setTimeout(()=>done(), 450);
+    }, 4000);
+  }
+
   document.getElementById('yearToggle')?.addEventListener('click',()=>{
     if(step!==6) return; step=7;
     clearGlow(); bubble.classList.remove('show');
     goToMain();
     setTimeout(()=>{
-      showBubble('setteiBtn','これでばっちりだね。\n下の「せってい」から見返せるよ\nさぁ、今日のぶんをやってみよう', 7);
-      // 最終カードは大きめ・上めに固定
-      setTimeout(()=>{
-        const bw=320;
-        bubble.style.width=bw+'px';
-        bubble.style.top='44px';
-        bubble.style.left=Math.max(14,Math.min(window.innerWidth-bw-14,window.innerWidth/2-bw/2))+'px';
-      }, 560);
+      showFinalCard('これでばっちりだね。\n\n下の「せってい」から\n見返せるよ\n\nさぁ、今日のぶんを\nやってみよう');
     }, 1000);
-  });
-
-  // step7: setteiBtn タップで完了
-  document.getElementById('setteiBtn')?.addEventListener('click',()=>{
-    if(step===7) done();
   });
 })();
 
